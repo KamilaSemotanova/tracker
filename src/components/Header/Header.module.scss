@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=KoHo&display=swap');
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem;
+  height: 5rem;
+  width: 100vw;
+  background-color: #ffe9e0;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: 'KoHo', sans-serif;
+  color: #230903;
+  text-transform: lowercase;
+}
