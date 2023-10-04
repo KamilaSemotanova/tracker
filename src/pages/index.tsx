@@ -1,11 +1,11 @@
-import Head from "next/head";
-import Link from "next/link";
+import Head from 'next/head';
+import Link from 'next/link';
 
-import { api } from "~/utils/api";
-import styles from "./index.module.css";
+import { api } from '~/utils/api';
+import styles from './index.module.css';
 
-export default function Home() {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+const Home = () => {
+  const hello = api.example.hello.useQuery({ text: 'from tRPC' });
 
   return (
     <>
@@ -44,10 +44,12 @@ export default function Home() {
             </Link>
           </div>
           <p className={styles.showcaseText}>
-            {hello.data ? hello.data.greeting : "Loading tRPC query..."}
+            {hello.data ? hello.data.greeting : 'Loading tRPC query...'}
           </p>
         </div>
       </main>
     </>
   );
-}
+};
+
+export default Home;
