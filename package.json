@@ -7,11 +7,15 @@
     "build": "next build",
     "dev": "next dev",
     "start": "next start",
+    "db:push": "prisma db push",
+    "db:seed": "npx prisma db seed",
     "lint": "eslint --ignore-path .gitignore '**/*.{js,jsx,ts,tsx}' --fix",
     "prettier": "prettier --ignore-path .gitignore --write '**/*.{js,jsx,ts,tsx}'",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@prisma/client": "^5.1.1",
     "@t3-oss/env-nextjs": "^0.6.0",
     "@tanstack/react-query": "^4.32.6",
     "@trpc/client": "^10.37.1",
@@ -42,6 +46,7 @@
     "husky": "^8.0.0",
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
+    "prisma": "^5.4.0",
     "typescript": "^5.1.6"
   },
   "lint-staged": {
