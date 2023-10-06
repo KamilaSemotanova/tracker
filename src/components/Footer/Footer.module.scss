@@ -1,16 +1,19 @@
+@import '../../styles/color.scss';
+
 .footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffe9e0;
-  color: #230903;
-  height: 50px;
-  width: 100vw;
-  padding: 5px 10px;
-  text-align: left;
-  font-family: sans-serif, Calibri;
-  font-size: 14px;
-  font-weight: 300;
-  line-height: 1.5;
   flex-shrink: 0;
+
+  min-height: 3rem;
+  width: 100%;
+  padding: 0 1rem;
+
+  background-color: $translucent-silk;
+  color: $severely-burnt-toast;
+
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 300;
 }
