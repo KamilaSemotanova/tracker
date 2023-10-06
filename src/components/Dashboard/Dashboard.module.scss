@@ -1,0 +1,133 @@
+@import 'src/styles/color.scss';
+
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+  background-color: $spruce-stone;
+  border-radius: 10px;
+}
+
+.title {
+  color: $severely-burnt-toast;
+  font-size: 1rem;
+}
+
+.activities {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 1.5rem 0;
+  list-style-type: none;
+  cursor: pointer;
+}
+
+.activity {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80vw;
+  height: 2.5rem;
+  padding-right: 0.3rem;
+  color: $translucent-silk;
+  background-color: $hornblende-green;
+  border: none;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.activityZero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80vw;
+  height: 2.5rem;
+  padding-right: 0.3rem;
+  color: $translucent-silk;
+  background-color: $pumping-spice;
+  border: none;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.timesDone {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+}
+
+.btnDone {
+  width: 2rem;
+  height: 2rem;
+  color: $severely-burnt-toast;
+  background-color: $translucent-silk;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 300;
+  cursor: pointer;
+}
+
+.btnDone:hover {
+  background-color: $spruce-stone;
+}
+
+.revealForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  background-color: $translucent-silk;
+  border: none;
+  border-radius: 50%;
+  font-size: 2rem;
+  font-weight: 300;
+  cursor: pointer;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: $hornblende-green;
+  color: $translucent-silk;
+}
+
+.input {
+  color: $translucent-silk;
+  background-color: $hornblende-green;
+  border: none;
+  border-bottom: 1px solid $translucent-silk;
+  cursor: pointer;
+}
+
+.btnBox {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.btn {
+  width: 45%;
+  padding: 0.5rem;
+  color: $severely-burnt-toast;
+  background-color: $translucent-silk;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 300;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: $spruce-stone;
+}

@@ -1,4 +1,4 @@
-@import '../../styles/color.scss';
+@import 'src/styles/color.scss';
 
 .container {
   display: flex;
@@ -14,5 +14,4 @@
   color: $severely-burnt-toast;
   font-size: 1.5rem;
   font-weight: 600;
-  font-family: 'KoHo', sans-serif;
 }

@@ -1,11 +1,17 @@
+import { ReactNode } from 'react';
+
 import { Footer } from '../Footer/Footer';
 import { Header } from '../Header/Header';
 import style from './Layout.module.scss';
 
-export const Layout = () => (
+type LayoutProps = {
+  children?: ReactNode;
+};
+
+export const Layout: React.FC<LayoutProps> = ({ children }) => (
   <main className={style.main}>
     <Header />
-    <div className={style.content}>Content</div>
+    <div className={style.content}>{children}</div>
     <Footer />
   </main>
 );
