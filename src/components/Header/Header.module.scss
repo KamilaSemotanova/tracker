@@ -1,0 +1,18 @@
+@import '../../styles/color.scss';
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5rem;
+  width: 100%;
+  padding: 0 1rem;
+  background-color: $translucent-silk;
+}
+
+.title {
+  color: $severely-burnt-toast;
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-family: 'KoHo', sans-serif;
+}
