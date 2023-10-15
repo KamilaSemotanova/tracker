@@ -1,4 +1,5 @@
 @import 'src/styles/color.scss';
+@import 'src/styles/breakpoints.scss';
 
 .box {
   display: flex;
@@ -6,7 +7,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 1rem;
+  padding: 2rem 1rem;
   background-color: $spruce-stone;
   border-radius: 10px;
 }
@@ -31,7 +32,7 @@
   align-items: center;
   justify-content: space-between;
   width: 80vw;
-  height: 2.5rem;
+  height: min-content;
   padding-right: 0.3rem;
   color: $translucent-silk;
   background-color: $hornblende-green;
@@ -40,40 +41,45 @@
   text-align: center;
 }
 
-.activityZero {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 80vw;
-  height: 2.5rem;
-  padding-right: 0.3rem;
-  color: $translucent-silk;
+.zero {
   background-color: $pumping-spice;
-  border: none;
-  border-radius: 10px;
-  text-align: center;
+}
+
+.more {
+  background-color: $hornblende-green;
+}
+
+.nameOfActivity {
+  padding: 0.5rem;
 }
 
 .timesDone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 10px;
 }
 
-.btnDone {
+.buttonDone {
   width: 2rem;
   height: 2rem;
-  color: $severely-burnt-toast;
-  background-color: $translucent-silk;
-  border: none;
+  border: 1px solid $translucent-silk;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 300;
   cursor: pointer;
+
+  &:hover {
+    opacity: 0.5;
+  }
 }
 
-.btnDone:hover {
-  background-color: $spruce-stone;
+.checkMark {
+  height: 1.5rem;
+  width: 1.5rem;
+  z-index: 1;
 }
 
 .revealForm {
@@ -94,7 +100,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 80vw;
   padding: 1rem;
   border-radius: 10px;
   background-color: $hornblende-green;
@@ -102,32 +108,87 @@
 }
 
 .input {
+  margin-left: 1rem;
   color: $translucent-silk;
   background-color: $hornblende-green;
   border: none;
   border-bottom: 1px solid $translucent-silk;
   cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
 }
 
-.btnBox {
+.buttonBox {
   display: flex;
   justify-content: space-between;
   width: 100%;
   margin: 1rem 0;
 }
 
-.btn {
+.button {
   width: 45%;
   padding: 0.5rem;
-  color: $severely-burnt-toast;
-  background-color: $translucent-silk;
-  border: none;
+  color: $translucent-silk;
+  background-color: $hornblende-green;
+  border: 1px solid $translucent-silk;
   border-radius: 10px;
   font-size: 1rem;
   font-weight: 300;
   cursor: pointer;
+
+  &:hover {
+    background-color: $translucent-silk;
+    color: $severely-burnt-toast;
+  }
 }
 
-.btn:hover {
-  background-color: $spruce-stone;
+@media only screen and (min-width: $screen-md-min) {
+  .box {
+    width: 80%;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .activities {
+    flex-direction: row;
+    flex-wrap: wrap;
+    row-gap: 1.8rem;
+    column-gap: 5rem;
+    width: 80%;
+    margin: 2.2rem 0;
+  }
+
+  .activity {
+    width: 43%;
+    height: 4rem;
+    padding: 0 1rem;
+    font-size: 1.4rem;
+  }
+
+  .buttonDone {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .revealForm {
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 3rem;
+  }
+
+  .form {
+    gap: 1.5rem;
+    width: 80%;
+    padding: 2rem;
+    margin: 2rem 0 3rem 0;
+    font-size: 1.4rem;
+  }
+
+  .button {
+    font-size: 1.4rem;
+  }
 }
