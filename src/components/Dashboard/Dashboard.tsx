@@ -1,49 +1,48 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 
 import { Row } from '../Row/Row';
+import { trpc } from '../../utils/trpc';
 import style from './Dashboard.module.scss';
-
-type ActivityType = {
-  activity: string;
-  id: number;
-  timesDone: number;
-};
-
-const activities: ActivityType[] = [
-  { activity: 'running', id: 1, timesDone: 3 },
-  { activity: 'swimming', id: 2, timesDone: 2 },
-  { activity: 'not smoking', id: 3, timesDone: 21 },
-];
 
 export const Dashboard = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [newActivity, setNewActivity] = useState('');
-  const [currentActivities, setCurrentActivities] = useState([...activities]);
+
+  const { data: activities } = trpc.activities.list.useQuery();
+
+  const utils = trpc.useContext();
+  const addNewActivity = trpc.activities.create.useMutation({
+    onSuccess: () => {
+      utils.activities.invalidate();
+    },
+  });
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    addNewActivity.mutate({ name: newActivity });
+
+    setFormVisible(false);
+  };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewActivity(e.target.value);
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const updateDoneCounter = trpc.activities.updateDoneCounter.useMutation({
+    onSuccess: () => {
+      utils.activities.invalidate();
+    },
+  });
 
-    const newObj = { activity: newActivity, id: 4, timesDone: 0 };
-    const newArray = activities.concat([newObj]);
-
-    setCurrentActivities(newArray);
-    setFormVisible(false);
-  };
-
-  const handleActivityClick = (updatedActivity: string) => {
-    const addToCounter = currentActivities.map((currentActivity) => {
-      if (currentActivity.activity === updatedActivity) {
-        return { ...currentActivity, timesDone: currentActivity.timesDone + 1 };
-      }
-
-      return currentActivity;
-    });
-
-    setCurrentActivities(addToCounter);
+  const handleActivityClick = ({
+    id,
+    timesDone,
+  }: {
+    id: number;
+    timesDone: number;
+  }) => {
+    updateDoneCounter.mutate({ id, timesDone: timesDone + 1 });
   };
 
   return (
@@ -51,19 +50,19 @@ export const Dashboard = () => {
       <div className={style.box}>
         <h1 className={style.title}>Všechny aktivity</h1>
         <ul className={style.activities}>
-          {currentActivities.map(({ timesDone, id, activity }) => (
+          {activities?.map(({ timesDone, id, name }) => (
             <div
               className={timesDone === 0 ? style.activityZero : style.activity}
               key={id}
             >
               <span className={style.timesDone}>{timesDone}</span>
-              <li>{activity}</li>
+              <li>{name}</li>
 
               <button
                 className={style.btnDone}
                 type="button"
                 onClick={() => {
-                  handleActivityClick(activity);
+                  handleActivityClick({ id, timesDone });
                 }}
               >
                 ✔️
@@ -84,6 +83,7 @@ export const Dashboard = () => {
             <label htmlFor="activity">
               aktivita
               <input
+                id="activityName"
                 type="text"
                 className={style.input}
                 onChange={handleChange}
