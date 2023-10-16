@@ -54,24 +54,6 @@ export const Dashboard = () => {
       <div className={style.box}>
         <h1 className={style.title}>Všechny aktivity</h1>
         <ul className={style.activities}>
-          <div className={classnames(style.activity, style.zero)}>
-            <span className={style.timesDone}>0</span>
-            <li className={style.nameOfActivity}>běhání</li>
-            <button
-              className={classnames(style.buttonDone, style.zero)}
-              aria-label="activity done"
-              type="button"
-              onClick={() => {
-                handleActivityClick({ id, timesDone });
-              }}
-            >
-              <Image
-                src={checkMark}
-                alt="check mark"
-                className={style.checkMark}
-              />
-            </button>
-          </div>
           {activities?.map(({ timesDone, id, name }) => (
             <div
               className={classnames(style.activity, {
@@ -93,7 +75,11 @@ export const Dashboard = () => {
                   handleActivityClick({ id, timesDone });
                 }}
               >
-                <div className={style.checkMark} />
+                <Image
+                  src={checkMark}
+                  alt="check mark"
+                  className={style.checkMark}
+                />
               </button>
             </div>
           ))}
