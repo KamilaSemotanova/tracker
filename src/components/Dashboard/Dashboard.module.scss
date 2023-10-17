@@ -65,6 +65,9 @@
 .buttonDone {
   width: 2rem;
   height: 2rem;
+  background-image: url('./img/icon_check.png');
+  background-size: cover;
+  background-position: center;
   border: 1px solid $translucent-silk;
   border-radius: 8px;
   font-size: 1rem;
@@ -72,14 +75,9 @@
   cursor: pointer;
 
   &:hover {
-    opacity: 0.5;
+    background-color: $translucent-silk;
+    background-image: url('./img/icon_check_hover.png');
   }
-}
-
-.checkMark {
-  height: 1.5rem;
-  width: 1.5rem;
-  z-index: 1;
 }
 
 .revealForm {
@@ -125,6 +123,11 @@
   justify-content: space-between;
   width: 100%;
   margin: 1rem 0;
+}
+
+.addActivity {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .button {

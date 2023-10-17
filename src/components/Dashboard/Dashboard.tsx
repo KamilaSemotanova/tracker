@@ -4,7 +4,6 @@ import Image from 'next/image';
 
 import { Row } from '../Row/Row';
 import { trpc } from '../../utils/trpc';
-import checkMark from './img/icon_check.png';
 import addActivity from './img/plus.png';
 import style from './Dashboard.module.scss';
 
@@ -74,13 +73,7 @@ export const Dashboard = () => {
                 onClick={() => {
                   handleActivityClick({ id, timesDone });
                 }}
-              >
-                <Image
-                  src={checkMark}
-                  alt="check mark"
-                  className={style.checkMark}
-                />
-              </button>
+              />
             </div>
           ))}
         </ul>
@@ -92,7 +85,7 @@ export const Dashboard = () => {
             <Image
               src={addActivity}
               alt="add activity"
-              className={style.checkMark}
+              className={style.addActivity}
             />
           </button>
         )}
