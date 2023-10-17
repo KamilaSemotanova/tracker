@@ -62,7 +62,7 @@ export const Dashboard = () => {
               key={id}
             >
               <span className={style.timesDone}>{timesDone}</span>
-              <li className={style.nameOfActivity}>{name}</li>$
+              <li className={style.nameOfActivity}>{name}</li>
               <button
                 className={classnames(style.buttonDone, {
                   [style.zero]: timesDone === 0,

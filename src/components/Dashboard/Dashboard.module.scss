@@ -21,8 +21,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 0;
   margin: 1.5rem 0;
+  padding: 0;
   list-style-type: none;
   cursor: pointer;
 }
@@ -100,13 +100,14 @@
   align-items: center;
   width: 80vw;
   padding: 1rem;
-  border-radius: 10px;
-  background-color: $hornblende-green;
   color: $translucent-silk;
+  background-color: $hornblende-green;
+  border-radius: 10px;
 }
 
 .input {
   margin-left: 1rem;
+  width: max-content;
   color: $translucent-silk;
   background-color: $hornblende-green;
   border: none;
