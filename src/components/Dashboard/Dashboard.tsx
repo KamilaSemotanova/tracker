@@ -23,9 +23,10 @@ export const Dashboard = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    addNewActivity.mutate({ name: newActivity });
+    newActivity !== '' && addNewActivity.mutate({ name: newActivity });
 
     setFormVisible(false);
+    setNewActivity('');
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -61,14 +62,19 @@ export const Dashboard = () => {
               })}
               key={id}
             >
-              <span className={style.timesDone}>{timesDone}</span>
+              <span
+                className={style.timesDone}
+                aria-description={`Aktivita ${name} byla dokončena ${timesDone}x.`}
+              >
+                {timesDone}
+              </span>
               <li className={style.nameOfActivity}>{name}</li>
               <button
                 className={classnames(style.buttonDone, {
                   [style.zero]: timesDone === 0,
                   [style.more]: timesDone > 0,
                 })}
-                aria-label="activity done"
+                aria-label={`Dokončena aktivita ${name}.`}
                 type="button"
                 onClick={() => {
                   handleActivityClick({ id, timesDone });
@@ -84,7 +90,7 @@ export const Dashboard = () => {
           >
             <Image
               src={addActivity}
-              alt="add activity"
+              alt="Přidat novou aktivitu"
               className={style.addActivity}
             />
           </button>
@@ -100,6 +106,7 @@ export const Dashboard = () => {
                   placeholder="běhání"
                   className={style.input}
                   onChange={handleChange}
+                  autoFocus
                 />
               </label>
             </Row>

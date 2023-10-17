@@ -12,9 +12,21 @@
   border-radius: 10px;
 }
 
+@media (min-width: $screen-md-min) {
+  .box {
+    width: 80%;
+  }
+}
+
 .title {
   color: $severely-burnt-toast;
   font-size: 1rem;
+}
+
+@media (min-width: $screen-md-min) {
+  .title {
+    font-size: 2rem;
+  }
 }
 
 .activities {
@@ -25,6 +37,17 @@
   padding: 0;
   list-style-type: none;
   cursor: pointer;
+}
+
+@media (min-width: $screen-md-min) {
+  .activities {
+    flex-direction: row;
+    flex-wrap: wrap;
+    row-gap: 1.8rem;
+    column-gap: 5rem;
+    width: 80%;
+    margin: 2.2rem 0;
+  }
 }
 
 .activity {
@@ -39,6 +62,15 @@
   border: none;
   border-radius: 10px;
   text-align: center;
+}
+
+@media (min-width: $screen-md-min) {
+  .activity {
+    width: 43%;
+    height: 4rem;
+    padding: 0 1rem;
+    font-size: 1.4rem;
+  }
 }
 
 .zero {
@@ -80,6 +112,13 @@
   }
 }
 
+@media (min-width: $screen-md-min) {
+  .buttonDone {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
 .revealForm {
   display: flex;
   justify-content: center;
@@ -94,6 +133,14 @@
   cursor: pointer;
 }
 
+@media (min-width: $screen-md-min) {
+  .revealForm {
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 3rem;
+  }
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -103,6 +150,16 @@
   color: $translucent-silk;
   background-color: $hornblende-green;
   border-radius: 10px;
+}
+
+@media (min-width: $screen-md-min) {
+  .form {
+    gap: 1.5rem;
+    width: 80%;
+    padding: 2rem;
+    margin: 2rem 0 3rem 0;
+    font-size: 1.4rem;
+  }
 }
 
 .input {
@@ -148,50 +205,7 @@
   }
 }
 
-@media only screen and (min-width: $screen-md-min) {
-  .box {
-    width: 80%;
-  }
-
-  .title {
-    font-size: 2rem;
-  }
-
-  .activities {
-    flex-direction: row;
-    flex-wrap: wrap;
-    row-gap: 1.8rem;
-    column-gap: 5rem;
-    width: 80%;
-    margin: 2.2rem 0;
-  }
-
-  .activity {
-    width: 43%;
-    height: 4rem;
-    padding: 0 1rem;
-    font-size: 1.4rem;
-  }
-
-  .buttonDone {
-    width: 2.5rem;
-    height: 2.5rem;
-  }
-
-  .revealForm {
-    width: 3.5rem;
-    height: 3.5rem;
-    font-size: 3rem;
-  }
-
-  .form {
-    gap: 1.5rem;
-    width: 80%;
-    padding: 2rem;
-    margin: 2rem 0 3rem 0;
-    font-size: 1.4rem;
-  }
-
+@media (min-width: $screen-md-min) {
   .button {
     font-size: 1.4rem;
   }
