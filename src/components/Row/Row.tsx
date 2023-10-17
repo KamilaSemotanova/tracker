@@ -6,6 +6,7 @@ import style from './Row.module.scss';
 type RowProps = {
   flexCol?: boolean;
   justifyCenter?: boolean;
+  justifyStart?: boolean;
   justifyEnd?: boolean;
   justifySpace?: boolean;
   itemsCenter?: boolean;
@@ -20,6 +21,7 @@ export const Row: React.FC<RowProps> = ({
   children,
   flexCol,
   justifyCenter,
+  justifyStart,
   justifyEnd,
   justifySpace,
   itemsCenter,
@@ -34,6 +36,7 @@ export const Row: React.FC<RowProps> = ({
       {
         [style.flexCol]: flexCol,
         [style.justifyCenter]: justifyCenter,
+        [style.justifyStart]: justifyStart,
         [style.justifyEnd]: justifyEnd,
         [style.justifySpace]: justifySpace,
         [style.itemsCenter]: itemsCenter,
