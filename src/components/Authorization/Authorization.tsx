@@ -1,26 +1,30 @@
 import { FormEvent, useState } from 'react';
+import { useRouter } from 'next/router';
 import classnames from 'classnames';
 
 import style from './Authorization.module.scss';
 
-export const Authorization = () => {
+export const Authorization = ({ setIsLogged }) => {
   const [revealForm, setRevealForm] = useState(false);
   const [registrationForm, setRegistrationForm] = useState(false);
 
+  const router = useRouter();
+
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setIsLogged(true);
+    router.push('/');
   };
 
   const handleRegistration = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setIsLogged(true);
+    router.push('/');
   };
 
   const handleReveal = (boolean: boolean) => {
-    setRevealForm(true);
-    setRegistrationForm(boolean);
-  };
-
-  const switchForm = (boolean: boolean) => {
     setRevealForm(true);
     setRegistrationForm(boolean);
   };
@@ -29,9 +33,11 @@ export const Authorization = () => {
     <div className={style.authorization}>
       <h2>Vítejte,</h2>
       <p>
-        aplikace je vytvořena k zaznamenávání aktivit. Zmapujte si svůj progres!
+        v aplikaci Tracker, která je vytvořena k zaznamenávání aktivit. Mapujte
+        svůj progres!
       </p>
-      {!revealForm && (
+
+      {!revealForm ? (
         <div className={style.buttonBox}>
           <button onClick={() => handleReveal(false)} className={style.button}>
             Přihlásit
@@ -40,8 +46,7 @@ export const Authorization = () => {
             Registrovat
           </button>
         </div>
-      )}
-      {revealForm && (
+      ) : (
         <div>
           <div
             className={classnames({
@@ -80,7 +85,7 @@ export const Authorization = () => {
               <button
                 className={style.link}
                 onClick={() => {
-                  switchForm(false);
+                  handleReveal(false);
                 }}
               >
                 Máte již účet?
@@ -111,7 +116,7 @@ export const Authorization = () => {
                 />
               </label>
               <button className={style.link}>Zapomněli jste heslo?</button>
-              <button className={style.link} onClick={() => switchForm(true)}>
+              <button className={style.link} onClick={() => handleReveal(true)}>
                 Nemáte ještě účet?
               </button>
               <button type="submit" className={style.button}>
