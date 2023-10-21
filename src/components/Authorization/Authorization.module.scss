@@ -8,9 +8,18 @@
   border-radius: 10px 10px 0 0;
 }
 
+.formBox {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+  background-color: $translucent-silk;
+  border-radius: 10px;
+}
+
 .buttonBox {
   display: flex;
-  gap: 1rem;
 }
 
 .button {
@@ -21,13 +30,24 @@
   color: $severely-burnt-toast;
   font-size: 1rem;
   font-weight: 300;
-  border: 1px solid $severely-burnt-toast;
+  border: 1px solid $translucent-silk;
   cursor: pointer;
 
   &:hover {
     background-color: $translucent-silk;
-    border: 1px solid $translucent-silk;
+    border: 1px solid $severely-burnt-toast;
   }
+}
+
+.buttonRegistr,
+.buttonLogin {
+  flex-grow: 1;
+  text-align: center;
+  border: 1px solid $translucent-silk;
+}
+
+.active {
+  background-color: $translucent-silk;
 }
 
 .hide {
@@ -39,12 +59,12 @@
   flex-direction: column;
   gap: 1rem;
   align-items: self-start;
-  margin-top: 2rem;
+  margin: 2rem;
 }
 
 .link {
   text-decoration: none;
-  background-color: $spice-pink;
+  background-color: $translucent-silk;
   color: $severely-burnt-toast;
   border: none;
   font-size: 1rem;
@@ -57,7 +77,7 @@
 }
 
 .input {
-  background-color: $spice-pink;
+  background-color: $translucent-silk;
   border: none;
   border-bottom: 1px solid $severely-burnt-toast;
   &:focus {

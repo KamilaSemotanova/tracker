@@ -36,96 +36,98 @@ export const Authorization = ({ setIsLogged }) => {
         v aplikaci Tracker, která je vytvořena k zaznamenávání aktivit. Mapujte
         svůj progres!
       </p>
-
-      {!revealForm ? (
+      <div className={style.formBox}>
         <div className={style.buttonBox}>
-          <button onClick={() => handleReveal(false)} className={style.button}>
+          <button
+            onClick={() => handleReveal(false)}
+            className={classnames(style.button, style.buttonLogin, {
+              [style.active]: registrationForm === false,
+            })}
+          >
             Přihlásit
           </button>
-          <button onClick={() => handleReveal(true)} className={style.button}>
+          <button
+            onClick={() => handleReveal(true)}
+            className={classnames(style.button, style.buttonRegistr, {
+              [style.active]: registrationForm === true,
+            })}
+          >
             Registrovat
           </button>
         </div>
-      ) : (
-        <div>
-          <div
-            className={classnames({
-              [style.hide]: registrationForm === false,
-            })}
-          >
-            <form className={style.form} onSubmit={handleRegistration}>
-              <label>
-                <input
-                  type="text"
-                  placeholder="Jméno a příjmení"
-                  className={style.input}
-                />
-              </label>
-              <label>
-                <input
-                  type="text"
-                  placeholder="E-mail"
-                  className={style.input}
-                />
-              </label>
-              <label>
-                <input
-                  type="password"
-                  placeholder="Heslo"
-                  className={style.input}
-                />
-              </label>
-              <label>
-                <input
-                  type="password"
-                  placeholder="Ověření hesla"
-                  className={style.input}
-                />
-              </label>
-              <button
-                className={style.link}
-                onClick={() => {
-                  handleReveal(false);
-                }}
-              >
-                Máte již účet?
-              </button>
-              <button type="submit" className={style.button}>
-                Zaregistrovat
-              </button>
-            </form>
+
+        {revealForm && (
+          <div>
+            <div
+              className={classnames({
+                [style.hide]: registrationForm === false,
+              })}
+            >
+              <form className={style.form} onSubmit={handleRegistration}>
+                <label>
+                  <input
+                    type="text"
+                    placeholder="Jméno a příjmení"
+                    className={style.input}
+                    autoFocus
+                  />
+                </label>
+                <label>
+                  <input
+                    type="text"
+                    placeholder="E-mail"
+                    className={style.input}
+                  />
+                </label>
+                <label>
+                  <input
+                    type="password"
+                    placeholder="Heslo"
+                    className={style.input}
+                  />
+                </label>
+                <label>
+                  <input
+                    type="password"
+                    placeholder="Ověření hesla"
+                    className={style.input}
+                  />
+                </label>
+                <button type="submit" className={style.button}>
+                  Zaregistrovat
+                </button>
+              </form>
+            </div>
+            <div
+              className={classnames({
+                [style.hide]: registrationForm === true,
+              })}
+            >
+              <form className={style.form} onSubmit={handleLogin}>
+                <label>
+                  <input
+                    type="text"
+                    placeholder="E-mail"
+                    className={style.input}
+                    autoFocus
+                  />
+                </label>
+                <label>
+                  <input
+                    type="password"
+                    placeholder="Heslo"
+                    className={style.input}
+                  />
+                </label>
+                <button className={style.link}>Zapomněli jste heslo?</button>
+                <button type="submit" className={style.button}>
+                  Přihlásit
+                </button>
+              </form>
+            </div>
           </div>
-          <div
-            className={classnames({
-              [style.hide]: registrationForm === true,
-            })}
-          >
-            <form className={style.form} onSubmit={handleLogin}>
-              <label>
-                <input
-                  type="text"
-                  placeholder="E-mail"
-                  className={style.input}
-                />
-              </label>
-              <label>
-                <input
-                  type="password"
-                  placeholder="Heslo"
-                  className={style.input}
-                />
-              </label>
-              <button className={style.link}>Zapomněli jste heslo?</button>
-              <button className={style.link} onClick={() => handleReveal(true)}>
-                Nemáte ještě účet?
-              </button>
-              <button type="submit" className={style.button}>
-                Přihlásit
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
