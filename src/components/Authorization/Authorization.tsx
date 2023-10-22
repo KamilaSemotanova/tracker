@@ -2,10 +2,10 @@ import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/router';
 import classnames from 'classnames';
 
+import { Row } from '../Row/Row';
 import style from './Authorization.module.scss';
 
 export const Authorization = ({ setIsLogged }) => {
-  const [revealForm, setRevealForm] = useState(false);
   const [registrationForm, setRegistrationForm] = useState(false);
 
   const router = useRouter();
@@ -25,38 +25,36 @@ export const Authorization = ({ setIsLogged }) => {
   };
 
   const handleReveal = (boolean: boolean) => {
-    setRevealForm(true);
     setRegistrationForm(boolean);
   };
 
   return (
-    <div className={style.authorization}>
-      <h2>Vítejte,</h2>
-      <p>
-        v aplikaci Tracker, která je vytvořena k zaznamenávání aktivit. Mapujte
-        svůj progres!
-      </p>
-      <div className={style.formBox}>
-        <div className={style.buttonBox}>
-          <button
-            onClick={() => handleReveal(false)}
-            className={classnames(style.button, style.buttonLogin, {
-              [style.active]: registrationForm === false,
-            })}
-          >
-            Přihlásit
-          </button>
-          <button
-            onClick={() => handleReveal(true)}
-            className={classnames(style.button, style.buttonRegistr, {
-              [style.active]: registrationForm === true,
-            })}
-          >
-            Registrovat
-          </button>
-        </div>
-
-        {revealForm && (
+    <section className={style.container}>
+      <div className={style.authorization}>
+        <h2>Vítejte,</h2>
+        <p>
+          v aplikaci Tracker, která je vytvořena k zaznamenávání aktivit.
+          Mapujte svůj progres!
+        </p>
+        <div className={style.formBox}>
+          <Row>
+            <button
+              onClick={() => handleReveal(false)}
+              className={classnames(style.button, style.buttonTop, {
+                [style.active]: registrationForm === false,
+              })}
+            >
+              Přihlásit
+            </button>
+            <button
+              onClick={() => handleReveal(true)}
+              className={classnames(style.button, style.buttonTop, {
+                [style.active]: registrationForm === true,
+              })}
+            >
+              Registrovat
+            </button>
+          </Row>
           <div>
             <div
               className={classnames({
@@ -93,7 +91,10 @@ export const Authorization = ({ setIsLogged }) => {
                     className={style.input}
                   />
                 </label>
-                <button type="submit" className={style.button}>
+                <button
+                  type="submit"
+                  className={classnames(style.button, style.submit)}
+                >
                   Zaregistrovat
                 </button>
               </form>
@@ -119,15 +120,18 @@ export const Authorization = ({ setIsLogged }) => {
                     className={style.input}
                   />
                 </label>
-                <button className={style.link}>Zapomněli jste heslo?</button>
-                <button type="submit" className={style.button}>
+                <a className={style.link}>Zapomněli jste heslo?</a>
+                <button
+                  type="submit"
+                  className={classnames(style.button, style.submit)}
+                >
                   Přihlásit
                 </button>
               </form>
             </div>
           </div>
-        )}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };

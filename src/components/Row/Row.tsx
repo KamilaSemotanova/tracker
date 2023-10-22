@@ -11,6 +11,7 @@ type RowProps = {
   justifySpace?: boolean;
   itemsCenter?: boolean;
   itemsStart?: boolean;
+  itemsEnd?: boolean;
   fullWidth?: boolean;
   dataTestId?: string;
   className?: string;
@@ -26,6 +27,7 @@ export const Row: React.FC<RowProps> = ({
   justifySpace,
   itemsCenter,
   itemsStart,
+  itemsEnd,
   fullWidth,
   dataTestId,
   className,
@@ -41,6 +43,7 @@ export const Row: React.FC<RowProps> = ({
         [style.justifySpace]: justifySpace,
         [style.itemsCenter]: itemsCenter,
         [style.itemsStart]: itemsStart,
+        [style.itemsEnd]: itemsEnd,
         [style.fullWidth]: fullWidth,
       },
       style.row,
