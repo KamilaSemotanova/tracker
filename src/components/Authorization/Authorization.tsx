@@ -5,13 +5,27 @@ import classnames from 'classnames';
 import { Row } from '../Row/Row';
 import style from './Authorization.module.scss';
 
-export const Authorization = ({ setIsLogged }) => {
+export const Authorization = ({
+  setIsLogged,
+}: {
+  setIsLogged: (value: boolean) => void;
+}) => {
   const [registrationForm, setRegistrationForm] = useState(false);
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [registrationName, setRegistrationName] = useState('');
+  const [registrationEmail, setRegistrationEmail] = useState('');
+  const [registrationPassword, setRegistrationPassword] = useState('');
+  const [passwordVerification, setPasswordVerification] = useState('');
 
   const router = useRouter();
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const dataLogin = { name: loginEmail, password: loginPassword };
+
+    console.log(dataLogin);
 
     setIsLogged(true);
     router.push('/');
@@ -19,6 +33,14 @@ export const Authorization = ({ setIsLogged }) => {
 
   const handleRegistration = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const dataRegistration = {
+      name: registrationName,
+      email: registrationEmail,
+      password: registrationPassword,
+      passwordVerification,
+    };
+    console.log(dataRegistration);
 
     setIsLogged(true);
     router.push('/');
@@ -67,6 +89,7 @@ export const Authorization = ({ setIsLogged }) => {
                     type="text"
                     placeholder="Jméno a příjmení"
                     className={style.input}
+                    onChange={(e) => setRegistrationName(e.target.value)}
                     autoFocus
                   />
                 </label>
@@ -75,6 +98,7 @@ export const Authorization = ({ setIsLogged }) => {
                     type="text"
                     placeholder="E-mail"
                     className={style.input}
+                    onChange={(e) => setRegistrationEmail(e.target.value)}
                   />
                 </label>
                 <label>
@@ -82,6 +106,7 @@ export const Authorization = ({ setIsLogged }) => {
                     type="password"
                     placeholder="Heslo"
                     className={style.input}
+                    onChange={(e) => setRegistrationPassword(e.target.value)}
                   />
                 </label>
                 <label>
@@ -89,8 +114,10 @@ export const Authorization = ({ setIsLogged }) => {
                     type="password"
                     placeholder="Ověření hesla"
                     className={style.input}
+                    onChange={(e) => setPasswordVerification(e.target.value)}
                   />
                 </label>
+                {/* <div className={classnames(style.warningBox)} /> */}
                 <button
                   type="submit"
                   className={classnames(style.button, style.submit)}
@@ -110,6 +137,7 @@ export const Authorization = ({ setIsLogged }) => {
                     type="text"
                     placeholder="E-mail"
                     className={style.input}
+                    onChange={(e) => setLoginEmail(e.target.value)}
                     autoFocus
                   />
                 </label>
@@ -118,6 +146,7 @@ export const Authorization = ({ setIsLogged }) => {
                     type="password"
                     placeholder="Heslo"
                     className={style.input}
+                    onChange={(e) => setLoginPassword(e.target.value)}
                   />
                 </label>
                 <a className={style.link}>Zapomněli jste heslo?</a>
