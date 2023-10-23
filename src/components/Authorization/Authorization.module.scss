@@ -1,4 +1,4 @@
-@import '../../styles/color.scss';
+@import 'src/styles/color.scss';
 
 .container {
   display: flex;
@@ -89,4 +89,18 @@
   &:focus {
     outline: none;
   }
+}
+
+.warningBox {
+  height: 1rem;
+}
+
+.missingData::before {
+  color: $pumping-spice;
+  font-size: 1rem;
+  content: 'Vyplnte prosím všechna pole';
+}
+
+.passwordMismatch::before {
+  content: 'Hesla se neshodují';
 }

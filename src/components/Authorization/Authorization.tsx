@@ -17,37 +17,57 @@ export const Authorization = ({
   const [registrationEmail, setRegistrationEmail] = useState('');
   const [registrationPassword, setRegistrationPassword] = useState('');
   const [passwordVerification, setPasswordVerification] = useState('');
+  const [warningMissingData, setWarningMissingData] = useState(false);
+  const [warningPassword, setWarningPassword] = useState(false);
 
   const router = useRouter();
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const dataLogin = { name: loginEmail, password: loginPassword };
+    if (loginEmail && loginPassword) {
+      const dataLogin = { name: loginEmail, password: loginPassword };
+      console.log(dataLogin);
 
-    console.log(dataLogin);
-
-    setIsLogged(true);
-    router.push('/');
+      setIsLogged(true);
+      router.push('/');
+    } else {
+      setWarningMissingData(true);
+    }
   };
 
   const handleRegistration = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const dataRegistration = {
-      name: registrationName,
-      email: registrationEmail,
-      password: registrationPassword,
-      passwordVerification,
-    };
-    console.log(dataRegistration);
+    if (
+      registrationName &&
+      registrationEmail &&
+      registrationPassword &&
+      passwordVerification
+    ) {
+      if (registrationPassword === passwordVerification) {
+        // success
 
-    setIsLogged(true);
-    router.push('/');
+        const dataRegistration = {
+          name: registrationName,
+          email: registrationEmail,
+          password: registrationPassword,
+        };
+        console.log(dataRegistration);
+        setIsLogged(true);
+        router.push('/');
+      } else {
+        setWarningPassword(true);
+      }
+    } else {
+      setWarningMissingData(true);
+    }
   };
 
   const handleReveal = (boolean: boolean) => {
     setRegistrationForm(boolean);
+    setWarningMissingData(false);
+    setWarningPassword(false);
   };
 
   return (
@@ -117,7 +137,12 @@ export const Authorization = ({
                     onChange={(e) => setPasswordVerification(e.target.value)}
                   />
                 </label>
-                {/* <div className={classnames(style.warningBox)} /> */}
+                <div
+                  className={classnames(style.warningBox, {
+                    [style.missingData]: warningMissingData === true,
+                    [style.passwordMismatch]: warningPassword === true,
+                  })}
+                />
                 <button
                   type="submit"
                   className={classnames(style.button, style.submit)}
@@ -149,6 +174,11 @@ export const Authorization = ({
                     onChange={(e) => setLoginPassword(e.target.value)}
                   />
                 </label>
+                <div
+                  className={classnames(style.warningBox, {
+                    [style.missingData]: warningMissingData === true,
+                  })}
+                />
                 <a className={style.link}>Zapomněli jste heslo?</a>
                 <button
                   type="submit"
