@@ -147,11 +147,3 @@
     font-size: 1.4rem;
   }
 }
-
-.missingData::before {
-  content: 'Vyplnte všechna pole';
-}
-
-.passwordMismatch::before {
-  content: 'Hesla se neshodují';
-}

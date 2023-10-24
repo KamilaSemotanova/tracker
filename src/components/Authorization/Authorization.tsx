@@ -18,8 +18,7 @@ export const Authorization = ({
   const [registrationEmail, setRegistrationEmail] = useState('');
   const [registrationPassword, setRegistrationPassword] = useState('');
   const [passwordVerification, setPasswordVerification] = useState('');
-  const [warningMissingData, setWarningMissingData] = useState(false);
-  const [warningPassword, setWarningPassword] = useState(false);
+  const [warningMessage, setWarningMessage] = useState('');
 
   const router = useRouter();
 
@@ -30,19 +29,17 @@ export const Authorization = ({
     },
   });
 
-  // const getUser = trpc.user.getUser.useQuery({});
-
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (loginEmail && loginPassword) {
       const dataLogin = { name: loginEmail, password: loginPassword };
-      console.log(dataLogin);
-
-      setIsLogged(true);
-      router.push('/');
+      if (dataLogin) {
+        setIsLogged(true);
+        router.push('/');
+      }
     } else {
-      setWarningMissingData(true);
+      setWarningMessage('Vyplnte všechna pole');
     }
   };
 
@@ -60,23 +57,22 @@ export const Authorization = ({
         addNewUser.mutate({
           name: registrationName,
           email: registrationEmail,
-          // password: registrationPassword,
+          password: registrationPassword,
         });
 
         setIsLogged(true);
         router.push('/');
       } else {
-        setWarningPassword(true);
+        setWarningMessage('Hesla se neshodují');
       }
     } else {
-      setWarningMissingData(true);
+      setWarningMessage('Vyplnte všechna pole');
     }
   };
 
   const handleReveal = (boolean: boolean) => {
     setRegistrationForm(boolean);
-    setWarningMissingData(false);
-    setWarningPassword(false);
+    setWarningMessage('');
   };
 
   return (
@@ -148,12 +144,7 @@ export const Authorization = ({
                     onChange={(e) => setPasswordVerification(e.target.value)}
                   />
                 </label>
-                <div
-                  className={classnames(style.warningBox, {
-                    [style.missingData]: warningMissingData === true,
-                    [style.passwordMismatch]: warningPassword === true,
-                  })}
-                />
+                <div className={style.warningBox}>{warningMessage}</div>
                 <button
                   type="submit"
                   className={classnames(style.button, style.submit)}
@@ -185,11 +176,7 @@ export const Authorization = ({
                     onChange={(e) => setLoginPassword(e.target.value)}
                   />
                 </label>
-                <div
-                  className={classnames(style.warningBox, {
-                    [style.missingData]: warningMissingData === true,
-                  })}
-                />
+                <div className={style.warningBox}>{warningMessage}</div>
                 <a className={style.link}>Zapomněli jste heslo?</a>
                 <button
                   type="submit"
