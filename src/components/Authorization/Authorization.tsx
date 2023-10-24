@@ -29,17 +29,26 @@ export const Authorization = ({
     },
   });
 
+  const findUser = trpc.user.getUser.useQuery({
+    email: loginEmail,
+    password: loginPassword,
+  });
+
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (loginEmail && loginPassword) {
-      const dataLogin = { name: loginEmail, password: loginPassword };
-      if (dataLogin) {
+      if (
+        loginEmail === findUser.data?.email &&
+        loginPassword === findUser.data?.password
+      ) {
         setIsLogged(true);
         router.push('/');
+      } else {
+        setWarningMessage('Špatné přihlašovací údaje');
       }
     } else {
-      setWarningMessage('Vyplnte všechna pole');
+      setWarningMessage('Vyplňte všechna pole');
     }
   };
 
@@ -66,7 +75,7 @@ export const Authorization = ({
         setWarningMessage('Hesla se neshodují');
       }
     } else {
-      setWarningMessage('Vyplnte všechna pole');
+      setWarningMessage('Vyplňte všechna pole');
     }
   };
 

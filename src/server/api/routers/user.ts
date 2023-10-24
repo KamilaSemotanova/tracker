@@ -29,13 +29,15 @@ export const userRouter = createTRPCRouter({
       return newUser;
     }),
 
-  getUser: publicProcedure.input(z.number()).query(async ({ input, ctx }) => {
-    const user = await ctx.prisma.user.findUnique({
-      where: { id: input },
-    });
+  getUser: publicProcedure
+    .input(z.object({ email: z.string(), password: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const user = await ctx.prisma.user.findUnique({
+        where: { email: input.email, password: input.password },
+      });
 
-    return user;
-  }),
+      return user;
+    }),
 
   updateUser: publicProcedure
     .input(
@@ -52,7 +54,7 @@ export const userRouter = createTRPCRouter({
         data: {
           name: input.name,
           email: input.email,
-          // password: input.password,
+          password: input.password,
         },
       });
 
