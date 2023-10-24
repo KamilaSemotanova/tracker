@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/router';
 import classnames from 'classnames';
 
+import { trpc } from '../../utils/trpc';
 import { Row } from '../Row/Row';
 import style from './Authorization.module.scss';
 
@@ -21,6 +22,15 @@ export const Authorization = ({
   const [warningPassword, setWarningPassword] = useState(false);
 
   const router = useRouter();
+
+  const utils = trpc.useContext();
+  const addNewUser = trpc.user.createUser.useMutation({
+    onSuccess: () => {
+      utils.user.invalidate();
+    },
+  });
+
+  // const getUser = trpc.user.getUser.useQuery({});
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,13 +57,11 @@ export const Authorization = ({
     ) {
       if (registrationPassword === passwordVerification) {
         // success
-
-        const dataRegistration = {
+        addNewUser.mutate({
           name: registrationName,
           email: registrationEmail,
-          password: registrationPassword,
-        };
-        console.log(dataRegistration);
+          // password: registrationPassword,
+        });
 
         setIsLogged(true);
         router.push('/');
