@@ -1,4 +1,5 @@
 @import 'src/styles/color.scss';
+@import 'src/styles/breakpoints.scss';
 
 .container {
   display: flex;
@@ -6,6 +7,13 @@
   align-items: end;
   width: 100%;
   height: 100%;
+}
+
+@media (min-width: $screen-md-min) {
+  .container {
+    align-items: center;
+    font-size: 2rem;
+  }
 }
 
 .authorization {
@@ -16,6 +24,16 @@
   border-radius: 10px 10px 0 0;
 }
 
+@media (min-width: $screen-md-min) {
+  .authorization {
+    display: flex;
+    width: 80%;
+    padding: 3rem;
+    gap: 3rem;
+    border-radius: 10px;
+  }
+}
+
 .formBox {
   display: flex;
   flex-direction: column;
@@ -24,6 +42,12 @@
   margin-top: 2rem;
   background-color: $translucent-silk;
   border-radius: 10px;
+}
+
+@media (min-width: $screen-md-min) {
+  .formBox {
+    margin: 0;
+  }
 }
 
 .button {
@@ -39,6 +63,14 @@
 
   &:hover {
     background-color: $translucent-silk;
+  }
+}
+
+@media (min-width: $screen-md-min) {
+  .button {
+    height: 3rem;
+    padding: 0 1rem;
+    font-size: 1.4rem;
   }
 }
 
@@ -81,6 +113,12 @@
   }
 }
 
+@media (min-width: $screen-md-min) {
+  .link {
+    font-size: 1.4rem;
+  }
+}
+
 .input {
   background-color: $translucent-silk;
   border: none;
@@ -91,14 +129,27 @@
   }
 }
 
+@media (min-width: $screen-md-min) {
+  .input {
+    font-size: 1.4rem;
+  }
+}
+
 .warningBox {
   height: 1rem;
+  color: $pumping-spice;
+  font-size: 1rem;
+}
+
+@media (min-width: $screen-md-min) {
+  .warningBox {
+    height: 2rem;
+    font-size: 1.4rem;
+  }
 }
 
 .missingData::before {
-  color: $pumping-spice;
-  font-size: 1rem;
-  content: 'Vyplnte prosím všechna pole';
+  content: 'Vyplnte všechna pole';
 }
 
 .passwordMismatch::before {

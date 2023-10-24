@@ -54,6 +54,7 @@ export const Authorization = ({
           password: registrationPassword,
         };
         console.log(dataRegistration);
+
         setIsLogged(true);
         router.push('/');
       } else {
@@ -73,11 +74,13 @@ export const Authorization = ({
   return (
     <section className={style.container}>
       <div className={style.authorization}>
-        <h2>Vítejte,</h2>
-        <p>
-          v aplikaci Tracker, která je vytvořena k zaznamenávání aktivit.
-          Mapujte svůj progres!
-        </p>
+        <div>
+          <h2>Vítejte,</h2>
+          <p>
+            v aplikaci Tracker, která je vytvořena k zaznamenávání aktivit.
+            Mapujte svůj progres!
+          </p>
+        </div>
         <div className={style.formBox}>
           <Row>
             <button
