@@ -1,10 +1,17 @@
-import { FormEvent } from 'react';
+import { FormEvent, useRef } from 'react';
 import { useRouter } from 'next/router';
 
 import { trpc } from '../../utils/trpc';
 import { TextField } from '../TextField/TextField';
 import { Row } from '../Row/Row';
 import { FormWrapper } from './FormWrapper';
+
+type RegisterFormData = {
+  name: { value: string };
+  email: { value: string };
+  password: { value: string };
+  passwordVerification: { value: string };
+};
 
 type RegisterFormProps = {
   setIsLogged: (value: boolean) => void;
@@ -18,6 +25,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
   buttonClassName,
 }) => {
   const router = useRouter();
+  const formRef = useRef<RegisterFormData>();
 
   const utils = trpc.useContext();
   const addNewUser = trpc.user.register.useMutation({
@@ -29,32 +37,38 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
   const handleRegistration = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const registrationName = (e.target as any)[0].value;
-    const registrationEmail = (e.target as any)[1].value;
-    const registrationPassword = (e.target as any)[2].value;
-    const passwordVerification = (e.target as any)[3].value;
+    if (!formRef.current) {
+      return;
+    }
+
+    const { name, email, password, passwordVerification } = formRef.current;
+
+    const nameValue = name.value.trim();
+    const emailValue = email.value.trim();
+    const passwordValue = password.value.trim();
+    const passwordVerificationValue = passwordVerification.value.trim();
 
     if (
-      !registrationName ||
-      !registrationEmail ||
-      !registrationPassword ||
-      !passwordVerification
+      !nameValue ||
+      !emailValue ||
+      !passwordValue ||
+      !passwordVerificationValue
     ) {
       setWarningMessage('Vyplňte všechna pole');
 
       return;
     }
 
-    if (registrationPassword !== passwordVerification) {
+    if (passwordValue !== passwordVerificationValue) {
       setWarningMessage('Hesla se neshodují');
 
       return;
     }
 
     addNewUser.mutate({
-      name: registrationName,
-      email: registrationEmail,
-      password: registrationPassword,
+      name: nameValue,
+      email: emailValue,
+      password: passwordValue,
     });
 
     setIsLogged(true);
@@ -66,6 +80,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
       handleSubmit={handleRegistration}
       buttonClassName={buttonClassName}
       buttonLabel="Register"
+      ref={formRef}
     >
       <Row flexCol>
         <TextField
@@ -75,11 +90,15 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           autoFocus
         />
 
-        <TextField id="email" type="text" placeholder="E-mail" />
+        <TextField name="email" type="text" placeholder="E-mail" />
 
-        <TextField id="password" type="password" placeholder="Heslo" />
+        <TextField name="password" type="password" placeholder="Heslo" />
 
-        <TextField id="name" type="password" placeholder="Ověření hesla" />
+        <TextField
+          name="passwordVerification"
+          type="password"
+          placeholder="Ověření hesla"
+        />
       </Row>
     </FormWrapper>
   );
