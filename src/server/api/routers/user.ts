@@ -9,7 +9,7 @@ export const userRouter = createTRPCRouter({
     return users;
   }),
 
-  createUser: publicProcedure
+  register: publicProcedure
     .input(
       z.object({
         name: z.string(),
@@ -29,7 +29,7 @@ export const userRouter = createTRPCRouter({
       return newUser;
     }),
 
-  register: publicProcedure
+  login: publicProcedure
     .input(z.object({ email: z.string(), password: z.string() }))
     .query(async ({ input, ctx }) => {
       const user = await ctx.prisma.user.findUnique({

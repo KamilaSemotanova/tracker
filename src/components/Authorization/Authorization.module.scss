@@ -44,6 +44,10 @@
   }
 }
 
+.formContainer {
+  margin: 2rem;
+}
+
 .button {
   width: min-content;
   height: 2rem;
@@ -53,6 +57,7 @@
   border-radius: 5px;
   font-size: 1rem;
   font-weight: 300;
+  cursor: pointer;
 
   &:hover {
     background-color: $translucent-silk;
@@ -72,54 +77,6 @@
 
 .active {
   background-color: $translucent-silk;
-}
-
-.hide {
-  display: none;
-}
-
-.submit:hover {
-  border: 1px solid $severely-burnt-toast;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  align-items: self-start;
-  margin: 2rem;
-}
-
-.link {
-  color: $severely-burnt-toast;
-  background-color: $translucent-silk;
-  border-bottom: 1px solid $translucent-silk;
-  font-size: 1rem;
-  font-weight: 300;
-  text-decoration: none;
-  cursor: pointer;
-
-  &:hover {
-    border-bottom: 1px solid $severely-burnt-toast;
-  }
-
-  @media (min-width: $screen-md-min) {
-    font-size: 1.4rem;
-  }
-}
-
-.input {
-  background-color: $translucent-silk;
-  border: none;
-  border-bottom: 1px solid $severely-burnt-toast;
-
-  &:focus {
-    outline: none;
-  }
-
-  @media (min-width: $screen-md-min) {
-    font-size: 1.4rem;
-  }
 }
 
 .warningBox {

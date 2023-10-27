@@ -1,11 +1,13 @@
+import { NextPage } from 'next';
+
 import { Authorization } from '../components/Authorization/Authorization';
 import { Layout } from '../components/Layout/Layout';
 
-const Prihlaseni = ({
-  setIsLogged,
-}: {
+type PrihlaseniProps = {
   setIsLogged: (value: boolean) => void;
-}) => (
+};
+
+const Prihlaseni: NextPage<PrihlaseniProps> = ({ setIsLogged }) => (
   <Layout>
     <Authorization setIsLogged={setIsLogged} />
   </Layout>

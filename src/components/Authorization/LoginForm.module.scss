@@ -1,0 +1,20 @@
+@import 'src/styles/color.scss';
+@import 'src/styles/breakpoints.scss';
+
+.link {
+  color: $severely-burnt-toast;
+  background-color: $translucent-silk;
+  border-bottom: 1px solid $translucent-silk;
+  font-size: 1rem;
+  font-weight: 300;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    border-bottom: 1px solid $severely-burnt-toast;
+  }
+
+  @media (min-width: $screen-md-min) {
+    font-size: 1.4rem;
+  }
+}
