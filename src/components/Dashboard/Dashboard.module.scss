@@ -10,10 +10,8 @@
   padding: 2rem 1rem;
   background-color: $spruce-stone;
   border-radius: 10px;
-}
 
-@media (min-width: $screen-md-min) {
-  .box {
+  @media (min-width: $screen-md-min) {
     width: 80%;
   }
 }
@@ -21,10 +19,8 @@
 .title {
   color: $severely-burnt-toast;
   font-size: 1rem;
-}
 
-@media (min-width: $screen-md-min) {
-  .title {
+  @media (min-width: $screen-md-min) {
     font-size: 2rem;
   }
 }
@@ -37,10 +33,8 @@
   padding: 0;
   list-style-type: none;
   cursor: pointer;
-}
 
-@media (min-width: $screen-md-min) {
-  .activities {
+  @media (min-width: $screen-md-min) {
     flex-direction: row;
     flex-wrap: wrap;
     row-gap: 1.8rem;
@@ -62,10 +56,8 @@
   border: none;
   border-radius: 10px;
   text-align: center;
-}
 
-@media (min-width: $screen-md-min) {
-  .activity {
+  @media (min-width: $screen-md-min) {
     width: 43%;
     height: 4rem;
     padding: 0 1rem;
@@ -104,16 +96,13 @@
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 300;
-  cursor: pointer;
 
   &:hover {
     background-color: $translucent-silk;
     background-image: url('./img/icon_check_hover.png');
   }
-}
 
-@media (min-width: $screen-md-min) {
-  .buttonDone {
+  @media (min-width: $screen-md-min) {
     width: 2.5rem;
     height: 2.5rem;
   }
@@ -131,10 +120,8 @@
   font-size: 2rem;
   font-weight: 300;
   cursor: pointer;
-}
 
-@media (min-width: $screen-md-min) {
-  .revealForm {
+  @media (min-width: $screen-md-min) {
     width: 3.5rem;
     height: 3.5rem;
     font-size: 3rem;
@@ -150,10 +137,8 @@
   color: $translucent-silk;
   background-color: $hornblende-green;
   border-radius: 10px;
-}
 
-@media (min-width: $screen-md-min) {
-  .form {
+  @media (min-width: $screen-md-min) {
     gap: 1.5rem;
     width: 80%;
     padding: 2rem;
@@ -197,16 +182,13 @@
   border-radius: 10px;
   font-size: 1rem;
   font-weight: 300;
-  cursor: pointer;
 
   &:hover {
     background-color: $translucent-silk;
     color: $severely-burnt-toast;
   }
-}
 
-@media (min-width: $screen-md-min) {
-  .button {
+  @media (min-width: $screen-md-min) {
     font-size: 1.4rem;
   }
 }

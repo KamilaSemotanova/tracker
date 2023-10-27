@@ -23,13 +23,13 @@ export const Authorization = ({
   const router = useRouter();
 
   const utils = trpc.useContext();
-  const addNewUser = trpc.user.createUser.useMutation({
+  const addNewUser = trpc.user.register.useMutation({
     onSuccess: () => {
       utils.user.invalidate();
     },
   });
 
-  const findUser = trpc.user.getUser.useQuery({
+  const findUser = trpc.user.login.useQuery({
     email: loginEmail,
     password: loginPassword,
   });
