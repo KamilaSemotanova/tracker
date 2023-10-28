@@ -83,22 +83,34 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
       ref={formRef}
     >
       <Row flexCol>
-        <TextField
-          id="name"
-          type="text"
-          placeholder="Jméno a příjmení"
-          autoFocus
-        />
+        <label>
+          Jméno a příjmení
+          <TextField
+            id="name"
+            type="text"
+            placeholder="Jméno a příjmení"
+            autoFocus
+          />
+        </label>
 
-        <TextField name="email" type="text" placeholder="E-mail" />
+        <label>
+          E-mail
+          <TextField name="email" type="text" placeholder="E-mail" />
+        </label>
 
-        <TextField name="password" type="password" placeholder="Heslo" />
+        <label>
+          Heslo
+          <TextField name="password" type="password" placeholder="Heslo" />
+        </label>
 
-        <TextField
-          name="passwordVerification"
-          type="password"
-          placeholder="Ověření hesla"
-        />
+        <label>
+          Ověření hesla
+          <TextField
+            name="passwordVerification"
+            type="password"
+            placeholder="Ověření hesla"
+          />
+        </label>
       </Row>
     </FormWrapper>
   );
