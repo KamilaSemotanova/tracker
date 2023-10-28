@@ -1,7 +1,19 @@
 @import 'src/styles/color.scss';
 @import 'src/styles/breakpoints.scss';
 
+.linkWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .link {
+  margin-top: 1rem;
   color: $severely-burnt-toast;
   background-color: $translucent-silk;
   border-bottom: 1px solid $translucent-silk;
@@ -17,4 +29,9 @@
   @media (min-width: $screen-md-min) {
     font-size: 1.4rem;
   }
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
 }

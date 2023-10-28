@@ -57,34 +57,36 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   };
 
   return (
-    <>
+    <div className={style.linkWrapper}>
       <FormWrapper
         handleSubmit={handleLogin}
         buttonClassName={buttonClassName}
         buttonLabel="Přihlásit"
       >
-        <label>
-          E-mail
-          <TextField
-            id="email"
-            type="text"
-            placeholder="E-mail"
-            autoFocus
-            onChange={(e) => setLoginEmail(e.target.value)}
-          />
-        </label>
-        <label>
-          Heslo
-          <TextField
-            id="password"
-            type="password"
-            placeholder="Heslo"
-            onChange={(e) => setLoginPassword(e.target.value)}
-          />
-        </label>
+        <div className={style.login}>
+          <label>
+            <span className={style.label}>E-mail</span>
+            <TextField
+              id="email"
+              type="text"
+              placeholder="ukázka@email.com"
+              autoFocus
+              onChange={(e) => setLoginEmail(e.target.value)}
+            />
+          </label>
+          <label>
+            <span className={style.label}>Heslo</span>
+            <TextField
+              id="password"
+              type="password"
+              placeholder="Vaše heslo"
+              onChange={(e) => setLoginPassword(e.target.value)}
+            />
+          </label>
+        </div>
       </FormWrapper>
 
       <a className={style.link}>Zapomněli jste heslo?</a>
-    </>
+    </div>
   );
 };

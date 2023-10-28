@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 
 import { trpc } from '../../utils/trpc';
 import { TextField } from '../TextField/TextField';
-import { Row } from '../Row/Row';
 import { FormWrapper } from './FormWrapper';
+import style from './RegisterForm.module.scss';
 
 type RegisterFormData = {
   name: { value: string };
@@ -82,36 +82,36 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
       buttonLabel="Register"
       ref={formRef}
     >
-      <Row flexCol>
-        <label>
-          Jméno a příjmení
+      <div className={style.register}>
+        <label className={style.label}>
+          <span>Jméno a příjmení</span>
           <TextField
             id="name"
             type="text"
-            placeholder="Jméno a příjmení"
+            placeholder="Jana Nováková"
             autoFocus
           />
         </label>
 
-        <label>
-          E-mail
-          <TextField name="email" type="text" placeholder="E-mail" />
+        <label className={style.label}>
+          <span>E-mail</span>
+          <TextField name="email" type="text" placeholder="ukázka@email.com" />
         </label>
 
-        <label>
-          Heslo
-          <TextField name="password" type="password" placeholder="Heslo" />
+        <label className={style.label}>
+          <span>Heslo</span>
+          <TextField name="password" type="password" placeholder="Vaše heslo" />
         </label>
 
-        <label>
-          Ověření hesla
+        <label className={style.label}>
+          <span>Ověření hesla</span>
           <TextField
             name="passwordVerification"
             type="password"
-            placeholder="Ověření hesla"
+            placeholder="Vaše heslo"
           />
         </label>
-      </Row>
+      </div>
     </FormWrapper>
   );
 };
