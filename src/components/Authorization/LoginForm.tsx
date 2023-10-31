@@ -64,25 +64,22 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         buttonLabel="Přihlásit"
       >
         <div className={style.login}>
-          <label>
-            <span className={style.label}>E-mail</span>
-            <TextField
-              id="email"
-              type="text"
-              placeholder="ukázka@email.com"
-              autoFocus
-              onChange={(e) => setLoginEmail(e.target.value)}
-            />
-          </label>
-          <label>
-            <span className={style.label}>Heslo</span>
-            <TextField
-              id="password"
-              type="password"
-              placeholder="Vaše heslo"
-              onChange={(e) => setLoginPassword(e.target.value)}
-            />
-          </label>
+          <TextField
+            id="email"
+            type="text"
+            placeholder="ukázka@email.com"
+            label="E-mail"
+            autoFocus
+            onChange={(e) => setLoginEmail(e.target.value)}
+          />
+
+          <TextField
+            id="password"
+            type="password"
+            placeholder="Vaše heslo"
+            label="Heslo"
+            onChange={(e) => setLoginPassword(e.target.value)}
+          />
         </div>
       </FormWrapper>
 

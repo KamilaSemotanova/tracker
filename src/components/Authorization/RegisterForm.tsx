@@ -83,34 +83,34 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
       ref={formRef}
     >
       <div className={style.register}>
-        <label className={style.label}>
-          <span>Jméno a příjmení</span>
-          <TextField
-            id="name"
-            type="text"
-            placeholder="Jana Nováková"
-            autoFocus
-          />
-        </label>
+        <TextField
+          id="name"
+          type="text"
+          placeholder="Jana Nováková"
+          label="Jméno a příjmení"
+          autoFocus
+        />
 
-        <label className={style.label}>
-          <span>E-mail</span>
-          <TextField name="email" type="text" placeholder="ukázka@email.com" />
-        </label>
+        <TextField
+          name="email"
+          type="text"
+          placeholder="ukázka@email.com"
+          label="E–mail"
+        />
 
-        <label className={style.label}>
-          <span>Heslo</span>
-          <TextField name="password" type="password" placeholder="Vaše heslo" />
-        </label>
+        <TextField
+          name="password"
+          type="password"
+          placeholder="Vaše heslo"
+          label="Heslo"
+        />
 
-        <label className={style.label}>
-          <span>Ověření hesla</span>
-          <TextField
-            name="passwordVerification"
-            type="password"
-            placeholder="Vaše heslo"
-          />
-        </label>
+        <TextField
+          name="passwordVerification"
+          type="password"
+          placeholder="Vaše heslo"
+          label="Ověření hesla"
+        />
       </div>
     </FormWrapper>
   );

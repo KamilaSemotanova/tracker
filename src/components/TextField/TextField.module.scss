@@ -1,14 +1,19 @@
 @import 'src/styles/color.scss';
 @import 'src/styles/breakpoints.scss';
 
+.label {
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: $screen-md-min) {
+    font-size: 1.4rem;
+  }
+}
+
 .input {
   background-color: $translucent-silk;
   border: none;
   border-bottom: 1px solid $severely-burnt-toast;
-
-  &:focus {
-    outline: none;
-  }
 
   @media (min-width: $screen-md-min) {
     font-size: 1.4rem;
