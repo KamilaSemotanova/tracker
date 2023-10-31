@@ -72,6 +72,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             autoFocus
             onChange={(e) => setLoginEmail(e.target.value)}
           />
+
           <TextField
             id="password"
             type="password"

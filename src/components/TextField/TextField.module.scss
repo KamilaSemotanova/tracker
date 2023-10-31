@@ -15,10 +15,6 @@
   border: none;
   border-bottom: 1px solid $severely-burnt-toast;
 
-  &:focus {
-    outline: none;
-  }
-
   @media (min-width: $screen-md-min) {
     font-size: 1.4rem;
   }

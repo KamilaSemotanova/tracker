@@ -13,7 +13,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   ...props
 }) => (
   <label>
-    <span className={style.label}> {label} </span>
+    <span className={style.label}>{label}</span>
     <input className={style.input} onChange={onChange} {...props} />
   </label>
 );
