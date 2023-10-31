@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import bcrypt from 'bcrypt';
+import { TRPCError } from '@trpc/server';
 
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
 
@@ -13,16 +15,17 @@ export const userRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
-        email: z.string(),
+        email: z.string().toLowerCase(),
         password: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
+      const hashedPassword = await bcrypt.hash(input.password, 10);
       const newUser = await ctx.prisma.user.create({
         data: {
           name: input.name,
           email: input.email,
-          password: input.password,
+          password: hashedPassword,
         },
       });
 
@@ -33,8 +36,18 @@ export const userRouter = createTRPCRouter({
     .input(z.object({ email: z.string(), password: z.string() }))
     .query(async ({ input, ctx }) => {
       const user = await ctx.prisma.user.findUnique({
-        where: { email: input.email, password: input.password },
+        where: { email: input.email.toLowerCase() },
       });
+
+      if (
+        !user ||
+        (!!user && !(await bcrypt.compare(input.password, user.password)))
+      ) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invalid email or password',
+        });
+      }
 
       return user;
     }),
