@@ -39,10 +39,12 @@ export const userRouter = createTRPCRouter({
         where: { email: input.email.toLowerCase() },
       });
 
-      if (
-        !user ||
-        (!!user && !(await bcrypt.compare(input.password, user.password)))
-      ) {
+      const hasMatchingPassword = await bcrypt.compare(
+        input.password,
+        user?.password || '',
+      );
+
+      if (!user || hasMatchingPassword) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'Invalid email or password',
