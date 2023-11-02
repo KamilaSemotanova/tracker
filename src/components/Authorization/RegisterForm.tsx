@@ -31,6 +31,11 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
   const addNewUser = trpc.user.register.useMutation({
     onSuccess: () => {
       utils.user.invalidate();
+      setIsLogged(true);
+      router.push('/');
+    },
+    onError: () => {
+      setWarningMessage('Registace se nezdařila');
     },
   });
 
@@ -65,20 +70,11 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
       return;
     }
 
-    // if (email error) {
-    //   setWarningMessage('Uživatel již existuje');
-
-    //   return;
-    // }
-
     addNewUser.mutate({
       name: nameValue,
       email: emailValue,
       password: passwordValue,
     });
-
-    setIsLogged(true);
-    router.push('/');
   };
 
   return (
