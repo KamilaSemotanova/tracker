@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import { TRPCError } from '@trpc/server';
+import { Prisma } from '@prisma/client';
 
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
 
@@ -20,16 +21,27 @@ export const userRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const hashedPassword = await bcrypt.hash(input.password, 10);
-      const newUser = await ctx.prisma.user.create({
-        data: {
-          name: input.name,
-          email: input.email,
-          password: hashedPassword,
-        },
+      const existingUser = await ctx.prisma.user.findUnique({
+        where: { email: input.email.toLowerCase() },
       });
 
-      return newUser;
+      if (existingUser) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'User already exists',
+        });
+      } else {
+        const hashedPassword = await bcrypt.hash(input.password, 10);
+        const newUser = await ctx.prisma.user.create({
+          data: {
+            name: input.name,
+            email: input.email,
+            password: hashedPassword,
+          },
+        });
+
+        return newUser;
+      }
     }),
 
   login: publicProcedure
@@ -44,7 +56,7 @@ export const userRouter = createTRPCRouter({
         user?.password || '',
       );
 
-      if (!user || hasMatchingPassword) {
+      if (!user || !hasMatchingPassword) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'Invalid email or password',

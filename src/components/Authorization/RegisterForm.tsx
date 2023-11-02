@@ -65,6 +65,12 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
       return;
     }
 
+    // if (email error) {
+    //   setWarningMessage('Uživatel již existuje');
+
+    //   return;
+    // }
+
     addNewUser.mutate({
       name: nameValue,
       email: emailValue,
