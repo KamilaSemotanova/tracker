@@ -6,13 +6,7 @@ import { RegisterForm } from './RegisterForm';
 import { LoginForm } from './LoginForm';
 import style from './Authorization.module.scss';
 
-type AuthorizationProps = {
-  setIsLogged: (value: boolean) => void;
-};
-
-export const Authorization: React.FC<AuthorizationProps> = ({
-  setIsLogged,
-}) => {
+export const Authorization: React.FC = () => {
   const [registrationForm, setRegistrationForm] = useState(false);
 
   const [warningMessage, setWarningMessage] = useState('');
@@ -54,13 +48,11 @@ export const Authorization: React.FC<AuthorizationProps> = ({
           <div className={style.formContainer}>
             {registrationForm ? (
               <RegisterForm
-                setIsLogged={setIsLogged}
                 setWarningMessage={setWarningMessage}
                 buttonClassName={style.button}
               />
             ) : (
               <LoginForm
-                setIsLogged={setIsLogged}
                 setWarningMessage={setWarningMessage}
                 buttonClassName={style.button}
               />

@@ -1,43 +1,37 @@
-/**
- * This is the client-side entrypoint for your tRPC API. It is used to create the `api` object which
- * contains the Next.js App-wrapper, as well as your type-safe React Query hooks.
- *
- * We also create a few inference helpers for input and output types.
- */
 import { httpBatchLink, loggerLink } from '@trpc/client';
 import { createTRPCNext } from '@trpc/next';
-import { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 import superjson from 'superjson';
 
-import { AppRouter } from '~/server/api/root';
+import { AppRouter } from '../../server/root';
+import { TOKEN_KEY } from '../components/AuthenticationProvider';
+import { isBrowser, isServer } from './env';
 
 const getBaseUrl = () => {
-  if (typeof window !== 'undefined') {
+  if (isServer()) {
     return '';
-  } // browser should use relative url
+  }
+
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`;
-  } // SSR should use vercel url
+  }
 
-  return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
+  return `http://localhost:${process.env.PORT ?? 3000}`;
 };
 
-/** A set of type-safe react-query hooks for your tRPC API. */
+const getLocalStorageToken = () => {
+  if (isBrowser()) {
+    return '';
+  }
+
+  const token = localStorage.getItem(TOKEN_KEY);
+
+  return token ? `Bearer ${token}` : '';
+};
+
 export const api = createTRPCNext<AppRouter>({
   config() {
     return {
-      /**
-       * Transformer used for data de-serialization from the server.
-       *
-       * @see https://trpc.io/docs/data-transformers
-       */
       transformer: superjson,
-
-      /**
-       * Links used to determine request flow from client to server.
-       *
-       * @see https://trpc.io/docs/links
-       */
       links: [
         loggerLink({
           enabled: (opts) =>
@@ -46,28 +40,13 @@ export const api = createTRPCNext<AppRouter>({
         }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
+          headers: () => ({
+            Authorization: getLocalStorageToken(),
+          }),
         }),
       ],
     };
   },
-  /**
-   * Whether tRPC should await queries when server rendering pages.
-   *
-   * @see https://trpc.io/docs/nextjs#ssr-boolean-default-false
-   */
+
   ssr: false,
 });
-
-/**
- * Inference helper for inputs.
- *
- * @example type HelloInput = RouterInputs['example']['hello']
- */
-export type RouterInputs = inferRouterInputs<AppRouter>;
-
-/**
- * Inference helper for outputs.
- *
- * @example type HelloOutput = RouterOutputs['example']['hello']
- */
-export type RouterOutputs = inferRouterOutputs<AppRouter>;

@@ -2,11 +2,11 @@
 
 Repository for tracking app.
 
-## To use
+## For development
 
 ```sh
 $ yarn install
-$ yarn start
+$ yarn dev
 ```
 
 And visit <http://localhost:3000/>.

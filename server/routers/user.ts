@@ -2,8 +2,8 @@ import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import { TRPCError } from '@trpc/server';
 
-import { signJwt } from '../../src/utils/jwt';
-import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
+import { signJwt } from '../utils/jwt';
+import { createTRPCRouter, privateProcedure, publicProcedure } from '../trpc';
 
 type User = {
   id: number;
@@ -96,7 +96,7 @@ export const userRouter = createTRPCRouter({
       return { access_token, refresh_token };
     }),
 
-  updateUser: publicProcedure
+  updateUser: privateProcedure
     .input(
       z.object({
         id: z.number(),
@@ -118,7 +118,7 @@ export const userRouter = createTRPCRouter({
       return updatedUser;
     }),
 
-  deleteUser: publicProcedure
+  deleteUser: privateProcedure
     .input(z.number())
     .mutation(async ({ input, ctx }) => {
       const deletedUser = await ctx.prisma.user.delete({

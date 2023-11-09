@@ -4,20 +4,20 @@ import { useRouter } from 'next/router';
 import { trpc } from '../../utils/trpc';
 import { TextField } from '../TextField/TextField';
 import { FormWrapper } from './FormWrapper';
+import { useAuthentication } from '../AuthenticationProvider';
 import style from './LoginForm.module.scss';
 
 type LoginFormProps = {
-  setIsLogged: (value: boolean) => void;
   setWarningMessage: (value: string) => void;
   buttonClassName: string;
 };
 
 export const LoginForm: React.FC<LoginFormProps> = ({
-  setIsLogged,
   setWarningMessage,
   buttonClassName,
 }) => {
   const router = useRouter();
+  const { login } = useAuthentication();
 
   const [loginEmail, setLoginEmail] = useState('testing@test.com');
   const [loginPassword, setLoginPassword] = useState('Marecek123');
@@ -29,8 +29,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     },
     {
       enabled: false,
-      onSuccess: () => {
-        setIsLogged(true);
+      onSuccess: ({ access_token }) => {
+        login(access_token);
         router.push('/');
       },
       onError: () => {

@@ -1,15 +1,15 @@
 import { z } from 'zod';
 
-import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
+import { createTRPCRouter, privateProcedure } from '../trpc';
 
 export const activityRouter = createTRPCRouter({
-  list: publicProcedure.query(async ({ ctx }) => {
+  list: privateProcedure.query(async ({ ctx }) => {
     const activities = await ctx.prisma.activity.findMany();
 
     return activities;
   }),
 
-  create: publicProcedure
+  create: privateProcedure
     .input(z.object({ name: z.string() }))
     .mutation(async ({ input, ctx }) => {
       const newActivity = await ctx.prisma.activity.create({
@@ -21,7 +21,7 @@ export const activityRouter = createTRPCRouter({
       return newActivity;
     }),
 
-  read: publicProcedure
+  read: privateProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ input, ctx }) => {
       const activity = await ctx.prisma.activity.findUnique({
@@ -33,7 +33,7 @@ export const activityRouter = createTRPCRouter({
       return activity;
     }),
 
-  updateDoneCounter: publicProcedure
+  updateDoneCounter: privateProcedure
     .input(z.object({ id: z.number(), timesDone: z.number() }))
     .mutation(async ({ input, ctx }) => {
       const updatedActivity = await ctx.prisma.activity.update({
@@ -48,7 +48,7 @@ export const activityRouter = createTRPCRouter({
       return updatedActivity;
     }),
 
-  delete: publicProcedure
+  delete: privateProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input, ctx }) => {
       const deletedActivity = await ctx.prisma.activity.delete({
