@@ -3,7 +3,28 @@ import bcrypt from 'bcrypt';
 import { TRPCError } from '@trpc/server';
 import { Prisma } from '@prisma/client';
 
+// import redisClient from '../../src/utils/connectRedis';
+import { signJwt } from '../../src/utils/jwt';
+import customConfig from '../../src/config/default';
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
+
+export const signTokens = async (user: Prisma.UserCreateInput) => {
+  // 1. Create Session
+  redisClient.set(`${user}`, JSON.stringify(user), {
+    EX: customConfig.redisCacheExpiresIn * 60,
+  });
+
+  // 2. Create Access and Refresh tokens
+  const access_token = signJwt({ sub: user }, 'accessTokenPrivateKey', {
+    expiresIn: `${customConfig.accessTokenExpiresIn}m`,
+  });
+
+  const refresh_token = signJwt({ sub: user }, 'refreshTokenPrivateKey', {
+    expiresIn: `${customConfig.refreshTokenExpiresIn}m`,
+  });
+
+  return { access_token, refresh_token };
+};
 
 export const userRouter = createTRPCRouter({
   getAllUsers: publicProcedure.query(async ({ ctx }) => {
@@ -28,7 +49,7 @@ export const userRouter = createTRPCRouter({
       if (existingUser) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: 'User already exists',
+          message: 'Registration failed.',
         });
       } else {
         const hashedPassword = await bcrypt.hash(input.password, 10);
@@ -51,6 +72,8 @@ export const userRouter = createTRPCRouter({
         where: { email: input.email.toLowerCase() },
       });
 
+      // const { access_token, refresh_token } = await signTokens({ user });
+
       const hasMatchingPassword = await bcrypt.compare(
         input.password,
         user?.password || '',
@@ -58,7 +81,7 @@ export const userRouter = createTRPCRouter({
 
       if (!user || !hasMatchingPassword) {
         throw new TRPCError({
-          code: 'BAD_REQUEST',
+          code: 'UNAUTHORIZED',
           message: 'Invalid email or password',
         });
       }

@@ -22,13 +22,19 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
 
-  trpc.user.login.useQuery(
+  const logUser = trpc.user.login.useQuery(
     {
       email: loginEmail || '',
       password: loginPassword || '',
     },
     {
-      enabled: false,
+      onSuccess: () => {
+        setIsLogged(true);
+        router.push('/');
+      },
+      onError: () => {
+        setWarningMessage('Špatný e-mail nebo heslo');
+      },
     },
   );
 
@@ -37,12 +43,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
     if (!loginEmail || !loginPassword) {
       setWarningMessage('Vyplňte všechna pole');
-
-      return;
     }
 
-    setIsLogged(true);
-    router.push('/');
+    logUser.refetch();
   };
 
   return (
