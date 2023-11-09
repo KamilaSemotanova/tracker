@@ -19,8 +19,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 }) => {
   const router = useRouter();
 
-  const [loginEmail, setLoginEmail] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
+  const [loginEmail, setLoginEmail] = useState('testing@test.com');
+  const [loginPassword, setLoginPassword] = useState('Marecek123');
 
   const logUser = trpc.user.login.useQuery(
     {
@@ -28,6 +28,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       password: loginPassword || '',
     },
     {
+      enabled: false,
       onSuccess: () => {
         setIsLogged(true);
         router.push('/');
@@ -62,6 +63,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             placeholder="ukázka@email.com"
             label="E-mail"
             autoFocus
+            value={loginEmail}
             onChange={(e) => setLoginEmail(e.target.value)}
           />
 
@@ -70,6 +72,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             type="password"
             placeholder="Vaše heslo"
             label="Heslo"
+            value={loginPassword}
             onChange={(e) => setLoginPassword(e.target.value)}
           />
         </div>

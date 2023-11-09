@@ -1,38 +1,36 @@
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import { TRPCError } from '@trpc/server';
-import { Prisma } from '@prisma/client';
 
-// import redisClient from '../../src/utils/connectRedis';
 import { signJwt } from '../../src/utils/jwt';
-import customConfig from '../../src/config/default';
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
 
-export const signTokens = async (user: Prisma.UserCreateInput) => {
-  // 1. Create Session
-  redisClient.set(`${user}`, JSON.stringify(user), {
-    EX: customConfig.redisCacheExpiresIn * 60,
-  });
+type User = {
+  id: number;
+  email: string;
+  name: string | null;
+  password: string;
+};
 
-  // 2. Create Access and Refresh tokens
-  const access_token = signJwt({ sub: user }, 'accessTokenPrivateKey', {
-    expiresIn: `${customConfig.accessTokenExpiresIn}m`,
-  });
+export const signTokens = async (user: User) => {
+  const access_token = signJwt(
+    { sub: user.id },
+    {
+      expiresIn: `${process.env.ACCESS_TOKEN_EXPIRES_IN}m`,
+    },
+  );
 
-  const refresh_token = signJwt({ sub: user }, 'refreshTokenPrivateKey', {
-    expiresIn: `${customConfig.refreshTokenExpiresIn}m`,
-  });
+  const refresh_token = signJwt(
+    { sub: user.id },
+    {
+      expiresIn: `${process.env.REFRESH_TOKEN_EXPIRES_IN}m`,
+    },
+  );
 
   return { access_token, refresh_token };
 };
 
 export const userRouter = createTRPCRouter({
-  getAllUsers: publicProcedure.query(async ({ ctx }) => {
-    const users = await ctx.prisma.user.findMany();
-
-    return users;
-  }),
-
   register: publicProcedure
     .input(
       z.object({
@@ -51,18 +49,20 @@ export const userRouter = createTRPCRouter({
           code: 'BAD_REQUEST',
           message: 'Registration failed.',
         });
-      } else {
-        const hashedPassword = await bcrypt.hash(input.password, 10);
-        const newUser = await ctx.prisma.user.create({
-          data: {
-            name: input.name,
-            email: input.email,
-            password: hashedPassword,
-          },
-        });
-
-        return newUser;
       }
+
+      const hashedPassword = await bcrypt.hash(input.password, 10);
+      const newUser = await ctx.prisma.user.create({
+        data: {
+          name: input.name,
+          email: input.email,
+          password: hashedPassword,
+        },
+      });
+
+      const { access_token, refresh_token } = await signTokens(newUser);
+
+      return { access_token, refresh_token };
     }),
 
   login: publicProcedure
@@ -72,21 +72,28 @@ export const userRouter = createTRPCRouter({
         where: { email: input.email.toLowerCase() },
       });
 
-      // const { access_token, refresh_token } = await signTokens({ user });
-
-      const hasMatchingPassword = await bcrypt.compare(
-        input.password,
-        user?.password || '',
-      );
-
-      if (!user || !hasMatchingPassword) {
+      if (!user) {
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: 'Invalid email or password',
         });
       }
 
-      return user;
+      const hasMatchingPassword = await bcrypt.compare(
+        input.password,
+        user.password,
+      );
+
+      if (!hasMatchingPassword) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'Invalid email or password',
+        });
+      }
+
+      const { access_token, refresh_token } = await signTokens(user);
+
+      return { access_token, refresh_token };
     }),
 
   updateUser: publicProcedure

@@ -1,13 +1,8 @@
+import { readFileSync } from 'fs';
 import jwt, { SignOptions } from 'jsonwebtoken';
 
-import customConfig from '../config/default';
-
-export const signJwt = (
-  payload: object,
-  key: 'accessTokenPrivateKey' | 'refreshTokenPrivateKey',
-  options: SignOptions = {},
-) => {
-  const privateKey = Buffer.from(customConfig[key], 'base64').toString('ascii');
+export const signJwt = (payload: object, options: SignOptions = {}) => {
+  const privateKey = readFileSync('private.key');
 
   return jwt.sign(payload, privateKey, {
     ...(options && options),
