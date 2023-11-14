@@ -3,8 +3,8 @@ import { AppType } from 'next/app';
 import Head from 'next/head';
 import localFont from 'next/font/local';
 
-import { api } from '~/utils/api';
 import { AuthenticationProvider } from '../components/AuthenticationProvider';
+import { api } from '../utils/baseTrpcWrapper';
 
 const mulishFont = localFont({ src: '../fonts/Mulish/Mulish-Regular.woff2' });
 
