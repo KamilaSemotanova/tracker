@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { trpc } from '../../utils/trpc';
 import { TextField } from '../TextField/TextField';
 import { FormWrapper } from './FormWrapper';
+import { useAuthentication } from '../AuthenticationProvider';
 import style from './RegisterForm.module.scss';
 
 type RegisterFormData = {
@@ -14,23 +15,27 @@ type RegisterFormData = {
 };
 
 type RegisterFormProps = {
-  setIsLogged: (value: boolean) => void;
   setWarningMessage: (value: string) => void;
   buttonClassName: string;
 };
 
 export const RegisterForm: React.FC<RegisterFormProps> = ({
-  setIsLogged,
   setWarningMessage,
   buttonClassName,
 }) => {
   const router = useRouter();
   const formRef = useRef<RegisterFormData>();
+  const { login } = useAuthentication();
 
   const utils = trpc.useContext();
   const addNewUser = trpc.user.register.useMutation({
-    onSuccess: () => {
+    onSuccess: ({ access_token }) => {
       utils.user.invalidate();
+      login(access_token);
+      router.push('/');
+    },
+    onError: () => {
+      setWarningMessage('Registace se nezdařila');
     },
   });
 
@@ -70,9 +75,6 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
       email: emailValue,
       password: passwordValue,
     });
-
-    setIsLogged(true);
-    router.push('/');
   };
 
   return (
