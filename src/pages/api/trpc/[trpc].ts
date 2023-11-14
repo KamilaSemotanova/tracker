@@ -7,19 +7,12 @@ import { createTRPCContext } from '../../../../server/context';
 export default createNextApiHandler({
   router: appRouter,
   createContext: createTRPCContext,
-  onError: ({ path, error, ctx }) => {
+  onError: ({ path, error }) => {
     if (env.NODE_ENV === 'development') {
       // eslint-disable-next-line no-console
       console.error(
         `❌ tRPC failed on ${path ?? '<no-path>'}: ${error.message}`,
       );
-    }
-
-    if (ctx && error.code === 'UNAUTHORIZED') {
-      ctx.res.writeHead(302, {
-        Location: '/prihlaseni',
-      });
-      ctx.res.end();
     }
   },
 });

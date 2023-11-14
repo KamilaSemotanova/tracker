@@ -1,10 +1,11 @@
-import { httpBatchLink, loggerLink } from '@trpc/client';
+import { TRPCClientError, httpBatchLink, loggerLink } from '@trpc/client';
 import { createTRPCNext } from '@trpc/next';
 import superjson from 'superjson';
+import Router from 'next/router';
 
 import { AppRouter } from '../../server/root';
 import { TOKEN_KEY } from '../components/AuthenticationProvider';
-import { isBrowser, isServer } from './env';
+import { isServer } from './env';
 
 const getBaseUrl = () => {
   if (isServer()) {
@@ -19,13 +20,31 @@ const getBaseUrl = () => {
 };
 
 const getLocalStorageToken = () => {
-  if (isBrowser()) {
+  if (isServer()) {
     return '';
   }
 
-  const token = localStorage.getItem(TOKEN_KEY);
+  const token = window.localStorage.getItem(TOKEN_KEY);
 
   return token ? `Bearer ${token}` : '';
+};
+
+const handleUnauthorizedErrorsOnClient = (error: unknown) => {
+  if (isServer()) {
+    return false;
+  }
+
+  if (!(error instanceof TRPCClientError)) {
+    return false;
+  }
+
+  if (error.data?.code !== 'UNAUTHORIZED') {
+    return false;
+  }
+
+  Router.push('/prihlaseni');
+
+  return true;
 };
 
 export const api = createTRPCNext<AppRouter>({
@@ -40,11 +59,39 @@ export const api = createTRPCNext<AppRouter>({
         }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
-          headers: () => ({
-            Authorization: getLocalStorageToken(),
-          }),
+          headers: () => {
+            const token = getLocalStorageToken();
+
+            if (!token) {
+              return {};
+            }
+
+            return {
+              Authorization: token,
+            };
+          },
         }),
       ],
+      queryClientConfig: {
+        defaultOptions: {
+          queries: {
+            retry: (failureCount, error) => {
+              if (handleUnauthorizedErrorsOnClient(error)) {
+                return false;
+              }
+
+              return failureCount < 3;
+            },
+          },
+          mutations: {
+            retry: (_, error) => {
+              handleUnauthorizedErrorsOnClient(error);
+
+              return false;
+            },
+          },
+        },
+      },
     };
   },
 
