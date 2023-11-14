@@ -19,16 +19,6 @@ const getBaseUrl = () => {
   return `http://localhost:${process.env.PORT ?? 3000}`;
 };
 
-const getLocalStorageToken = () => {
-  if (isServer()) {
-    return '';
-  }
-
-  const token = window.localStorage.getItem(TOKEN_KEY);
-
-  return token ? `Bearer ${token}` : '';
-};
-
 const handleUnauthorizedErrorsOnClient = (error: unknown) => {
   if (isServer()) {
     return false;
@@ -60,14 +50,18 @@ export const api = createTRPCNext<AppRouter>({
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
           headers: () => {
-            const token = getLocalStorageToken();
+            if (isServer()) {
+              return {};
+            }
+
+            const token = window.localStorage.getItem(TOKEN_KEY);
 
             if (!token) {
               return {};
             }
 
             return {
-              Authorization: token,
+              Authorization: `Bearer ${token}`,
             };
           },
         }),
