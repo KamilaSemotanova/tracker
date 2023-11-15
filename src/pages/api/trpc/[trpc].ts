@@ -1,27 +1,34 @@
 import { createNextApiHandler } from '@trpc/server/adapters/next';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 import { appRouter } from '../../../../server/root';
 import { createTRPCContext } from '../../../../server/context';
 
-export default createNextApiHandler({
-  router: appRouter,
-  createContext: createTRPCContext,
-  responseMeta(ctx) {
-    ctx.ctx?.res?.setHeader('Access-Control-Allow-Origin', '*');
-    ctx.ctx?.res?.setHeader('Access-Control-Request-Method', '*');
-    ctx.ctx?.res?.setHeader(
+const allowCors =
+  (fn: any) => async (req: NextApiRequest, res: NextApiResponse) => {
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader(
       'Access-Control-Allow-Methods',
-      'OPTIONS, GET, POST, DELETE, PUT, PATCH',
+      'GET,OPTIONS,PATCH,DELETE,POST,PUT',
     );
-    ctx.ctx?.res?.setHeader('Access-Control-Allow-Headers', '*');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Authorization, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+    );
 
-    if (ctx.ctx?.req?.method === 'OPTIONS') {
-      ctx.ctx?.res?.writeHead(200);
+    if (req.method === 'OPTIONS') {
+      res.status(200).end();
+
+      return;
     }
 
-    return {
-      headers: ctx.ctx?.res?.getHeaders() as Record<string, string>,
-      statusCode: ctx.ctx?.res?.statusCode || 200,
-    };
-  },
-});
+    return await fn(req, res);
+  };
+
+export default allowCors(
+  createNextApiHandler({
+    router: appRouter,
+    createContext: createTRPCContext,
+  }),
+);
