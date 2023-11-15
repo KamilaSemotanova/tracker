@@ -7,10 +7,7 @@ export default createNextApiHandler({
   router: appRouter,
   createContext: createTRPCContext,
   responseMeta(ctx) {
-    ctx.ctx?.res?.setHeader(
-      'Access-Control-Allow-Origin',
-      'https://*.vercel.app',
-    );
+    ctx.ctx?.res?.setHeader('Access-Control-Allow-Origin', '*');
     ctx.ctx?.res?.setHeader('Access-Control-Allow-Credentials', 'true');
     ctx.ctx?.res?.setHeader(
       'Access-Control-Allow-Methods',
@@ -18,7 +15,7 @@ export default createNextApiHandler({
     );
     ctx.ctx?.res?.setHeader(
       'Access-Control-Allow-Headers',
-      'x-csrf-token,x-requested-with,accept,accept-version,content-length,content-md5,content-type,date,x-api-version',
+      'authorization,x-csrf-token,x-requested-with,accept,accept-version,content-length,content-md5,content-type,date,x-api-version',
     );
 
     if (ctx.ctx?.req?.method === 'OPTIONS') {

@@ -15,7 +15,7 @@ const config = {
           { key: 'Access-Control-Allow-Credentials', value: 'true' },
           {
             key: 'Access-Control-Allow-Origin',
-            value: 'https://*.vercel.app',
+            value: '*',
           },
           {
             key: 'Access-Control-Allow-Methods',
@@ -24,7 +24,7 @@ const config = {
           {
             key: 'Access-Control-Allow-Headers',
             value:
-              'x-csrf-token,x-requested-with,accept,accept-version,content-length,content-md5,content-type,date,x-api-version',
+              'authorization,x-csrf-token,x-requested-with,accept,accept-version,content-length,content-md5,content-type,date,x-api-version',
           },
         ],
       },
