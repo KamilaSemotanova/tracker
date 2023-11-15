@@ -1,4 +1,3 @@
-import { readFileSync } from 'fs';
 import jwt, { SignOptions } from 'jsonwebtoken';
 
 type Payload = {
@@ -6,7 +5,7 @@ type Payload = {
 };
 
 export const signJwt = (payload: Payload, options: SignOptions = {}) => {
-  const privateKey = readFileSync('private.key');
+  const privateKey = Buffer.from(process.env.TOKEN_PRIVATE_KEY || '', 'base64');
 
   return jwt.sign(payload, privateKey, {
     ...(options && options),
@@ -16,7 +15,7 @@ export const signJwt = (payload: Payload, options: SignOptions = {}) => {
 
 export const verifyJwt = (token: string) => {
   try {
-    const publicKey = readFileSync('public.key');
+    const publicKey = Buffer.from(process.env.TOKEN_PUBLIC_KEY || '', 'base64');
 
     return jwt.verify(token, publicKey) as unknown as Payload;
   } catch (error) {
