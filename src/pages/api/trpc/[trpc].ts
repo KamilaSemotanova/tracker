@@ -9,7 +9,7 @@ export default createNextApiHandler({
   responseMeta(ctx) {
     ctx.ctx?.res?.setHeader(
       'Access-Control-Allow-Origin',
-      'http://localhost:3000,https://*.vercel.app',
+      'https://*.vercel.app',
     );
     ctx.ctx?.res?.setHeader('Access-Control-Allow-Credentials', 'true');
     ctx.ctx?.res?.setHeader(

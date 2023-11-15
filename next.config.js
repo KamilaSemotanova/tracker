@@ -15,7 +15,7 @@ const config = {
           { key: 'Access-Control-Allow-Credentials', value: 'true' },
           {
             key: 'Access-Control-Allow-Origin',
-            value: 'http://localhost:3000,https://*.vercel.app',
+            value: 'https://*.vercel.app',
           },
           {
             key: 'Access-Control-Allow-Methods',
