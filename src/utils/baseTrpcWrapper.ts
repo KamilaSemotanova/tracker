@@ -12,6 +12,11 @@ const getBaseUrl = () => {
     return '';
   }
 
+  // eslint-disable-next-line no-console
+  console.log(process.env.VERCEL_URL);
+  // eslint-disable-next-line no-console
+  console.log(process.env.VERCEL_BRANCH_URL);
+
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`;
   }
