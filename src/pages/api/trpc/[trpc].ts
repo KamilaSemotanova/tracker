@@ -7,7 +7,10 @@ import { createTRPCContext } from '../../../../server/context';
 const allowCors =
   (fn: any) => async (req: NextApiRequest, res: NextApiResponse) => {
     res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader(
+      'Access-Control-Allow-Origin',
+      'http://localhost:3000,https://*.vercel.app',
+    );
     res.setHeader(
       'Access-Control-Allow-Methods',
       'GET,OPTIONS,PATCH,DELETE,POST,PUT',
