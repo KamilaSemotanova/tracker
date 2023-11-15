@@ -24,7 +24,7 @@ const config = {
           {
             key: 'Access-Control-Allow-Headers',
             value:
-              'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+              'x-csrf-token,x-requested-with,accept,accept-version,content-length,content-md5,content-type,date,x-api-version',
           },
         ],
       },

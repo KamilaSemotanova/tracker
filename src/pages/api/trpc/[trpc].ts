@@ -14,11 +14,11 @@ export default createNextApiHandler({
     ctx.ctx?.res?.setHeader('Access-Control-Allow-Credentials', 'true');
     ctx.ctx?.res?.setHeader(
       'Access-Control-Allow-Methods',
-      'OPTIONS, GET, POST, DELETE, PUT, PATCH',
+      'OPTIONS,GET,POST,DELETE,PUT,PATCH',
     );
     ctx.ctx?.res?.setHeader(
       'Access-Control-Allow-Headers',
-      'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+      'x-csrf-token,x-requested-with,accept,accept-version,content-length,content-md5,content-type,date,x-api-version',
     );
 
     if (ctx.ctx?.req?.method === 'OPTIONS') {
