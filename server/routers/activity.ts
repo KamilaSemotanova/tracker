@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { TRPCError } from '@trpc/server';
 
 import { createTRPCRouter, privateProcedure } from '../trpc';
 
@@ -18,10 +19,6 @@ export const activityRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const userId = ctx.user?.id;
 
-      if (!userId) {
-        throw new Error('User not found');
-      }
-
       const user = await ctx.prisma.user.findUnique({
         where: {
           id: userId,
@@ -29,7 +26,10 @@ export const activityRouter = createTRPCRouter({
       });
 
       if (!user) {
-        throw new Error('User not found');
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'No access to this resource',
+        });
       }
 
       const newActivity = await ctx.prisma.activity.create({
@@ -48,9 +48,15 @@ export const activityRouter = createTRPCRouter({
       const activity = await ctx.prisma.activity.findUnique({
         where: {
           id: input.id,
-          userId: ctx.user?.id,
         },
       });
+
+      if (ctx.user?.id !== activity?.userId) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'No access to this resource',
+        });
+      }
 
       return activity;
     }),
@@ -61,12 +67,18 @@ export const activityRouter = createTRPCRouter({
       const updatedActivity = await ctx.prisma.activity.update({
         where: {
           id: input.id,
-          userId: ctx.user?.id,
         },
         data: {
           timesDone: input.timesDone,
         },
       });
+
+      if (ctx.user?.id !== updatedActivity?.userId) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'No access to this resource',
+        });
+      }
 
       return updatedActivity;
     }),
@@ -77,9 +89,15 @@ export const activityRouter = createTRPCRouter({
       const deletedActivity = await ctx.prisma.activity.delete({
         where: {
           id: input.id,
-          userId: ctx.user?.id,
         },
       });
+
+      if (ctx.user?.id !== deletedActivity?.userId) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'No access to this resource',
+        });
+      }
 
       return deletedActivity;
     }),
