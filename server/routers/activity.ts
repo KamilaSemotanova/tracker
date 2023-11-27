@@ -4,7 +4,11 @@ import { createTRPCRouter, privateProcedure } from '../trpc';
 
 export const activityRouter = createTRPCRouter({
   list: privateProcedure.query(async ({ ctx }) => {
-    const activities = await ctx.prisma.activity.findMany();
+    const activities = await ctx.prisma.activity.findMany({
+      where: {
+        userId: ctx.user?.id,
+      },
+    });
 
     return activities;
   }),
@@ -12,9 +16,26 @@ export const activityRouter = createTRPCRouter({
   create: privateProcedure
     .input(z.object({ name: z.string() }))
     .mutation(async ({ input, ctx }) => {
+      const userId = ctx.user?.id;
+
+      if (!userId) {
+        throw new Error('User not found');
+      }
+
+      const user = await ctx.prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+      });
+
+      if (!user) {
+        throw new Error('User not found');
+      }
+
       const newActivity = await ctx.prisma.activity.create({
         data: {
           name: input.name,
+          userId: user.id,
         },
       });
 
@@ -27,6 +48,7 @@ export const activityRouter = createTRPCRouter({
       const activity = await ctx.prisma.activity.findUnique({
         where: {
           id: input.id,
+          userId: ctx.user?.id,
         },
       });
 
@@ -39,6 +61,7 @@ export const activityRouter = createTRPCRouter({
       const updatedActivity = await ctx.prisma.activity.update({
         where: {
           id: input.id,
+          userId: ctx.user?.id,
         },
         data: {
           timesDone: input.timesDone,
@@ -54,6 +77,7 @@ export const activityRouter = createTRPCRouter({
       const deletedActivity = await ctx.prisma.activity.delete({
         where: {
           id: input.id,
+          userId: ctx.user?.id,
         },
       });
 
