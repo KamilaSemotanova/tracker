@@ -5,6 +5,19 @@ import { createTRPCRouter, privateProcedure } from '../trpc';
 
 export const activityRouter = createTRPCRouter({
   list: privateProcedure.query(async ({ ctx }) => {
+    const user = await ctx.prisma.user.findUnique({
+      where: {
+        id: ctx.user?.id,
+      },
+    });
+
+    if (!user) {
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: 'No access to this resource',
+      });
+    }
+
     const activities = await ctx.prisma.activity.findMany({
       where: {
         userId: ctx.user?.id,
