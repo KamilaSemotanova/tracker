@@ -22,4 +22,5 @@ model Activity {
   id    Int     @id @default(autoincrement())
   name String
   timesDone  Int @default(0)
+  userId Int
 }

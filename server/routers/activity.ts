@@ -1,10 +1,15 @@
 import { z } from 'zod';
+import { TRPCError } from '@trpc/server';
 
 import { createTRPCRouter, privateProcedure } from '../trpc';
 
 export const activityRouter = createTRPCRouter({
   list: privateProcedure.query(async ({ ctx }) => {
-    const activities = await ctx.prisma.activity.findMany();
+    const activities = await ctx.prisma.activity.findMany({
+      where: {
+        userId: ctx.user?.id,
+      },
+    });
 
     return activities;
   }),
@@ -15,6 +20,7 @@ export const activityRouter = createTRPCRouter({
       const newActivity = await ctx.prisma.activity.create({
         data: {
           name: input.name,
+          userId: ctx.user?.id,
         },
       });
 
@@ -29,6 +35,13 @@ export const activityRouter = createTRPCRouter({
           id: input.id,
         },
       });
+
+      if (ctx.user?.id !== activity?.userId) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'No access to this resource',
+        });
+      }
 
       return activity;
     }),
@@ -45,6 +58,13 @@ export const activityRouter = createTRPCRouter({
         },
       });
 
+      if (ctx.user?.id !== updatedActivity?.userId) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'No access to this resource',
+        });
+      }
+
       return updatedActivity;
     }),
 
@@ -56,6 +76,13 @@ export const activityRouter = createTRPCRouter({
           id: input.id,
         },
       });
+
+      if (ctx.user?.id !== deletedActivity?.userId) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'No access to this resource',
+        });
+      }
 
       return deletedActivity;
     }),
