@@ -5,19 +5,6 @@ import { createTRPCRouter, privateProcedure } from '../trpc';
 
 export const activityRouter = createTRPCRouter({
   list: privateProcedure.query(async ({ ctx }) => {
-    const user = await ctx.prisma.user.findUnique({
-      where: {
-        id: ctx.user?.id,
-      },
-    });
-
-    if (!user) {
-      throw new TRPCError({
-        code: 'FORBIDDEN',
-        message: 'No access to this resource',
-      });
-    }
-
     const activities = await ctx.prisma.activity.findMany({
       where: {
         userId: ctx.user?.id,
@@ -30,25 +17,17 @@ export const activityRouter = createTRPCRouter({
   create: privateProcedure
     .input(z.object({ name: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      const userId = ctx.user?.id;
-
-      const user = await ctx.prisma.user.findUnique({
-        where: {
-          id: userId,
-        },
-      });
-
-      if (!user) {
+      if (!ctx.user?.id) {
         throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'No access to this resource',
+          code: 'BAD_REQUEST',
+          message: 'Failed to create activity',
         });
       }
 
       const newActivity = await ctx.prisma.activity.create({
         data: {
           name: input.name,
-          userId: user.id,
+          userId: ctx.user?.id,
         },
       });
 
