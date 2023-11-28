@@ -17,13 +17,6 @@ export const activityRouter = createTRPCRouter({
   create: privateProcedure
     .input(z.object({ name: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      if (!ctx.user?.id) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Failed to create activity',
-        });
-      }
-
       const newActivity = await ctx.prisma.activity.create({
         data: {
           name: input.name,

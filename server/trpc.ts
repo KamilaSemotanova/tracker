@@ -31,7 +31,7 @@ const isAuthorized = t.middleware(({ ctx, next }) => {
   }
 
   return next({
-    ctx,
+    ctx: { ...ctx, user: ctx.user, test: 'test' },
   });
 });
 
