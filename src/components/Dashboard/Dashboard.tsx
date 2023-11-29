@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Row } from '../Row/Row';
 import { trpc } from '../../utils/trpc';
 import addActivity from './img/plus.png';
+import { UserBox } from './UserBox';
 import style from './Dashboard.module.scss';
 
 export const Dashboard = () => {
@@ -51,6 +52,7 @@ export const Dashboard = () => {
 
   return (
     <Row flexCol fullWidth justifyCenter itemsCenter>
+      <UserBox />
       <div className={style.box}>
         <h1 className={style.title}>Všechny aktivity</h1>
         <ul className={style.activities}>

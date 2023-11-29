@@ -62,7 +62,7 @@ export const userRouter = createTRPCRouter({
 
       const { access_token, refresh_token } = await signTokens(newUser);
 
-      return { access_token, refresh_token };
+      return { access_token, refresh_token, userName: newUser.name };
     }),
 
   login: publicProcedure
@@ -93,7 +93,7 @@ export const userRouter = createTRPCRouter({
 
       const { access_token, refresh_token } = await signTokens(user);
 
-      return { access_token, refresh_token };
+      return { access_token, refresh_token, userName: user.name };
     }),
 
   updateUser: privateProcedure
@@ -102,7 +102,6 @@ export const userRouter = createTRPCRouter({
         id: z.number(),
         name: z.string(),
         email: z.string(),
-        password: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -111,11 +110,28 @@ export const userRouter = createTRPCRouter({
         data: {
           name: input.name,
           email: input.email,
-          password: input.password,
         },
       });
 
       return updatedUser;
+    }),
+
+  updatePassword: privateProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        password: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const updatedPassword = await ctx.prisma.user.update({
+        where: { id: input.id },
+        data: {
+          password: input.password,
+        },
+      });
+
+      return updatedPassword;
     }),
 
   deleteUser: privateProcedure
