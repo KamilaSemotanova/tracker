@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import classnames from 'classnames';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 import { Row } from '../Row/Row';
 import { trpc } from '../../utils/trpc';
@@ -13,6 +14,8 @@ export const Dashboard = () => {
   const [newActivity, setNewActivity] = useState('');
 
   const { data: activities } = trpc.activities.list.useQuery();
+
+  const router = useRouter();
 
   const utils = trpc.useContext();
   const addNewActivity = trpc.activities.create.useMutation({
@@ -50,6 +53,10 @@ export const Dashboard = () => {
     updateDoneCounter.mutate({ id, timesDone: timesDone + 1 });
   };
 
+  const handleDetailClick = (id: number) => {
+    router.push(`/detail/${id}`);
+  };
+
   return (
     <Row flexCol fullWidth justifyCenter itemsCenter>
       <UserBox />
@@ -58,6 +65,7 @@ export const Dashboard = () => {
         <ul className={style.activities}>
           {activities?.map(({ timesDone, id, name }) => (
             <div
+              onClick={() => handleDetailClick(id)}
               className={classnames(style.activity, {
                 [style.zero]: timesDone === 0,
                 [style.more]: timesDone > 0,

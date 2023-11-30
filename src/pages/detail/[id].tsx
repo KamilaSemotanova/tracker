@@ -1,11 +1,11 @@
 import { NextPage } from 'next';
 
-import { Detail } from '../../../../components/[detail]/Detail';
-import { Layout } from '../../../../components/Layout/Layout';
+import { DetailOfActivity } from '../../components/Detail/Detail';
+import { Layout } from '../../components/Layout/Layout';
 
 const Detail: NextPage = () => (
   <Layout>
-    <Detail />
+    <DetailOfActivity />
   </Layout>
 );
 
