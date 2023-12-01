@@ -1,6 +1,27 @@
 @import 'src/styles/color.scss';
 @import 'src/styles/breakpoints.scss';
 
+@keyframes backgroundAnimation {
+  0% {
+    background-image: url('./img/strike3.png');
+  }
+  20% {
+    background-image: url('./img/strike2.png');
+  }
+  40% {
+    background-image: url('./img/strike7.png');
+  }
+  60% {
+    background-image: url('./img/strike4.png');
+  }
+  80% {
+    background-image: url('./img/strike5.png');
+  }
+  100% {
+    background-image: url('./img/strike6.png');
+  }
+}
+
 .box {
   display: flex;
   flex-direction: column;
@@ -10,6 +31,39 @@
 
   @media (min-width: $screen-md-min) {
     width: 80%;
+  }
+}
+
+.navigation {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem 0;
+  padding: 0 1rem;
+  font-size: 1.2rem;
+
+  @media (min-width: $screen-md-min) {
+    height: 3rem;
+    padding: 0 1rem;
+    font-size: 1.4rem;
+  }
+}
+
+.back {
+  width: 2rem;
+  height: 2rem;
+  padding: 0.5rem;
+  background-color: unset;
+  border: 1px hidden $translucent-silk;
+  background-image: url('./img/back.png');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateX(-0.3rem);
   }
 }
 
@@ -36,4 +90,51 @@
 
 .zero {
   background-color: $pumping-spice;
+}
+
+.delete {
+  width: 2rem;
+  height: 2rem;
+  padding: 0.5rem;
+  background-color: unset;
+  border: 1px hidden $translucent-silk;
+  background-image: url('./img/delete.png');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  height: 100%;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.counter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 10rem;
+  height: 10rem;
+  margin-bottom: 1rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: backgroundAnimation 1s infinite;
+}
+
+.number {
+  margin-bottom: 0.5rem;
+  font-family: 'Mulish', sans-serif;
+  font-size: 4rem;
+  font-weight: 500;
 }
