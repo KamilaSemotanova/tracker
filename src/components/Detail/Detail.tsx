@@ -58,6 +58,7 @@ export const DetailOfActivity = () => {
             <button onClick={handleDelete} className={style.delete} />
           </nav>
           <button
+            className={style.done}
             aria-label={`Dokončena aktivita ${activityData.name}.`}
             type="button"
             onClick={() => {
@@ -66,14 +67,12 @@ export const DetailOfActivity = () => {
                 timesDone: activityData.timesDone,
               });
             }}
-          >
-            done
-          </button>
+          />
           <div className={style.container}>
             <div className={style.counter}>
               <p className={style.number}>{activityData.timesDone}</p>
             </div>
-            <p>dní</p>
+            <p className={style.streekDays}>dní</p>
           </div>
           {/* <div>calendar</div> */}
         </div>
