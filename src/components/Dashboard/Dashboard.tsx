@@ -7,16 +7,16 @@ import { Row } from '../Row/Row';
 import { trpc } from '../../utils/trpc';
 import addActivity from './img/plus.png';
 import { UserBox } from './UserBox';
+import { Button } from '../Button/Button';
 import style from './Dashboard.module.scss';
 
 export const Dashboard = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [newActivity, setNewActivity] = useState('');
 
-  const { data: activities } = trpc.activities.list.useQuery();
-
   const router = useRouter();
 
+  const { data: activities } = trpc.activities.list.useQuery();
   const utils = trpc.useContext();
   const addNewActivity = trpc.activities.create.useMutation({
     onSuccess: () => {
@@ -97,6 +97,7 @@ export const Dashboard = () => {
           <button
             className={style.revealForm}
             onClick={() => setFormVisible(true)}
+            type="button"
           >
             <Image
               src={addActivity}
@@ -121,16 +122,13 @@ export const Dashboard = () => {
               </label>
             </Row>
             <div className={style.buttonBox}>
-              <button type="submit" className={style.button}>
-                přidat
-              </button>
-              <button
+              <Button type="submit" className={style.button} label="přidat" />
+              <Button
                 type="button"
                 className={style.button}
+                label="zrušit"
                 onClick={() => setFormVisible(false)}
-              >
-                zrušit
-              </button>
+              />
             </div>
           </form>
         )}

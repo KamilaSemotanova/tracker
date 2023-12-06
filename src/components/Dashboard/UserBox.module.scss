@@ -1,13 +1,6 @@
 @import 'src/styles/color.scss';
 @import 'src/styles/breakpoints.scss';
 
-.userBox {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 .userBoxOpen {
   width: 100%;
   padding: 2rem 1rem;
@@ -56,20 +49,8 @@
   transform: rotate(180deg);
 }
 
-.button {
-  width: 45%;
-  padding: 0.5rem;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 300;
-  cursor: pointer;
-
-  @media (min-width: $screen-md-min) {
-    font-size: 1.4rem;
-  }
-}
-
 .buttonUpdate {
+  width: 18rem;
   color: $severely-burnt-toast;
   background-color: $translucent-silk;
   border: 1px solid $translucent-silk;
@@ -81,6 +62,7 @@
 }
 
 .buttonLogOut {
+  width: 18rem;
   color: $severely-burnt-toast;
   background-color: $pumping-spice;
   border: 1px solid $pumping-spice;

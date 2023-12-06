@@ -5,6 +5,8 @@ import { TRPCError } from '@trpc/server';
 import { signJwt } from '../utils/jwt';
 import { createTRPCRouter, privateProcedure, publicProcedure } from '../trpc';
 
+const SALT_CONSTANT = 10;
+
 type User = {
   id: number;
   email: string;
@@ -51,7 +53,7 @@ export const userRouter = createTRPCRouter({
         });
       }
 
-      const hashedPassword = await bcrypt.hash(input.password, 10);
+      const hashedPassword = await bcrypt.hash(input.password, SALT_CONSTANT);
       const newUser = await ctx.prisma.user.create({
         data: {
           name: input.name,
@@ -99,14 +101,13 @@ export const userRouter = createTRPCRouter({
   updateUser: privateProcedure
     .input(
       z.object({
-        id: z.number(),
         name: z.string(),
         email: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
       const updatedUser = await ctx.prisma.user.update({
-        where: { id: input.id },
+        where: { id: ctx.user?.id },
         data: {
           name: input.name,
           email: input.email,
@@ -119,15 +120,15 @@ export const userRouter = createTRPCRouter({
   updatePassword: privateProcedure
     .input(
       z.object({
-        id: z.number(),
         password: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
+      const hashedPassword = await bcrypt.hash(input.password, SALT_CONSTANT);
       const updatedPassword = await ctx.prisma.user.update({
-        where: { id: input.id },
+        where: { id: ctx.user?.id },
         data: {
-          password: input.password,
+          password: hashedPassword,
         },
       });
 

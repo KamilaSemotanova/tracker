@@ -11,7 +11,9 @@ export const DetailOfActivity = () => {
 
   const utils = trpc.useContext();
 
-  const activityData = trpc.activities.read.useQuery({ id: Number(id) }).data;
+  const { data: activityData } = trpc.activities.read.useQuery({
+    id: Number(id),
+  });
 
   const deleteActivity = trpc.activities.delete.useMutation({
     onSuccess: () => {
@@ -19,10 +21,8 @@ export const DetailOfActivity = () => {
     },
   });
 
-  const handleDelete = () => {
-    if (activityData) {
-      deleteActivity.mutate({ id: activityData.id });
-    }
+  const handleDelete = (activityId: number) => {
+    deleteActivity.mutate({ id: activityId });
 
     router.push('/');
   };
@@ -43,11 +43,26 @@ export const DetailOfActivity = () => {
     updateDoneCounter.mutate({ id: activityId, timesDone: timesDone + 1 });
   };
 
+  const days = (timesDone: number) => {
+    if (timesDone === 1) {
+      return 'den';
+    }
+    if (timesDone > 1 && timesDone < 5) {
+      return 'dny';
+    }
+
+    return 'dní';
+  };
+
   return (
     activityData && (
       <Row flexCol fullWidth justifyCenter itemsCenter>
         <nav className={style.navigation}>
-          <button onClick={() => router.push('/')} className={style.back} />
+          <button
+            onClick={() => router.push('/')}
+            className={style.back}
+            aria-label="Zpět na hlavní stránku."
+          />
           <h1
             className={classnames(style.activity, {
               [style.zero]: activityData.timesDone === 0,
@@ -55,12 +70,15 @@ export const DetailOfActivity = () => {
           >
             {activityData.name}
           </h1>
-          <button onClick={handleDelete} className={style.delete} />
+          <button
+            onClick={() => handleDelete(activityData.id)}
+            className={style.delete}
+            aria-label={`Smazat aktivitu ${activityData.name}.`}
+          />
         </nav>
         <button
           className={style.done}
-          aria-label={`Dokončena aktivita ${activityData.name}.`}
-          type="button"
+          aria-label={`Dokončit aktivitu ${activityData.name}.`}
           onClick={() => {
             handleActivityClick({
               activityId: activityData.id,
@@ -72,7 +90,7 @@ export const DetailOfActivity = () => {
           <div className={style.counter}>
             <p className={style.number}>{activityData.timesDone}</p>
           </div>
-          <p className={style.streekDays}>dní</p>
+          <p className={style.streekDays}>{days(activityData.timesDone)}</p>
         </div>
         {/* <div>calendar</div> */}
       </Row>

@@ -81,7 +81,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
     <FormWrapper
       handleSubmit={handleRegistration}
       buttonClassName={buttonClassName}
-      buttonLabel="Register"
+      buttonLabel="Registrovat"
       ref={formRef}
     >
       <div className={style.register}>

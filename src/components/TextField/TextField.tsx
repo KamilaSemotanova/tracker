@@ -12,7 +12,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   label,
   ...props
 }) => (
-  <label>
+  <label className={style.labelWrapper}>
     <span className={style.label}>{label}</span>
     <input className={style.input} onChange={onChange} {...props} />
   </label>
