@@ -34,17 +34,19 @@ export const Authorization: React.FC = () => {
               className={classnames(style.button, style.buttonTop, {
                 [style.active]: registrationForm === false,
               })}
-              label="Přihlásit"
               onClick={() => handleReveal(false)}
-            />
+            >
+              Přihlásit
+            </Button>
             <Button
               type="button"
               className={classnames(style.button, style.buttonTop, {
                 [style.active]: registrationForm === true,
               })}
-              label="Registrovat"
               onClick={() => handleReveal(true)}
-            />
+            >
+              Registrovat
+            </Button>
           </Row>
           <div className={style.formContainer}>
             {registrationForm ? (
