@@ -18,8 +18,9 @@ export const FormWrapper = forwardRef<any, FormWrapperProps>(
       <Button
         type="submit"
         className={classnames(buttonClassName, style.submit)}
-        label={buttonLabel}
-      />
+      >
+        {buttonLabel}
+      </Button>
     </form>
   ),
 );
