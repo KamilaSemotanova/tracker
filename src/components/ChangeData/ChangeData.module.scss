@@ -1,0 +1,36 @@
+@import 'src/styles/color.scss';
+@import 'src/styles/breakpoints.scss';
+
+.changeForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 2rem 0;
+}
+
+.forms {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  @media (min-width: $screen-md-min) {
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+}
+
+.buttonBack {
+  width: 45%;
+  color: $translucent-silk;
+  background-color: $pumping-spice;
+  border: 1px solid $translucent-silk;
+
+  &:hover {
+    color: $severely-burnt-toast;
+    background-color: $translucent-silk;
+    border: 1px solid $severely-burnt-toast;
+  }
+}

@@ -4,6 +4,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useState,
 } from 'react';
 import { useRouter } from 'next/router';
 
@@ -12,8 +13,9 @@ import { ChildrenFC } from '../utils/types';
 export const TOKEN_KEY = 'token';
 
 export type AuthenticationContextValueType = {
-  login: (newToken: string) => void;
+  login: (newToken: string, newUserName: string) => void;
   logout: () => void;
+  userName?: string;
 };
 
 const AuthenticationContext = createContext<AuthenticationContextValueType>(
@@ -21,6 +23,8 @@ const AuthenticationContext = createContext<AuthenticationContextValueType>(
 );
 
 export const AuthenticationProvider: ChildrenFC = ({ children }) => {
+  const [userName, setUserName] = useState<string>();
+
   const router = useRouter();
 
   useEffect(() => {
@@ -29,15 +33,21 @@ export const AuthenticationProvider: ChildrenFC = ({ children }) => {
     }
   }, []);
 
-  const login = useCallback((newToken: string) => {
+  const login = useCallback((newToken: string, newUserName: string) => {
     localStorage.setItem(TOKEN_KEY, newToken);
+    setUserName(newUserName);
   }, []);
 
   const logout = useCallback(() => {
     localStorage.removeItem(TOKEN_KEY);
+    setUserName(undefined);
+    router.push('/prihlaseni');
   }, []);
 
-  const value = useMemo(() => ({ login, logout }), [login, logout]);
+  const value = useMemo(
+    () => ({ login, logout, userName }),
+    [login, logout, userName],
+  );
 
   return (
     <AuthenticationContext.Provider value={value}>

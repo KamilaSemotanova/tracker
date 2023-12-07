@@ -1,18 +1,22 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import classnames from 'classnames';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 import { Row } from '../Row/Row';
 import { trpc } from '../../utils/trpc';
 import addActivity from './img/plus.png';
+import { UserBox } from './UserBox';
+import { Button } from '../Button/Button';
 import style from './Dashboard.module.scss';
 
 export const Dashboard = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [newActivity, setNewActivity] = useState('');
 
-  const { data: activities } = trpc.activities.list.useQuery();
+  const router = useRouter();
 
+  const { data: activities } = trpc.activities.list.useQuery();
   const utils = trpc.useContext();
   const addNewActivity = trpc.activities.create.useMutation({
     onSuccess: () => {
@@ -49,13 +53,19 @@ export const Dashboard = () => {
     updateDoneCounter.mutate({ id, timesDone: timesDone + 1 });
   };
 
+  const handleDetailClick = (id: number) => {
+    router.push(`/detail/${id}`);
+  };
+
   return (
     <Row flexCol fullWidth justifyCenter itemsCenter>
+      <UserBox />
       <div className={style.box}>
         <h1 className={style.title}>Všechny aktivity</h1>
         <ul className={style.activities}>
           {activities?.map(({ timesDone, id, name }) => (
             <div
+              onClick={() => handleDetailClick(id)}
               className={classnames(style.activity, {
                 [style.zero]: timesDone === 0,
                 [style.more]: timesDone > 0,
@@ -87,6 +97,7 @@ export const Dashboard = () => {
           <button
             className={style.revealForm}
             onClick={() => setFormVisible(true)}
+            type="button"
           >
             <Image
               src={addActivity}
@@ -111,16 +122,16 @@ export const Dashboard = () => {
               </label>
             </Row>
             <div className={style.buttonBox}>
-              <button type="submit" className={style.button}>
+              <Button type="submit" className={style.button}>
                 přidat
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
                 className={style.button}
                 onClick={() => setFormVisible(false)}
               >
                 zrušit
-              </button>
+              </Button>
             </div>
           </form>
         )}

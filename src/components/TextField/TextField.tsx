@@ -1,4 +1,5 @@
 import React, { InputHTMLAttributes } from 'react';
+import classnames from 'classnames';
 
 import style from './TextField.module.scss';
 
@@ -10,10 +11,16 @@ type TextFieldProps = {
 export const TextField: React.FC<TextFieldProps> = ({
   onChange,
   label,
+  className,
   ...props
 }) => (
-  <label>
+  <label className={style.labelWrapper}>
     <span className={style.label}>{label}</span>
-    <input className={style.input} onChange={onChange} {...props} />
+    <input
+      className={classnames(style.input, className)}
+      onChange={onChange}
+      {...props}
+      type="text"
+    />
   </label>
 );

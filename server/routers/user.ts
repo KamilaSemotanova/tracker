@@ -5,6 +5,8 @@ import { TRPCError } from '@trpc/server';
 import { signJwt } from '../utils/jwt';
 import { createTRPCRouter, privateProcedure, publicProcedure } from '../trpc';
 
+const SALT_CONSTANT = 10;
+
 type User = {
   id: number;
   email: string;
@@ -51,7 +53,7 @@ export const userRouter = createTRPCRouter({
         });
       }
 
-      const hashedPassword = await bcrypt.hash(input.password, 10);
+      const hashedPassword = await bcrypt.hash(input.password, SALT_CONSTANT);
       const newUser = await ctx.prisma.user.create({
         data: {
           name: input.name,
@@ -62,7 +64,7 @@ export const userRouter = createTRPCRouter({
 
       const { access_token, refresh_token } = await signTokens(newUser);
 
-      return { access_token, refresh_token };
+      return { access_token, refresh_token, userName: newUser.name };
     }),
 
   login: publicProcedure
@@ -93,29 +95,43 @@ export const userRouter = createTRPCRouter({
 
       const { access_token, refresh_token } = await signTokens(user);
 
-      return { access_token, refresh_token };
+      return { access_token, refresh_token, userName: user.name };
     }),
 
   updateUser: privateProcedure
     .input(
       z.object({
-        id: z.number(),
         name: z.string(),
         email: z.string(),
-        password: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
       const updatedUser = await ctx.prisma.user.update({
-        where: { id: input.id },
+        where: { id: ctx.user?.id },
         data: {
           name: input.name,
           email: input.email,
-          password: input.password,
         },
       });
 
       return updatedUser;
+    }),
+
+  updatePassword: privateProcedure
+    .input(
+      z.object({
+        password: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const hashedPassword = await bcrypt.hash(input.password, SALT_CONSTANT);
+
+      return ctx.prisma.user.update({
+        where: { id: ctx.user?.id },
+        data: {
+          password: hashedPassword,
+        },
+      });
     }),
 
   deleteUser: privateProcedure

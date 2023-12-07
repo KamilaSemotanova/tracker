@@ -1,6 +1,10 @@
 @import 'src/styles/color.scss';
 @import 'src/styles/breakpoints.scss';
 
+.labelWrapper {
+  width: 100%;
+}
+
 .label {
   display: flex;
   flex-direction: column;
@@ -11,7 +15,7 @@
 }
 
 .input {
-  background-color: $translucent-silk;
+  background-color: transparent;
   border: none;
   border-bottom: 1px solid $severely-burnt-toast;
 

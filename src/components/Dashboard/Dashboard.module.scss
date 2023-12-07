@@ -89,9 +89,7 @@
 .buttonDone {
   width: 2rem;
   height: 2rem;
-  background-image: url('./img/icon_check.png');
-  background-size: cover;
-  background-position: center;
+  background: no-repeat center/cover url('./img/icon_check.png');
   border: 1px solid $translucent-silk;
   border-radius: 8px;
   font-size: 1rem;
@@ -156,10 +154,6 @@
   border: none;
   border-bottom: 1px solid $translucent-silk;
   cursor: pointer;
-
-  &:focus {
-    outline: none;
-  }
 }
 
 .buttonBox {
@@ -176,21 +170,12 @@
 
 .button {
   width: 45%;
-  padding: 0.5rem;
   color: $translucent-silk;
   background-color: $hornblende-green;
   border: 1px solid $translucent-silk;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 300;
-  cursor: pointer;
 
   &:hover {
     background-color: $translucent-silk;
     color: $severely-burnt-toast;
-  }
-
-  @media (min-width: $screen-md-min) {
-    font-size: 1.4rem;
   }
 }

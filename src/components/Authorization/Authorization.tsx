@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { Row } from '../Row/Row';
 import { RegisterForm } from './RegisterForm';
 import { LoginForm } from './LoginForm';
+import { Button } from '../Button/Button';
 import style from './Authorization.module.scss';
 
 export const Authorization: React.FC = () => {
@@ -28,22 +29,24 @@ export const Authorization: React.FC = () => {
         </div>
         <div className={style.formBox}>
           <Row>
-            <button
-              onClick={() => handleReveal(false)}
+            <Button
+              type="button"
               className={classnames(style.button, style.buttonTop, {
                 [style.active]: registrationForm === false,
               })}
+              onClick={() => handleReveal(false)}
             >
               Přihlásit
-            </button>
-            <button
-              onClick={() => handleReveal(true)}
+            </Button>
+            <Button
+              type="button"
               className={classnames(style.button, style.buttonTop, {
                 [style.active]: registrationForm === true,
               })}
+              onClick={() => handleReveal(true)}
             >
               Registrovat
-            </button>
+            </Button>
           </Row>
           <div className={style.formContainer}>
             {registrationForm ? (

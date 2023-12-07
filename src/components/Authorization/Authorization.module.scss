@@ -42,41 +42,36 @@
   @media (min-width: $screen-md-min) {
     margin: 0;
   }
+
+  .button {
+    height: 2rem;
+    color: $severely-burnt-toast;
+    background-color: $spice-pink;
+    border: 1px solid $translucent-silk;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: $translucent-silk;
+    }
+
+    @media (min-width: $screen-md-min) {
+      height: 3rem;
+      padding: 0 1rem;
+    }
+  }
+
+  .buttonTop {
+    flex-grow: 1;
+    text-align: center;
+  }
+
+  .active {
+    background-color: $translucent-silk;
+  }
 }
 
 .formContainer {
   margin: 2rem;
-}
-
-.button {
-  width: min-content;
-  height: 2rem;
-  color: $severely-burnt-toast;
-  background-color: $spice-pink;
-  border: 1px solid $translucent-silk;
-  border-radius: 5px;
-  font-size: 1rem;
-  font-weight: 300;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $translucent-silk;
-  }
-
-  @media (min-width: $screen-md-min) {
-    height: 3rem;
-    padding: 0 1rem;
-    font-size: 1.4rem;
-  }
-}
-
-.buttonTop {
-  flex-grow: 1;
-  text-align: center;
-}
-
-.active {
-  background-color: $translucent-silk;
 }
 
 .warningBox {

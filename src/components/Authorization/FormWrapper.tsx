@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
 import classnames from 'classnames';
 
+import { Button } from '../Button/Button';
 import style from './FormWrapper.module.scss';
 
 type FormWrapperProps = {
@@ -14,13 +15,12 @@ export const FormWrapper = forwardRef<any, FormWrapperProps>(
   ({ children, buttonLabel, handleSubmit, buttonClassName }, ref) => (
     <form ref={ref} className={style.container} onSubmit={handleSubmit}>
       {children}
-
-      <button
+      <Button
         type="submit"
         className={classnames(buttonClassName, style.submit)}
       >
         {buttonLabel}
-      </button>
+      </Button>
     </form>
   ),
 );
