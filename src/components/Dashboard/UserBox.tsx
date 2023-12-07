@@ -2,18 +2,15 @@ import { useState } from 'react';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 
-import { useUserName } from '../AuthenticationProvider';
 import { useAuthentication } from '../AuthenticationProvider';
-import { Row } from '../Row/Row';
 import { Button } from '../Button/Button';
 import style from './UserBox.module.scss';
 
 export const UserBox = () => {
   const [userBoxVisible, setUserBoxVisible] = useState(false);
 
-  const userName = useUserName();
   const router = useRouter();
-  const { logout } = useAuthentication();
+  const { logout, userName } = useAuthentication();
 
   const handleRevealUserBox = () => {
     setUserBoxVisible(!userBoxVisible);
@@ -24,15 +21,16 @@ export const UserBox = () => {
   };
 
   return (
-    <Row
-      flexCol
-      justifyCenter
-      itemsCenter
-      className={classnames({
-        [style.userBoxOpen]: userBoxVisible,
+    <div
+      className={classnames(style.userBox, {
+        [style.userBoxOpen]: userBoxVisible === true,
       })}
     >
-      <button onClick={handleRevealUserBox} className={style.profileBox}>
+      <button
+        onClick={handleRevealUserBox}
+        className={style.profileBox}
+        aria-label="Otevřít box k upravení profilu a odhlášení."
+      >
         <div className={style.profile} />
         <div
           className={classnames(style.arrow, {
@@ -46,17 +44,15 @@ export const UserBox = () => {
           <Button
             type="button"
             className={style.buttonUpdate}
-            label="upravit profil"
             onClick={handleUpdate}
-          />
-          <Button
-            type="button"
-            className={style.buttonLogOut}
-            label="odhlásit"
-            onClick={logout}
-          />
+          >
+            upravit profil
+          </Button>
+          <Button type="button" className={style.buttonLogOut} onClick={logout}>
+            odhlásit
+          </Button>
         </>
       )}
-    </Row>
+    </div>
   );
 };

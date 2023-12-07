@@ -29,12 +29,9 @@ export const ChangeData = () => {
         />
       </div>
       {isVisible && <p>{warningMessage}</p>}
-      <Button
-        type="button"
-        className={style.buttonBack}
-        label="Zpět"
-        onClick={handleReturn}
-      />
+      <Button type="button" className={style.buttonBack} onClick={handleReturn}>
+        zpět
+      </Button>
     </section>
   );
 };

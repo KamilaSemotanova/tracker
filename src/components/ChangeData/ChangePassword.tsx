@@ -30,8 +30,10 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({
     e.preventDefault();
 
     if (updatedPassword !== updatedPasswordControl) {
-      setWarningMessage('hesla se neshodují');
+      setWarningMessage('Hesla se neshodují');
       setIsVisible(true);
+
+      return;
     }
 
     updatePassword.mutate({ password: updatedPassword });
@@ -58,7 +60,9 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({
           onChange={(e) => setUpdatedPasswordControl(e.target.value)}
           className={style.textField}
         />
-        <Button type="submit" className={style.button} label="Uložit" />
+        <Button type="submit" className={style.button}>
+          uložit
+        </Button>
       </form>
     </div>
   );

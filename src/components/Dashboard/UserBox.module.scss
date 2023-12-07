@@ -1,6 +1,13 @@
 @import 'src/styles/color.scss';
 @import 'src/styles/breakpoints.scss';
 
+.userBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .userBoxOpen {
   width: 100%;
   padding: 2rem 1rem;
@@ -26,10 +33,7 @@
   width: 2rem;
   height: 2rem;
   border: none;
-  background-color: unset;
-  background-image: url('./img/profile.png');
-  background-size: cover;
-  background-position: center;
+  background: no-repeat center/cover url('./img/profile.png');
   cursor: pointer;
 }
 
@@ -37,10 +41,7 @@
   width: 1.5rem;
   height: 1.5rem;
   border: none;
-  background-color: unset;
-  background-image: url('./img/arrow.png');
-  background-size: contain;
-  background-position: center;
+  background: no-repeat center/contain url('./img/arrow.png');
   background-repeat: no-repeat;
   cursor: pointer;
 }

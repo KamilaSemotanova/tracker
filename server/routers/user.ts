@@ -125,14 +125,13 @@ export const userRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       const hashedPassword = await bcrypt.hash(input.password, SALT_CONSTANT);
-      const updatedPassword = await ctx.prisma.user.update({
+
+      return ctx.prisma.user.update({
         where: { id: ctx.user?.id },
         data: {
           password: hashedPassword,
         },
       });
-
-      return updatedPassword;
     }),
 
   deleteUser: privateProcedure

@@ -58,7 +58,9 @@ export const ChangeProfile: React.FC<ChangeProfileProps> = ({
           onChange={(e) => setUpdatedEmail(e.target.value)}
           className={style.textField}
         />
-        <Button type="submit" className={style.button} label="Uložit" />
+        <Button type="submit" className={style.button}>
+          uložit
+        </Button>
       </form>
     </div>
   );

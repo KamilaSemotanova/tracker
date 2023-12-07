@@ -57,4 +57,3 @@ export const AuthenticationProvider: ChildrenFC = ({ children }) => {
 };
 
 export const useAuthentication = () => useContext(AuthenticationContext);
-export const useUserName = () => useContext(AuthenticationContext).userName;

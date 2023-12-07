@@ -122,13 +122,16 @@ export const Dashboard = () => {
               </label>
             </Row>
             <div className={style.buttonBox}>
-              <Button type="submit" className={style.button} label="přidat" />
+              <Button type="submit" className={style.button}>
+                přidat
+              </Button>
               <Button
                 type="button"
                 className={style.button}
-                label="zrušit"
                 onClick={() => setFormVisible(false)}
-              />
+              >
+                zrušit
+              </Button>
             </div>
           </form>
         )}

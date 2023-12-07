@@ -89,9 +89,7 @@
 .buttonDone {
   width: 2rem;
   height: 2rem;
-  background-image: url('./img/icon_check.png');
-  background-size: cover;
-  background-position: center;
+  background: no-repeat center/cover url('./img/icon_check.png');
   border: 1px solid $translucent-silk;
   border-radius: 8px;
   font-size: 1rem;

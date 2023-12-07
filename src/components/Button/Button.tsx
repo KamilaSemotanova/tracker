@@ -6,19 +6,19 @@ type ButtonProps =
   | {
       type: 'submit';
       className?: string;
-      label: string;
+      children: React.ReactNode;
       onClick?: undefined;
     }
   | {
       type: 'button';
       className?: string;
-      label: string;
+      children: React.ReactNode;
       onClick: () => void;
     };
 
 export const Button: React.FC<ButtonProps> = ({
   className,
-  label,
+  children,
   type,
   onClick,
 }) => (
@@ -27,6 +27,6 @@ export const Button: React.FC<ButtonProps> = ({
     onClick={onClick}
     type={type}
   >
-    {label}
+    {children}
   </button>
 );

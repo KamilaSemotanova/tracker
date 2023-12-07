@@ -54,46 +54,48 @@ export const DetailOfActivity = () => {
     return 'dní';
   };
 
+  if (!activityData) {
+    return null;
+  }
+
   return (
-    activityData && (
-      <Row flexCol fullWidth justifyCenter itemsCenter>
-        <nav className={style.navigation}>
-          <button
-            onClick={() => router.push('/')}
-            className={style.back}
-            aria-label="Zpět na hlavní stránku."
-          />
-          <h1
-            className={classnames(style.activity, {
-              [style.zero]: activityData.timesDone === 0,
-            })}
-          >
-            {activityData.name}
-          </h1>
-          <button
-            onClick={() => handleDelete(activityData.id)}
-            className={style.delete}
-            aria-label={`Smazat aktivitu ${activityData.name}.`}
-          />
-        </nav>
+    <Row flexCol fullWidth justifyCenter itemsCenter>
+      <nav className={style.navigation}>
         <button
-          className={style.done}
-          aria-label={`Dokončit aktivitu ${activityData.name}.`}
-          onClick={() => {
-            handleActivityClick({
-              activityId: activityData.id,
-              timesDone: activityData.timesDone,
-            });
-          }}
+          onClick={() => router.push('/')}
+          className={style.back}
+          aria-label="Zpět na hlavní stránku."
         />
-        <div className={style.container}>
-          <div className={style.counter}>
-            <p className={style.number}>{activityData.timesDone}</p>
-          </div>
-          <p className={style.streekDays}>{days(activityData.timesDone)}</p>
+        <h1
+          className={classnames(style.activity, {
+            [style.zero]: activityData.timesDone === 0,
+          })}
+        >
+          {activityData.name}
+        </h1>
+        <button
+          onClick={() => handleDelete(activityData.id)}
+          className={style.delete}
+          aria-label={`Smazat aktivitu ${activityData.name}.`}
+        />
+      </nav>
+      <button
+        className={style.done}
+        aria-label={`Dokončit aktivitu ${activityData.name}.`}
+        onClick={() => {
+          handleActivityClick({
+            activityId: activityData.id,
+            timesDone: activityData.timesDone,
+          });
+        }}
+      />
+      <div className={style.container}>
+        <div className={style.counter}>
+          <p className={style.number}>{activityData.timesDone}</p>
         </div>
-        {/* <div>calendar</div> */}
-      </Row>
-    )
+        <p className={style.streekDays}>{days(activityData.timesDone)}</p>
+      </div>
+      {/* <div>calendar</div> */}
+    </Row>
   );
 };
