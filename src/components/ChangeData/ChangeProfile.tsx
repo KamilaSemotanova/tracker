@@ -1,35 +1,35 @@
 import { FormEvent, useState } from 'react';
 
 import { trpc } from '../../utils/trpc';
-import { TextField } from '../TextField/TextField';
+import { useAuthentication } from '../AuthenticationProvider';
 import { Button } from '../Button/Button';
+import { TextField } from '../TextField/TextField';
 import style from './ChangeProfile.module.scss';
 
-type ChangeProfileProps = {
-  setWarningMessage: (value: string) => void;
-  setIsVisible: (value: boolean) => void;
-};
-
-export const ChangeProfile: React.FC<ChangeProfileProps> = ({
-  setWarningMessage,
-  setIsVisible,
-}) => {
+export const ChangeProfile = () => {
   const [updatedName, setUpdatedName] = useState('');
   const [updatedEmail, setUpdatedEmail] = useState('');
+  const [warningMessage, setWarningMessage] = useState('');
+
+  const { userName, userEmail } = useAuthentication();
 
   const updateProfile = trpc.user.updateUser.useMutation({
     onSuccess: () => {
       setWarningMessage('Profil byl upraven');
-      setIsVisible(true);
     },
     onError: () => {
       setWarningMessage('Úprava se nezdařila');
-      setIsVisible(true);
     },
   });
 
   const handleSubmitProfile = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (updatedName === '' && updatedEmail === '') {
+      setWarningMessage('Vyplňte alespoň jedno pole');
+
+      return;
+    }
 
     updateProfile.mutate({
       name: updatedName,
@@ -49,6 +49,7 @@ export const ChangeProfile: React.FC<ChangeProfileProps> = ({
           value={updatedName}
           onChange={(e) => setUpdatedName(e.target.value)}
           className={style.textField}
+          placeholder={userName}
         />
         <TextField
           id="email"
@@ -57,9 +58,11 @@ export const ChangeProfile: React.FC<ChangeProfileProps> = ({
           value={updatedEmail}
           onChange={(e) => setUpdatedEmail(e.target.value)}
           className={style.textField}
+          placeholder={userEmail}
         />
+        <p className={style.warning}>{warningMessage}</p>
         <Button type="submit" className={style.button}>
-          uložit
+          upravit
         </Button>
       </form>
     </div>

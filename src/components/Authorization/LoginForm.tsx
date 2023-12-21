@@ -2,9 +2,9 @@ import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { trpc } from '../../utils/trpc';
+import { useAuthentication } from '../AuthenticationProvider';
 import { TextField } from '../TextField/TextField';
 import { FormWrapper } from './FormWrapper';
-import { useAuthentication } from '../AuthenticationProvider';
 import style from './LoginForm.module.scss';
 
 type LoginFormProps = {
@@ -29,8 +29,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     },
     {
       enabled: false,
-      onSuccess: ({ access_token, userName }) => {
-        login(access_token, userName);
+      onSuccess: ({ access_token, userName, userEmail }) => {
+        login(access_token, userName, userEmail);
         router.push('/');
       },
       onError: () => {
