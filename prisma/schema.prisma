@@ -21,6 +21,8 @@ model User {
 model Activity {
   id    Int     @id @default(autoincrement())
   name String
+  amount Int
+  unit String
   timesDone  Int @default(0)
   userId Int
 }

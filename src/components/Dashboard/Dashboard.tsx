@@ -1,18 +1,21 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { Row } from '../Row/Row';
 import { trpc } from '../../utils/trpc';
-import addActivity from './img/plus.png';
-import { UserBox } from './UserBox';
 import { Button } from '../Button/Button';
+import { Row } from '../Row/Row';
+import { TextField } from '../TextField/TextField';
+import { UserBox } from './UserBox';
+import addActivity from './img/plus.png';
 import style from './Dashboard.module.scss';
 
 export const Dashboard = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [newActivity, setNewActivity] = useState('');
+  const [newAmount, setNewAmount] = useState(0);
+  const [newUnit, setNewUnit] = useState('');
 
   const router = useRouter();
 
@@ -27,14 +30,17 @@ export const Dashboard = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    newActivity !== '' && addNewActivity.mutate({ name: newActivity });
+    newActivity !== '' &&
+      addNewActivity.mutate({
+        name: newActivity,
+        amount: newAmount,
+        unit: newUnit,
+      });
 
     setFormVisible(false);
     setNewActivity('');
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewActivity(e.target.value);
+    setNewAmount(0);
+    setNewUnit('');
   };
 
   const updateDoneCounter = trpc.activities.updateDoneCounter.useMutation({
@@ -109,17 +115,28 @@ export const Dashboard = () => {
         {formVisible && (
           <form className={style.form} onSubmit={handleSubmit}>
             <Row fullWidth justifyStart>
-              <label htmlFor="activity">
-                aktivita:
-                <input
-                  id="activity"
-                  type="text"
-                  placeholder="běhání"
-                  className={style.input}
-                  onChange={handleChange}
-                  autoFocus
-                />
-              </label>
+              <TextField
+                type="text"
+                label="aktivita"
+                placeholder="běhání"
+                className={style.input}
+                onChange={(e) => setNewActivity(e.target.value)}
+                autoFocus
+              />
+              <TextField
+                type="number"
+                label="množství"
+                placeholder="30"
+                className={style.input}
+                onChange={(e) => setNewAmount(+e.target.value)}
+              />
+              <TextField
+                type="text"
+                label="jednotka"
+                placeholder="minut"
+                className={style.input}
+                onChange={(e) => setNewUnit(e.target.value)}
+              />
             </Row>
             <div className={style.buttonBox}>
               <Button type="submit" className={style.button}>

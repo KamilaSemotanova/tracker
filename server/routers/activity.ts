@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
+import { z } from 'zod';
 
 import { createTRPCRouter, privateProcedure } from '../trpc';
 
@@ -15,12 +15,14 @@ export const activityRouter = createTRPCRouter({
   }),
 
   create: privateProcedure
-    .input(z.object({ name: z.string() }))
+    .input(z.object({ name: z.string(), amount: z.number(), unit: z.string() }))
     .mutation(async ({ input, ctx }) => {
       const newActivity = await ctx.prisma.activity.create({
         data: {
           name: input.name,
           userId: ctx.user?.id,
+          amount: input.amount,
+          unit: input.unit,
         },
       });
 
