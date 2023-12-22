@@ -1,8 +1,9 @@
-import { useRouter } from 'next/router';
 import classnames from 'classnames';
+import { useRouter } from 'next/router';
 
-import { Row } from '../Row/Row';
 import { trpc } from '../../utils/trpc';
+import { Row } from '../Row/Row';
+import { UpdateForm } from './UpdateForm';
 import style from './Detail.module.scss';
 
 export const DetailOfActivity = () => {
@@ -25,22 +26,6 @@ export const DetailOfActivity = () => {
     deleteActivity.mutate({ id: activityId });
 
     router.push('/');
-  };
-
-  const updateDoneCounter = trpc.activities.updateDoneCounter.useMutation({
-    onSuccess: () => {
-      utils.activities.invalidate();
-    },
-  });
-
-  const handleActivityClick = ({
-    activityId,
-    timesDone,
-  }: {
-    activityId: number;
-    timesDone: number;
-  }) => {
-    updateDoneCounter.mutate({ id: activityId, timesDone: timesDone + 1 });
   };
 
   const days = (timesDone: number) => {
@@ -79,16 +64,7 @@ export const DetailOfActivity = () => {
           aria-label={`Smazat aktivitu ${activityData.name}.`}
         />
       </nav>
-      <button
-        className={style.done}
-        aria-label={`Dokončit aktivitu ${activityData.name}.`}
-        onClick={() => {
-          handleActivityClick({
-            activityId: activityData.id,
-            timesDone: activityData.timesDone,
-          });
-        }}
-      />
+      <UpdateForm activity={activityData} />
       <div className={style.container}>
         <div className={style.counter}>
           <p className={style.number}>{activityData.timesDone}</p>

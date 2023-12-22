@@ -1,0 +1,35 @@
+@import 'src/styles/color.scss';
+@import 'src/styles/breakpoints.scss';
+
+.updateBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.amountBox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.done {
+  width: 2rem;
+  height: 2rem;
+  background: no-repeat center/cover url('./img/done_check.svg');
+  border: 1px hidden $translucent-silk;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    border: 1px solid $severely-burnt-toast;
+  }
+
+  @media (min-width: $screen-md-min) {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
