@@ -3,10 +3,9 @@
 
 .updateBox {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  width: 100%;
 }
 
 .amountBox {
@@ -16,9 +15,6 @@
 }
 
 .done {
-  width: 2rem;
-  height: 2rem;
-  background: no-repeat center/cover url('./img/done_check.svg');
   border: 1px hidden $translucent-silk;
   border-radius: 10px;
   font-size: 1rem;

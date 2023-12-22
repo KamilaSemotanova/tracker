@@ -1,4 +1,8 @@
+import { useState } from 'react';
+
 import { trpc } from '../../utils/trpc';
+import { Button } from '../Button/Button';
+import { TextField } from '../TextField/TextField';
 import style from './UpdateForm.module.scss';
 
 type UpdateFormProps = {
@@ -12,6 +16,7 @@ type UpdateFormProps = {
 };
 
 export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
+  const [currentAmount, setCurrentAmount] = useState(0);
   const utils = trpc.useContext();
   const updateDoneCounter = trpc.activities.updateDoneCounter.useMutation({
     onSuccess: () => {
@@ -19,33 +24,48 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
     },
   });
 
-  const handleActivityClick = ({
-    activityId,
-    times,
-  }: {
-    activityId: number;
-    times: number;
-  }) => {
-    updateDoneCounter.mutate({ id: activityId, timesDone: times + 1 });
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    updateDoneCounter.mutate({
+      id: activity.id,
+      timesDone: activity.timesDone,
+    });
   };
 
   return (
     <section className={style.updateBox}>
-      Cíl
-      <div className={style.amountBox}>
-        <p>{activity.amount}</p>
-        <span>{activity.unit}</span>
+      <div>
+        CÍL
+        <div className={style.amountBox}>
+          <p>{activity.amount}</p>
+          <span>{activity.unit}</span>
+        </div>
       </div>
-      <button
-        className={style.done}
-        aria-label={`Dokončit aktivitu ${activity.name}.`}
-        onClick={() => {
-          handleActivityClick({
-            activityId: activity.id,
-            times: activity.timesDone,
-          });
-        }}
-      />
+      <form onSubmit={handleSubmit}>
+        <div>
+          <TextField
+            label="HOTOVO"
+            name="timesDone"
+            type="number"
+            onChange={(e) => setCurrentAmount(+Number(e.target.value))}
+          />
+          <p>{activity.unit}</p>
+        </div>
+        <Button
+          type="submit"
+          aria-label={`Dokončit aktivitu ${activity.name}.`}
+          className={style.done}
+        >
+          Přidat
+        </Button>
+      </form>
+      <div>
+        ZBÝVÁ
+        <div className={style.amountBox}>
+          <p>{activity.amount - currentAmount}</p>
+          <span>{activity.unit}</span>
+        </div>
+      </div>
     </section>
   );
 };
