@@ -50,7 +50,6 @@
   justify-content: space-between;
   width: 80vw;
   height: min-content;
-  padding-right: 0.3rem;
   color: $translucent-silk;
   background-color: $hornblende-green;
   border: none;
@@ -73,10 +72,6 @@
   background-color: $hornblende-green;
 }
 
-.nameOfActivity {
-  padding: 0.5rem;
-}
-
 .timesDone {
   display: flex;
   align-items: center;
@@ -86,25 +81,16 @@
   border-radius: 10px;
 }
 
-.buttonDone {
-  width: 2rem;
-  height: 2rem;
-  background: no-repeat center/cover url('./img/icon_check.png');
-  border: 1px solid $translucent-silk;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 300;
-  cursor: pointer;
+.nameOfActivity {
+  padding: 0.5rem;
+}
 
-  &:hover {
-    background-color: $translucent-silk;
-    background-image: url('./img/icon_check_hover.png');
-  }
-
-  @media (min-width: $screen-md-min) {
-    width: 2.5rem;
-    height: 2.5rem;
-  }
+.nameBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-right: 2.5rem;
 }
 
 .revealForm {
@@ -146,14 +132,43 @@
   }
 }
 
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+
+  @media (min-width: $screen-md-min) {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+
+  label {
+    width: 50%;
+    margin-top: 0.7rem;
+  }
+}
+
 .input {
   margin-left: 1rem;
-  width: max-content;
+  width: min-content;
   color: $translucent-silk;
   background-color: $hornblende-green;
   border: none;
   border-bottom: 1px solid $translucent-silk;
   cursor: pointer;
+}
+
+.error {
+  color: $pumping-spice;
+  font-size: 1rem;
+  padding-top: 1rem;
+
+  @media (min-width: $screen-md-min) {
+    font-size: 1.4rem;
+  }
 }
 
 .buttonBox {

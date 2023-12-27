@@ -16,6 +16,7 @@ export const Dashboard = () => {
   const [newActivity, setNewActivity] = useState('');
   const [newAmount, setNewAmount] = useState(0);
   const [newUnit, setNewUnit] = useState('');
+  const [error, setError] = useState('');
 
   const router = useRouter();
 
@@ -30,33 +31,22 @@ export const Dashboard = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    newActivity !== '' &&
-      addNewActivity.mutate({
-        name: newActivity,
-        amount: newAmount,
-        unit: newUnit,
-      });
+    if (newActivity === '' || newAmount === 0 || newUnit === '') {
+      setError('Vyplňte všechna pole');
+
+      return;
+    }
+
+    addNewActivity.mutate({
+      name: newActivity,
+      amount: newAmount,
+      unit: newUnit,
+    });
 
     setFormVisible(false);
     setNewActivity('');
     setNewAmount(0);
     setNewUnit('');
-  };
-
-  const updateDoneCounter = trpc.activities.updateDoneCounter.useMutation({
-    onSuccess: () => {
-      utils.activities.invalidate();
-    },
-  });
-
-  const handleActivityClick = ({
-    id,
-    timesDone,
-  }: {
-    id: number;
-    timesDone: number;
-  }) => {
-    updateDoneCounter.mutate({ id, timesDone: timesDone + 1 });
   };
 
   const handleDetailClick = (id: number) => {
@@ -84,18 +74,9 @@ export const Dashboard = () => {
               >
                 {timesDone}
               </span>
-              <li className={style.nameOfActivity}>{name}</li>
-              <button
-                className={classnames(style.buttonDone, {
-                  [style.zero]: timesDone === 0,
-                  [style.more]: timesDone > 0,
-                })}
-                aria-label={`Dokončena aktivita ${name}.`}
-                type="button"
-                onClick={() => {
-                  handleActivityClick({ id, timesDone });
-                }}
-              />
+              <div className={style.nameBox}>
+                <li className={style.nameOfActivity}>{name}</li>
+              </div>
             </div>
           ))}
         </ul>
@@ -114,7 +95,7 @@ export const Dashboard = () => {
         )}
         {formVisible && (
           <form className={style.form} onSubmit={handleSubmit}>
-            <Row fullWidth justifyStart>
+            <Row fullWidth justifyStart flexCol>
               <TextField
                 type="text"
                 label="aktivita"
@@ -123,21 +104,24 @@ export const Dashboard = () => {
                 onChange={(e) => setNewActivity(e.target.value)}
                 autoFocus
               />
-              <TextField
-                type="number"
-                label="množství"
-                placeholder="30"
-                className={style.input}
-                onChange={(e) => setNewAmount(+e.target.value)}
-              />
-              <TextField
-                type="text"
-                label="jednotka"
-                placeholder="minut"
-                className={style.input}
-                onChange={(e) => setNewUnit(e.target.value)}
-              />
+              <div className={style.inputWrapper}>
+                <TextField
+                  type="number"
+                  label="množství"
+                  placeholder="30"
+                  className={style.input}
+                  onChange={(e) => setNewAmount(+e.target.value)}
+                />
+                <TextField
+                  type="text"
+                  label="jednotka"
+                  placeholder="minut"
+                  className={style.input}
+                  onChange={(e) => setNewUnit(e.target.value)}
+                />
+              </div>
             </Row>
+            <p className={style.error}>{error}</p>
             <div className={style.buttonBox}>
               <Button type="submit" className={style.button}>
                 přidat
