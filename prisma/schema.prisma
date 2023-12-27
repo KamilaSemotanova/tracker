@@ -27,9 +27,10 @@ model Activity {
   userId Int
 }
 
-model History {
-  date         DateTime @default(now())
+model ActivityRecord {
+  userId      Int
   activityId   Int
-  currentAmount Int
-  timesDone    Int @default(0)
+  addedAmount Int
+  done    Boolean
+  date         DateTime @default(now())
 }
