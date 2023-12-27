@@ -22,6 +22,8 @@ export const activityRecordsRouter = createTRPCRouter({
           activityId: input.activityId,
           userId: ctx.user?.id,
           date: input.date,
+          done: false,
+          addedAmount: 0,
         },
       });
 
@@ -31,7 +33,7 @@ export const activityRecordsRouter = createTRPCRouter({
   read: privateProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ input, ctx }) => {
-      const activityRecord = await ctx.prisma.activityRecord.findUnique({
+      const activityRecord = await ctx.prisma.activityRecords.findUnique({
         where: {
           id: input.id,
         },
@@ -47,15 +49,50 @@ export const activityRecordsRouter = createTRPCRouter({
       return activityRecord;
     }),
 
-  updateDoneCounter: privateProcedure
-    .input(z.object({ id: z.number(), timesDone: z.number() }))
+  update: privateProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        activityId: z.number(),
+        date: z.date(),
+        addedAmount: z.number(),
+      }),
+    )
     .mutation(async ({ input, ctx }) => {
-      const updatedActivityRecord = await ctx.prisma.activityRecord.update({
+      const updatedActivityRecord = await ctx.prisma.activityRecords.update({
         where: {
           id: input.id,
         },
         data: {
-          timesDone: input.timesDone,
+          activityId: input.activityId,
+          date: input.date,
+          addedAmount: +input.addedAmount,
+        },
+      });
+
+      return updatedActivityRecord;
+    }),
+
+  updateDoneCounter: privateProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        userId: z.number(),
+        activityId: z.number(),
+        date: z.date(),
+        done: z.boolean(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const updatedActivityRecord = await ctx.prisma.activityRecords.update({
+        where: {
+          id: input.id,
+          userId: input.userId,
+          activityId: input.activityId,
+          date: input.date,
+        },
+        data: {
+          done: input.done,
         },
       });
 
@@ -65,7 +102,7 @@ export const activityRecordsRouter = createTRPCRouter({
   delete: privateProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input, ctx }) => {
-      const deletedActivityRecord = await ctx.prisma.activityRecord.delete({
+      const deletedActivityRecord = await ctx.prisma.activityRecords.delete({
         where: {
           id: input.id,
         },
