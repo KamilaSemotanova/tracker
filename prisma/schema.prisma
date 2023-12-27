@@ -27,7 +27,7 @@ model Activity {
   userId Int
 }
 
-model ActivityRecord {
+model ActivityRecords {
   userId      Int
   activityId   Int
   addedAmount Int
