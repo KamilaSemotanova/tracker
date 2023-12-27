@@ -25,7 +25,7 @@ const AuthenticationContext = createContext<AuthenticationContextValueType>(
 
 export const AuthenticationProvider: ChildrenFC = ({ children }) => {
   const [userName, setUserName] = useState<string>();
-  const [userEmail, setUserEmail] = useState<string>();
+  const [userEmail, setUserEmail] = useState('');
 
   const router = useRouter();
 
@@ -47,7 +47,7 @@ export const AuthenticationProvider: ChildrenFC = ({ children }) => {
   const logout = useCallback(() => {
     localStorage.removeItem(TOKEN_KEY);
     setUserName(undefined);
-    setUserEmail(undefined);
+    setUserEmail('');
     router.push('/prihlaseni');
   }, []);
 

@@ -2,9 +2,9 @@ import { FormEvent, useRef } from 'react';
 import { useRouter } from 'next/router';
 
 import { trpc } from '../../utils/trpc';
+import { useAuthentication } from '../AuthenticationProvider';
 import { TextField } from '../TextField/TextField';
 import { FormWrapper } from './FormWrapper';
-import { useAuthentication } from '../AuthenticationProvider';
 import style from './RegisterForm.module.scss';
 
 type RegisterFormData = {
@@ -29,9 +29,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
 
   const utils = trpc.useContext();
   const addNewUser = trpc.user.register.useMutation({
-    onSuccess: ({ access_token, userName }) => {
+    onSuccess: ({ access_token, userName, userEmail }) => {
       utils.user.invalidate();
-      login(access_token, userName);
+      login(access_token, userName, userEmail);
       router.push('/');
     },
     onError: () => {

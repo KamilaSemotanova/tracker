@@ -64,7 +64,12 @@ export const userRouter = createTRPCRouter({
 
       const { access_token, refresh_token } = await signTokens(newUser);
 
-      return { access_token, refresh_token, userName: newUser.name };
+      return {
+        access_token,
+        refresh_token,
+        userName: newUser.name,
+        userEmail: newUser.email,
+      };
     }),
 
   login: publicProcedure
