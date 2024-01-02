@@ -48,7 +48,7 @@
   font-weight: 700;
 
   &:focus {
-    outline: transparent;
+    outline: 1px solid $translucent-silk;
   }
 
   @media (min-width: $screen-md-min) {
@@ -57,7 +57,8 @@
 }
 
 .textField::placeholder {
-  color: $translucent-silk;
+  color: #c5bebe7e;
+  font-weight: 400;
 }
 
 .warning {

@@ -15,8 +15,7 @@ export const TOKEN_KEY = 'token';
 export type AuthenticationContextValueType = {
   login: (newToken: string, newUserName: string, newUserEmail: string) => void;
   logout: () => void;
-  userName?: string;
-  userEmail?: string;
+  user?: { name: string; email: string };
 };
 
 const AuthenticationContext = createContext<AuthenticationContextValueType>(
@@ -24,8 +23,7 @@ const AuthenticationContext = createContext<AuthenticationContextValueType>(
 );
 
 export const AuthenticationProvider: ChildrenFC = ({ children }) => {
-  const [userName, setUserName] = useState<string>();
-  const [userEmail, setUserEmail] = useState('');
+  const [user, setUser] = useState({ name: '', email: '' });
 
   const router = useRouter();
 
@@ -38,23 +36,18 @@ export const AuthenticationProvider: ChildrenFC = ({ children }) => {
   const login = useCallback(
     (newToken: string, newUserName: string, newUserEmail: string) => {
       localStorage.setItem(TOKEN_KEY, newToken);
-      setUserName(newUserName);
-      setUserEmail(newUserEmail);
+      setUser({ name: newUserName, email: newUserEmail });
     },
     [],
   );
 
   const logout = useCallback(() => {
     localStorage.removeItem(TOKEN_KEY);
-    setUserName(undefined);
-    setUserEmail('');
+    setUser({ name: '', email: '' });
     router.push('/prihlaseni');
   }, []);
 
-  const value = useMemo(
-    () => ({ login, logout, userName, userEmail }),
-    [login, logout, userName, userEmail],
-  );
+  const value = useMemo(() => ({ login, logout, user }), [login, logout, user]);
 
   return (
     <AuthenticationContext.Provider value={value}>

@@ -5,12 +5,14 @@ import style from './TextField.module.scss';
 
 type TextFieldProps = {
   label: string;
+  type: string | 'text';
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 export const TextField: React.FC<TextFieldProps> = ({
   onChange,
   label,
+  type,
   className,
   ...props
 }) => (
@@ -20,7 +22,7 @@ export const TextField: React.FC<TextFieldProps> = ({
       className={classnames(style.input, className)}
       onChange={onChange}
       {...props}
-      type="text"
+      type={type}
     />
   </label>
 );

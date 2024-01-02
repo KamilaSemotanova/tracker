@@ -11,7 +11,7 @@ export const ChangeProfile = () => {
   const [updatedEmail, setUpdatedEmail] = useState('');
   const [warningMessage, setWarningMessage] = useState('');
 
-  const { userName, userEmail } = useAuthentication();
+  const { user } = useAuthentication();
 
   const updateProfile = trpc.user.updateUser.useMutation({
     onSuccess: () => {
@@ -49,7 +49,7 @@ export const ChangeProfile = () => {
           value={updatedName}
           onChange={(e) => setUpdatedName(e.target.value)}
           className={style.textField}
-          placeholder={userName}
+          placeholder={user?.name}
         />
         <TextField
           id="email"
@@ -58,7 +58,7 @@ export const ChangeProfile = () => {
           value={updatedEmail}
           onChange={(e) => setUpdatedEmail(e.target.value)}
           className={style.textField}
-          placeholder={userEmail}
+          placeholder={user?.email}
         />
         <p className={style.warning}>{warningMessage}</p>
         <Button type="submit" className={style.button}>

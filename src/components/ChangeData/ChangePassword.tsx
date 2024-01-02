@@ -43,7 +43,7 @@ export const ChangePassword = () => {
       <form className={style.form} onSubmit={handleSubmitPassword}>
         <TextField
           id="password"
-          type="text"
+          type="password"
           label="Heslo"
           autoFocus
           value={updatedPassword}
@@ -52,7 +52,7 @@ export const ChangePassword = () => {
         />
         <TextField
           id="controlPassword"
-          type="text"
+          type="password"
           label="Kontrola hesla"
           value={updatedPasswordControl}
           onChange={(e) => setUpdatedPasswordControl(e.target.value)}
