@@ -17,16 +17,42 @@ type UpdateFormProps = {
 
 export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
   const [currentAmount, setCurrentAmount] = useState(0);
+
   const utils = trpc.useContext();
-  const updateDoneCounter = trpc.activities.updateDoneCounter.useMutation({
+
+  const findActivityRecord = trpc.activityRecords.find.useQuery({
+    id: activity.id,
+  });
+
+  const createActivityRecord = trpc.activityRecords.create.useMutation({
     onSuccess: () => {
-      utils.activities.invalidate();
+      utils.activityRecords.invalidate();
+    },
+  });
+
+  const updateActivityRecord = trpc.activityRecords.update.useMutation({
+    onSuccess: () => {
+      utils.activityRecords.invalidate();
     },
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    updateDoneCounter.mutate({
+
+    if (findActivityRecord.data) {
+      updateActivityRecord.mutate({
+        id: findActivityRecord.data.id,
+        addedAmount: currentAmount,
+      });
+
+      return;
+    }
+
+    createActivityRecord.mutate({
+      activityId: activity.id,
+      addedAmount: currentAmount,
+    });
+    console.log({
       id: activity.id,
       timesDone: activity.timesDone,
     });
