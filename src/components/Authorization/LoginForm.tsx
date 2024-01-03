@@ -29,8 +29,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     },
     {
       enabled: false,
-      onSuccess: ({ access_token, userName, userEmail }) => {
-        login(access_token, userName, userEmail);
+      onSuccess: ({ access_token, user }) => {
+        login(access_token, user);
         router.push('/');
       },
       onError: () => {

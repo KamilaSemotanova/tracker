@@ -103,8 +103,7 @@ export const userRouter = createTRPCRouter({
       return {
         access_token,
         refresh_token,
-        userName: user.name,
-        userEmail: user.email,
+        user: { name: user.name, email: user.email },
       };
     }),
 

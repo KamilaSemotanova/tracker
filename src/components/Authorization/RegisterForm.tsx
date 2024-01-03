@@ -31,7 +31,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
   const addNewUser = trpc.user.register.useMutation({
     onSuccess: ({ access_token, userName, userEmail }) => {
       utils.user.invalidate();
-      login(access_token, userName, userEmail);
+      login(access_token, { name: userName, email: userEmail });
       router.push('/');
     },
     onError: () => {

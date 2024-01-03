@@ -13,7 +13,7 @@ import { ChildrenFC } from '../utils/types';
 export const TOKEN_KEY = 'token';
 
 export type AuthenticationContextValueType = {
-  login: (newToken: string, newUserName: string, newUserEmail: string) => void;
+  login: (newToken: string, newUser: { name: string; email: string }) => void;
   logout: () => void;
   user?: { name: string; email: string };
 };
@@ -34,9 +34,9 @@ export const AuthenticationProvider: ChildrenFC = ({ children }) => {
   }, []);
 
   const login = useCallback(
-    (newToken: string, newUserName: string, newUserEmail: string) => {
+    (newToken: string, newUser: { name: string; email: string }) => {
       localStorage.setItem(TOKEN_KEY, newToken);
-      setUser({ name: newUserName, email: newUserEmail });
+      setUser({ name: newUser.name, email: newUser.email });
     },
     [],
   );
