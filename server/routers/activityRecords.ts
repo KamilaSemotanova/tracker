@@ -3,9 +3,9 @@ import { z } from 'zod';
 
 import { createTRPCRouter, privateProcedure } from '../trpc';
 
-export const activityRecordsRouter = createTRPCRouter({
+export const activityRecordRouter = createTRPCRouter({
   list: privateProcedure.query(async ({ ctx }) => {
-    const activityRecords = await ctx.prisma.activityRecords.findMany({
+    const activityRecords = await ctx.prisma.activityRecord.findMany({
       where: {
         userId: ctx.user?.id,
       },
@@ -15,15 +15,13 @@ export const activityRecordsRouter = createTRPCRouter({
   }),
 
   create: privateProcedure
-    .input(z.object({ activityId: z.number(), date: z.date() }))
+    .input(z.object({ activityId: z.number(), addedAmount: z.number() }))
     .mutation(async ({ input, ctx }) => {
-      const newActivityRecord = await ctx.prisma.activityRecords.create({
+      const newActivityRecord = await ctx.prisma.activityRecord.create({
         data: {
           activityId: input.activityId,
           userId: ctx.user?.id,
-          date: input.date,
-          done: false,
-          addedAmount: 0,
+          addedAmount: input.addedAmount,
         },
       });
 
@@ -33,7 +31,7 @@ export const activityRecordsRouter = createTRPCRouter({
   read: privateProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ input, ctx }) => {
-      const activityRecord = await ctx.prisma.activityRecords.findUnique({
+      const activityRecord = await ctx.prisma.activityRecord.findUnique({
         where: {
           id: input.id,
         },
@@ -59,7 +57,7 @@ export const activityRecordsRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const updatedActivityRecord = await ctx.prisma.activityRecords.update({
+      const updatedActivityRecord = await ctx.prisma.activityRecord.update({
         where: {
           id: input.id,
         },
@@ -73,36 +71,10 @@ export const activityRecordsRouter = createTRPCRouter({
       return updatedActivityRecord;
     }),
 
-  updateDoneCounter: privateProcedure
-    .input(
-      z.object({
-        id: z.number(),
-        userId: z.number(),
-        activityId: z.number(),
-        date: z.date(),
-        done: z.boolean(),
-      }),
-    )
-    .mutation(async ({ input, ctx }) => {
-      const updatedActivityRecord = await ctx.prisma.activityRecords.update({
-        where: {
-          id: input.id,
-          userId: input.userId,
-          activityId: input.activityId,
-          date: input.date,
-        },
-        data: {
-          done: input.done,
-        },
-      });
-
-      return updatedActivityRecord;
-    }),
-
   delete: privateProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input, ctx }) => {
-      const deletedActivityRecord = await ctx.prisma.activityRecords.delete({
+      const deletedActivityRecord = await ctx.prisma.activityRecord.delete({
         where: {
           id: input.id,
         },
