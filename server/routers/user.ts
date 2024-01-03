@@ -1,9 +1,9 @@
-import { z } from 'zod';
-import bcrypt from 'bcrypt';
 import { TRPCError } from '@trpc/server';
+import bcrypt from 'bcrypt';
+import { z } from 'zod';
 
-import { signJwt } from '../utils/jwt';
 import { createTRPCRouter, privateProcedure, publicProcedure } from '../trpc';
+import { signJwt } from '../utils/jwt';
 
 const SALT_CONSTANT = 10;
 
@@ -64,7 +64,11 @@ export const userRouter = createTRPCRouter({
 
       const { access_token, refresh_token } = await signTokens(newUser);
 
-      return { access_token, refresh_token, userName: newUser.name };
+      return {
+        access_token,
+        refresh_token,
+        user: { name: newUser.name, email: newUser.email },
+      };
     }),
 
   login: publicProcedure
@@ -95,7 +99,11 @@ export const userRouter = createTRPCRouter({
 
       const { access_token, refresh_token } = await signTokens(user);
 
-      return { access_token, refresh_token, userName: user.name };
+      return {
+        access_token,
+        refresh_token,
+        user: { name: user.name, email: user.email },
+      };
     }),
 
   updateUser: privateProcedure

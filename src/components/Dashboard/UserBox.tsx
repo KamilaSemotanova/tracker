@@ -10,7 +10,7 @@ export const UserBox = () => {
   const [userBoxVisible, setUserBoxVisible] = useState(false);
 
   const router = useRouter();
-  const { logout, userName } = useAuthentication();
+  const { logout, user } = useAuthentication();
 
   const handleRevealUserBox = () => {
     setUserBoxVisible(!userBoxVisible);
@@ -40,7 +40,7 @@ export const UserBox = () => {
       </button>
       {userBoxVisible && (
         <>
-          <h2>{userName}</h2>
+          <h2>{user?.name}</h2>
           <Button
             type="button"
             className={style.buttonUpdate}

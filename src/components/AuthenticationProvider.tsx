@@ -1,4 +1,4 @@
-import React, {
+import {
   createContext,
   useCallback,
   useContext,
@@ -13,9 +13,9 @@ import { ChildrenFC } from '../utils/types';
 export const TOKEN_KEY = 'token';
 
 export type AuthenticationContextValueType = {
-  login: (newToken: string, newUserName: string) => void;
+  login: (newToken: string, newUser: { name: string; email: string }) => void;
   logout: () => void;
-  userName?: string;
+  user?: { name: string; email: string };
 };
 
 const AuthenticationContext = createContext<AuthenticationContextValueType>(
@@ -23,7 +23,7 @@ const AuthenticationContext = createContext<AuthenticationContextValueType>(
 );
 
 export const AuthenticationProvider: ChildrenFC = ({ children }) => {
-  const [userName, setUserName] = useState<string>();
+  const [user, setUser] = useState({ name: '', email: '' });
 
   const router = useRouter();
 
@@ -33,21 +33,21 @@ export const AuthenticationProvider: ChildrenFC = ({ children }) => {
     }
   }, []);
 
-  const login = useCallback((newToken: string, newUserName: string) => {
-    localStorage.setItem(TOKEN_KEY, newToken);
-    setUserName(newUserName);
-  }, []);
+  const login = useCallback(
+    (newToken: string, newUser: { name: string; email: string }) => {
+      localStorage.setItem(TOKEN_KEY, newToken);
+      setUser({ name: newUser.name, email: newUser.email });
+    },
+    [],
+  );
 
   const logout = useCallback(() => {
     localStorage.removeItem(TOKEN_KEY);
-    setUserName(undefined);
+    setUser({ name: '', email: '' });
     router.push('/prihlaseni');
   }, []);
 
-  const value = useMemo(
-    () => ({ login, logout, userName }),
-    [login, logout, userName],
-  );
+  const value = useMemo(() => ({ login, logout, user }), [login, logout, user]);
 
   return (
     <AuthenticationContext.Provider value={value}>
