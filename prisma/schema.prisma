@@ -32,5 +32,5 @@ model ActivityRecord {
   userId      Int
   activityId   Int
   addedAmount Int
-  date         DateTime @default(now())
+  createdAt         DateTime @default(now())
 }

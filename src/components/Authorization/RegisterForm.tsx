@@ -89,6 +89,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           id="name"
           type="text"
           placeholder="Jana Nováková"
+          className="light"
           label="Jméno a příjmení"
           autoFocus
         />
@@ -97,6 +98,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           name="email"
           type="text"
           placeholder="ukázka@email.com"
+          className="light"
           label="E–mail"
         />
 
@@ -104,6 +106,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           name="password"
           type="password"
           placeholder="Vaše heslo"
+          className="light"
           label="Heslo"
         />
 
@@ -111,6 +114,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           name="passwordVerification"
           type="password"
           placeholder="Vaše heslo"
+          className="light"
           label="Ověření hesla"
         />
       </div>

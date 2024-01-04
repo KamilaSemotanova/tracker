@@ -43,10 +43,10 @@ export const Dashboard = () => {
       unit: newUnit,
     });
 
-    setFormVisible(false);
-    setNewActivity('');
-    setNewAmount(0);
-    setNewUnit('');
+    // setFormVisible(false);
+    // setNewActivity('');
+    // setNewAmount(0);
+    // setNewUnit('');
   };
 
   const handleDetailClick = (id: number) => {
@@ -100,25 +100,29 @@ export const Dashboard = () => {
                 type="text"
                 label="aktivita"
                 placeholder="běhání"
-                className={style.input}
+                className="dark"
                 onChange={(e) => setNewActivity(e.target.value)}
                 autoFocus
               />
               <div className={style.inputWrapper}>
-                <TextField
-                  type="number"
-                  label="množství"
-                  placeholder="30"
-                  className={style.input}
-                  onChange={(e) => setNewAmount(+e.target.value)}
-                />
-                <TextField
-                  type="text"
-                  label="jednotka"
-                  placeholder="minut"
-                  className={style.input}
-                  onChange={(e) => setNewUnit(e.target.value)}
-                />
+                <div className={style.textField}>
+                  <TextField
+                    type="number"
+                    label="množství"
+                    placeholder="30"
+                    className="dark"
+                    onChange={(e) => setNewAmount(Number(e.target.value))}
+                  />
+                </div>
+                <div className={style.textField}>
+                  <TextField
+                    type="text"
+                    label="jednotka"
+                    placeholder="minut"
+                    className="dark"
+                    onChange={(e) => setNewUnit(e.target.value)}
+                  />
+                </div>
               </div>
             </Row>
             <p className={style.error}>{error}</p>

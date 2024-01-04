@@ -142,23 +142,18 @@
   @media (min-width: $screen-md-min) {
     flex-direction: row;
     justify-content: space-between;
+    gap: 0.5rem;
     margin-top: 1rem;
-  }
-
-  label {
-    width: 50%;
-    margin-top: 0.7rem;
   }
 }
 
-.input {
-  margin-left: 1rem;
-  width: min-content;
-  color: $translucent-silk;
-  background-color: $hornblende-green;
-  border: none;
-  border-bottom: 1px solid $translucent-silk;
-  cursor: pointer;
+.textField {
+  width: 100%;
+
+  @media (min-width: $screen-md-min) {
+    width: 48%;
+    margin-top: 0.7rem;
+  }
 }
 
 .error {

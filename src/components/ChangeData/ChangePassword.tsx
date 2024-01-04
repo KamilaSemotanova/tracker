@@ -45,18 +45,18 @@ export const ChangePassword = () => {
           id="password"
           type="password"
           label="Heslo"
+          className="dark"
           autoFocus
           value={updatedPassword}
           onChange={(e) => setUpdatedPassword(e.target.value)}
-          className={style.textField}
         />
         <TextField
           id="controlPassword"
           type="password"
           label="Kontrola hesla"
           value={updatedPasswordControl}
+          className="dark"
           onChange={(e) => setUpdatedPasswordControl(e.target.value)}
-          className={style.textField}
         />
         <p className={style.warning}>{warningMessage}</p>
         <Button type="submit" className={style.button}>

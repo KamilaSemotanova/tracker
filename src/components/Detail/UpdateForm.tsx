@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Activity } from '@prisma/client';
 
 import { trpc } from '../../utils/trpc';
 import { Button } from '../Button/Button';
@@ -6,13 +7,7 @@ import { TextField } from '../TextField/TextField';
 import style from './UpdateForm.module.scss';
 
 type UpdateFormProps = {
-  activity: {
-    name: string;
-    amount: number;
-    unit: string;
-    timesDone: number;
-    id: number;
-  };
+  activity: Activity;
 };
 
 export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
@@ -52,7 +47,8 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
             label="HOTOVO"
             name="timesDone"
             type="number"
-            onChange={(e) => setCurrentAmount(+Number(e.target.value))}
+            className="light"
+            onChange={(e) => setCurrentAmount(Number(e.target.value))}
           />
           <p>{activity.unit}</p>
         </div>

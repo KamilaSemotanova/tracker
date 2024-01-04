@@ -4,15 +4,13 @@ import { z } from 'zod';
 import { createTRPCRouter, privateProcedure } from '../trpc';
 
 export const activityRecordRouter = createTRPCRouter({
-  list: privateProcedure.query(async ({ ctx }) => {
-    const activityRecords = await ctx.prisma.activityRecord.findMany({
+  list: privateProcedure.query(({ ctx }) =>
+    ctx.prisma.activityRecord.findMany({
       where: {
         userId: ctx.user?.id,
       },
-    });
-
-    return activityRecords;
-  }),
+    }),
+  ),
 
   create: privateProcedure
     .input(z.object({ activityId: z.number(), addedAmount: z.number() }))
@@ -68,6 +66,13 @@ export const activityRecordRouter = createTRPCRouter({
         },
       });
 
+      if (ctx.user?.id !== updatedActivityRecord?.userId) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'No access to this resource',
+        });
+      }
+
       return updatedActivityRecord;
     }),
 
@@ -79,6 +84,13 @@ export const activityRecordRouter = createTRPCRouter({
           id: input.id,
         },
       });
+
+      if (ctx.user?.id !== deletedActivityRecord?.userId) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'No access to this resource',
+        });
+      }
 
       return deletedActivityRecord;
     }),
