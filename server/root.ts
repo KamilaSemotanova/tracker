@@ -1,5 +1,5 @@
 import { activityRouter } from './routers/activity';
-import { activityRecordRouter } from './routers/activityRecords';
+import { activityRecordRouter } from './routers/activityRecord';
 import { userRouter } from './routers/user';
 import { createTRPCRouter } from './trpc';
 
