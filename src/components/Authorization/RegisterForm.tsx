@@ -12,7 +12,7 @@ type RegisterFormData = {
   email: { value: string };
   password: { value: string };
   passwordVerification: { value: string };
-};
+} & HTMLFormElement;
 
 type RegisterFormProps = {
   setWarningMessage: (value: string) => void;
@@ -24,7 +24,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
   buttonClassName,
 }) => {
   const router = useRouter();
-  const formRef = useRef<RegisterFormData>();
+  const formRef = useRef<RegisterFormData>(null);
   const { login } = useAuthentication();
 
   const utils = trpc.useContext();
@@ -46,7 +46,8 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
       return;
     }
 
-    const { name, email, password, passwordVerification } = formRef.current;
+    const { name, email, password, passwordVerification } =
+      formRef.current as unknown as RegisterFormData;
 
     const nameValue = name.value.trim();
     const emailValue = email.value.trim();

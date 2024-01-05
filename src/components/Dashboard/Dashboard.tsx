@@ -11,18 +11,18 @@ import { UserBox } from './UserBox';
 import addActivity from './img/plus.png';
 import style from './Dashboard.module.scss';
 
-// type ActivityFormData = {
-//   name: { value: string };
-//   amount: { value: number };
-//   unit: { value: string };
-// };
+type ActivityFormData = {
+  name: { value: string };
+  amount: { value: number };
+  unit: { value: string };
+} & HTMLFormElement;
 
 export const Dashboard = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [error, setError] = useState('');
 
   const router = useRouter();
-  const formRef = useRef<any>();
+  const formRef = useRef<ActivityFormData>(null);
 
   const { data: activities } = trpc.activities.list.useQuery();
   const utils = trpc.useContext();
