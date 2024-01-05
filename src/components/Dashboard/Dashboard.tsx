@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -11,14 +11,18 @@ import { UserBox } from './UserBox';
 import addActivity from './img/plus.png';
 import style from './Dashboard.module.scss';
 
+// type ActivityFormData = {
+//   name: { value: string };
+//   amount: { value: number };
+//   unit: { value: string };
+// };
+
 export const Dashboard = () => {
   const [formVisible, setFormVisible] = useState(false);
-  const [newActivity, setNewActivity] = useState('');
-  const [newAmount, setNewAmount] = useState(0);
-  const [newUnit, setNewUnit] = useState('');
   const [error, setError] = useState('');
 
   const router = useRouter();
+  const formRef = useRef<any>();
 
   const { data: activities } = trpc.activities.list.useQuery();
   const utils = trpc.useContext();
@@ -31,22 +35,31 @@ export const Dashboard = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (newActivity === '' || newAmount === 0 || newUnit === '') {
+    if (!formRef.current) {
+      return;
+    }
+
+    const { name, amount, unit } = formRef.current;
+
+    const nameValue = name.value.trim();
+    const amountValue = Number(amount.value);
+    const unitValue = unit.value.trim();
+
+    if (!nameValue || !amountValue || !unitValue) {
       setError('Vyplňte všechna pole');
 
       return;
     }
 
     addNewActivity.mutate({
-      name: newActivity,
-      amount: newAmount,
-      unit: newUnit,
+      name: nameValue,
+      amount: amountValue,
+      unit: unitValue,
     });
 
-    // setFormVisible(false);
-    // setNewActivity('');
-    // setNewAmount(0);
-    // setNewUnit('');
+    formRef.current.reset();
+    setFormVisible(false);
+    setError('');
   };
 
   const handleDetailClick = (id: number) => {
@@ -94,33 +107,33 @@ export const Dashboard = () => {
           </button>
         )}
         {formVisible && (
-          <form className={style.form} onSubmit={handleSubmit}>
+          <form ref={formRef} className={style.form} onSubmit={handleSubmit}>
             <Row fullWidth justifyStart flexCol>
               <TextField
+                name="name"
                 type="text"
                 label="aktivita"
                 placeholder="běhání"
                 className="dark"
-                onChange={(e) => setNewActivity(e.target.value)}
                 autoFocus
               />
               <div className={style.inputWrapper}>
                 <div className={style.textField}>
                   <TextField
+                    name="amount"
                     type="number"
                     label="množství"
                     placeholder="30"
                     className="dark"
-                    onChange={(e) => setNewAmount(Number(e.target.value))}
                   />
                 </div>
                 <div className={style.textField}>
                   <TextField
+                    name="unit"
                     type="text"
                     label="jednotka"
                     placeholder="minut"
                     className="dark"
-                    onChange={(e) => setNewUnit(e.target.value)}
                   />
                 </div>
               </div>

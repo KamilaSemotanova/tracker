@@ -12,6 +12,7 @@ type UpdateFormProps = {
 
 export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
   const [currentAmount, setCurrentAmount] = useState(0);
+  const [warningMessage, setWarningMessage] = useState('');
 
   const utils = trpc.useContext();
 
@@ -24,10 +25,20 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    createActivityRecord.mutate({
-      activityId: activity.id,
-      addedAmount: currentAmount,
-    });
+    if (currentAmount === 0) {
+      return;
+    }
+
+    if (currentAmount < 0) {
+      setWarningMessage('Nelze odečíst z cíle');
+    }
+
+    {
+      createActivityRecord.mutate({
+        activityId: activity.id,
+        addedAmount: currentAmount,
+      });
+    }
 
     setCurrentAmount(0);
   };
@@ -67,6 +78,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
           <span>{activity.unit}</span>
         </div>
       </div>
+      <p className={style.warningBox}>{warningMessage}</p>
     </section>
   );
 };

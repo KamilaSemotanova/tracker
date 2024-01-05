@@ -29,3 +29,15 @@
     height: 2.5rem;
   }
 }
+
+.warningBox {
+  height: 1rem;
+  margin-top: 1rem;
+  color: $pumping-spice;
+  font-size: 1rem;
+
+  @media (min-width: $screen-md-min) {
+    height: 2rem;
+    font-size: 1.4rem;
+  }
+}
