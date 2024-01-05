@@ -50,7 +50,7 @@ export const activityRecordRouter = createTRPCRouter({
       z.object({
         id: z.number(),
         activityId: z.number(),
-        date: z.date(),
+        createdAt: z.date(),
         addedAmount: z.number(),
       }),
     )
@@ -61,7 +61,7 @@ export const activityRecordRouter = createTRPCRouter({
         },
         data: {
           activityId: input.activityId,
-          date: input.date,
+          createdAt: input.createdAt,
           addedAmount: +input.addedAmount,
         },
       });
