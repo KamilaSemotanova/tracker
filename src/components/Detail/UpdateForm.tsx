@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Activity } from '@prisma/client';
 
 import { trpc } from '../../utils/trpc';
@@ -11,9 +11,9 @@ type UpdateFormProps = {
 };
 
 export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
-  const [currentAmount, setCurrentAmount] = useState(0);
   const [warningMessage, setWarningMessage] = useState('');
 
+  const formRef = useRef<any>();
   const utils = trpc.useContext();
 
   const createActivityRecord = trpc.activityRecord.create.useMutation({
@@ -25,22 +25,25 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (currentAmount === 0) {
+    const { currentAmount } = formRef.current;
+    const currentAmountValue = Number(currentAmount.value);
+
+    if (!currentAmount) {
       return;
     }
 
-    if (currentAmount < 0) {
+    if (currentAmountValue < 0) {
       setWarningMessage('Nelze odečíst z cíle');
+
+      return;
     }
 
-    {
-      createActivityRecord.mutate({
-        activityId: activity.id,
-        addedAmount: currentAmount,
-      });
-    }
+    createActivityRecord.mutate({
+      activityId: activity.id,
+      addedAmount: currentAmountValue,
+    });
 
-    setCurrentAmount(0);
+    formRef.current.reset();
   };
 
   return (
@@ -52,14 +55,13 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
           <span>{activity.unit}</span>
         </div>
       </div>
-      <form onSubmit={handleSubmit}>
+      <form ref={formRef} onSubmit={handleSubmit}>
         <div>
           <TextField
+            name="currentAmount"
             label="HOTOVO"
-            name="timesDone"
             type="number"
             className="light"
-            onChange={(e) => setCurrentAmount(Number(e.target.value))}
           />
           <p>{activity.unit}</p>
         </div>
@@ -74,7 +76,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
       <div>
         ZBÝVÁ
         <div className={style.amountBox}>
-          <p>{activity.amount - currentAmount}</p>
+          <p>{activity.amount - 1}</p>
           <span>{activity.unit}</span>
         </div>
       </div>
