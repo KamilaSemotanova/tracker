@@ -114,7 +114,6 @@ export const Dashboard = () => {
                 type="text"
                 label="aktivita"
                 placeholder="běhání"
-                className="dark"
                 autoFocus
               />
               <div className={style.inputWrapper}>
@@ -124,7 +123,6 @@ export const Dashboard = () => {
                     type="number"
                     label="množství"
                     placeholder="30"
-                    className="dark"
                   />
                 </div>
                 <div className={style.textField}>
@@ -133,7 +131,6 @@ export const Dashboard = () => {
                     type="text"
                     label="jednotka"
                     placeholder="minut"
-                    className="dark"
                   />
                 </div>
               </div>

@@ -45,7 +45,6 @@ export const ChangePassword = () => {
           id="password"
           type="password"
           label="Heslo"
-          className="dark"
           autoFocus
           value={updatedPassword}
           onChange={(e) => setUpdatedPassword(e.target.value)}
@@ -55,7 +54,6 @@ export const ChangePassword = () => {
           type="password"
           label="Kontrola hesla"
           value={updatedPasswordControl}
-          className="dark"
           onChange={(e) => setUpdatedPasswordControl(e.target.value)}
         />
         <p className={style.warning}>{warningMessage}</p>

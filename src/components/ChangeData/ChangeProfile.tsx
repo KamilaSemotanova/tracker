@@ -47,7 +47,6 @@ export const ChangeProfile = () => {
           label="Jméno"
           autoFocus
           value={updatedName}
-          className="dark"
           onChange={(e) => setUpdatedName(e.target.value)}
         />
         <TextField
@@ -55,7 +54,6 @@ export const ChangeProfile = () => {
           type="text"
           label="E-mail"
           value={updatedEmail}
-          className="dark"
           onChange={(e) => setUpdatedEmail(e.target.value)}
         />
         <p className={style.warning}>{warningMessage}</p>

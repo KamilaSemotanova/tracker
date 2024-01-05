@@ -70,7 +70,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
             name="currentAmount"
             label="HOTOVO"
             type="number"
-            className="light"
+            variant="light"
           />
           <p>{activity.unit}</p>
         </div>

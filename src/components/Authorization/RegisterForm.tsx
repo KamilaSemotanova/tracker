@@ -46,8 +46,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
       return;
     }
 
-    const { name, email, password, passwordVerification } =
-      formRef.current as unknown as RegisterFormData;
+    const { name, email, password, passwordVerification } = formRef.current;
 
     const nameValue = name.value.trim();
     const emailValue = email.value.trim();
@@ -90,7 +89,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           id="name"
           type="text"
           placeholder="Jana Nováková"
-          className="light"
+          variant="light"
           label="Jméno a příjmení"
           autoFocus
         />
@@ -99,7 +98,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           name="email"
           type="text"
           placeholder="ukázka@email.com"
-          className="light"
+          variant="light"
           label="E–mail"
         />
 
@@ -107,7 +106,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           name="password"
           type="password"
           placeholder="Vaše heslo"
-          className="light"
+          variant="light"
           label="Heslo"
         />
 
@@ -115,7 +114,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           name="passwordVerification"
           type="password"
           placeholder="Vaše heslo"
-          className="light"
+          variant="light"
           label="Ověření hesla"
         />
       </div>
