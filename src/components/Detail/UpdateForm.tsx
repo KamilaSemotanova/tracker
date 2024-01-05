@@ -10,10 +10,14 @@ type UpdateFormProps = {
   activity: Activity;
 };
 
+type ActivityRecordFormData = {
+  currentAmount: { value: number };
+} & HTMLFormElement;
+
 export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
   const [warningMessage, setWarningMessage] = useState('');
 
-  const formRef = useRef<any>();
+  const formRef = useRef<ActivityRecordFormData>(null);
   const utils = trpc.useContext();
 
   const createActivityRecord = trpc.activityRecord.create.useMutation({
@@ -24,6 +28,10 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!formRef.current) {
+      return;
+    }
 
     const { currentAmount } = formRef.current;
     const currentAmountValue = Number(currentAmount.value);
@@ -44,6 +52,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
     });
 
     formRef.current.reset();
+    setWarningMessage('');
   };
 
   return (
