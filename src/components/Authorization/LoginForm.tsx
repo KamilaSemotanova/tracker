@@ -59,7 +59,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         <div className={style.login}>
           <TextField
             id="email"
-            type="text"
+            type="email"
             placeholder="ukázka@email.com"
             variant="light"
             label="E-mail"

@@ -51,7 +51,7 @@ export const ChangeProfile = () => {
         />
         <TextField
           id="email"
-          type="text"
+          type="email"
           label="E-mail"
           value={updatedEmail}
           onChange={(e) => setUpdatedEmail(e.target.value)}

@@ -96,7 +96,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
 
         <TextField
           name="email"
-          type="text"
+          type="email"
           placeholder="ukázka@email.com"
           variant="light"
           label="E–mail"

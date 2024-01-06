@@ -45,33 +45,35 @@ export const DetailOfActivity = () => {
 
   return (
     <Row flexCol fullWidth justifyCenter itemsCenter>
-      <nav className={style.navigation}>
-        <button
-          onClick={() => router.push('/')}
-          className={style.back}
-          aria-label="Zpět na hlavní stránku."
-        />
-        <h1
-          className={classnames(style.activity, {
-            [style.zero]: activityData.timesDone === 0,
-          })}
-        >
-          {activityData.name}
-        </h1>
-        <button
-          onClick={() => handleDelete(activityData.id)}
-          className={style.delete}
-          aria-label={`Smazat aktivitu ${activityData.name}.`}
-        />
-      </nav>
-      <UpdateForm activity={activityData} />
-      <div className={style.container}>
-        <div className={style.counter}>
-          <p className={style.number}>{activityData.timesDone}</p>
+      <div className={style.detailBox}>
+        <nav className={style.navigation}>
+          <button
+            onClick={() => router.push('/')}
+            className={style.back}
+            aria-label="Zpět na hlavní stránku."
+          />
+          <h1
+            className={classnames(style.activity, {
+              [style.zero]: activityData.timesDone === 0,
+            })}
+          >
+            {activityData.name}
+          </h1>
+          <button
+            onClick={() => handleDelete(activityData.id)}
+            className={style.delete}
+            aria-label={`Smazat aktivitu ${activityData.name}.`}
+          />
+        </nav>
+        <UpdateForm activity={activityData} />
+        <div className={style.container}>
+          <div className={style.counter}>
+            <p className={style.number}>{activityData.timesDone}</p>
+          </div>
+          <p className={style.streekDays}>{days(activityData.timesDone)}</p>
         </div>
-        <p className={style.streekDays}>{days(activityData.timesDone)}</p>
+        {/* <div>calendar</div> */}
       </div>
-      {/* <div>calendar</div> */}
     </Row>
   );
 };
