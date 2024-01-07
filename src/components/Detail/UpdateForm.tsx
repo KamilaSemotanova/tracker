@@ -6,13 +6,13 @@ import { Button } from '../Button/Button';
 import { TextField } from '../TextField/TextField';
 import style from './UpdateForm.module.scss';
 
-type UpdateFormProps = {
-  activity: Activity;
-};
-
 type ActivityRecordFormData = {
   currentAmount: { value: number };
 } & HTMLFormElement;
+
+type UpdateFormProps = {
+  activity: Activity;
+};
 
 export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
   const [warningMessage, setWarningMessage] = useState('');
@@ -33,12 +33,13 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
       return;
     }
 
-    const { currentAmount } = formRef.current;
-    const currentAmountValue = Number(currentAmount.value);
+    const { value } = formRef.current.currentAmount;
 
-    if (!currentAmount) {
+    if (!value) {
       return;
     }
+
+    const currentAmountValue = Number(value);
 
     if (currentAmountValue < 0) {
       setWarningMessage('Nelze odečíst z cíle');

@@ -1,7 +1,6 @@
 import { FormEvent, useState } from 'react';
 
 import { trpc } from '../../utils/trpc';
-import { useAuthentication } from '../AuthenticationProvider';
 import { Button } from '../Button/Button';
 import { TextField } from '../TextField/TextField';
 import style from './ChangeProfile.module.scss';
@@ -10,8 +9,6 @@ export const ChangeProfile = () => {
   const [updatedName, setUpdatedName] = useState('');
   const [updatedEmail, setUpdatedEmail] = useState('');
   const [warningMessage, setWarningMessage] = useState('');
-
-  const { user } = useAuthentication();
 
   const updateProfile = trpc.user.updateUser.useMutation({
     onSuccess: () => {

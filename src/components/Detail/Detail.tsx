@@ -72,7 +72,6 @@ export const DetailOfActivity = () => {
           </div>
           <p className={style.streekDays}>{days(activityData.timesDone)}</p>
         </div>
-        {/* <div>calendar</div> */}
       </div>
     </Row>
   );

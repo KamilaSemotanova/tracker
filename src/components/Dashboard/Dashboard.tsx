@@ -113,7 +113,7 @@ export const Dashboard = () => {
                 name="name"
                 type="text"
                 label="aktivita"
-                placeholder="běhání"
+                placeholder="běhání, čtení, ..."
                 autoFocus
               />
               <div className={style.inputWrapper}>
@@ -122,7 +122,7 @@ export const Dashboard = () => {
                     name="amount"
                     type="number"
                     label="množství"
-                    placeholder="30"
+                    placeholder="30, 50, ..."
                   />
                 </div>
                 <div className={style.textField}>
@@ -130,7 +130,7 @@ export const Dashboard = () => {
                     name="unit"
                     type="text"
                     label="jednotka"
-                    placeholder="minut"
+                    placeholder="minut, stránek, ..."
                   />
                 </div>
               </div>
