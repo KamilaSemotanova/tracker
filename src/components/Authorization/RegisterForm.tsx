@@ -12,7 +12,7 @@ type RegisterFormData = {
   email: { value: string };
   password: { value: string };
   passwordVerification: { value: string };
-};
+} & HTMLFormElement;
 
 type RegisterFormProps = {
   setWarningMessage: (value: string) => void;
@@ -24,7 +24,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
   buttonClassName,
 }) => {
   const router = useRouter();
-  const formRef = useRef<RegisterFormData>();
+  const formRef = useRef<RegisterFormData>(null);
   const { login } = useAuthentication();
 
   const utils = trpc.useContext();
@@ -89,14 +89,16 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           id="name"
           type="text"
           placeholder="Jana Nováková"
+          variant="light"
           label="Jméno a příjmení"
           autoFocus
         />
 
         <TextField
           name="email"
-          type="text"
+          type="email"
           placeholder="ukázka@email.com"
+          variant="light"
           label="E–mail"
         />
 
@@ -104,6 +106,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           name="password"
           type="password"
           placeholder="Vaše heslo"
+          variant="light"
           label="Heslo"
         />
 
@@ -111,6 +114,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           name="passwordVerification"
           type="password"
           placeholder="Vaše heslo"
+          variant="light"
           label="Ověření hesla"
         />
       </div>

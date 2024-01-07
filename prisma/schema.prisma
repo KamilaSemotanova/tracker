@@ -21,6 +21,16 @@ model User {
 model Activity {
   id    Int     @id @default(autoincrement())
   name String
+  amount Int
+  unit String
   timesDone  Int @default(0)
   userId Int
+}
+
+model ActivityRecord {
+  id    Int     @id @default(autoincrement())
+  userId      Int
+  activityId   Int
+  addedAmount Int
+  createdAt         DateTime @default(now())
 }

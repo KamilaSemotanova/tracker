@@ -11,7 +11,7 @@ type FormWrapperProps = {
   children: React.ReactNode;
 };
 
-export const FormWrapper = forwardRef<any, FormWrapperProps>(
+export const FormWrapper = forwardRef<HTMLFormElement, FormWrapperProps>(
   ({ children, buttonLabel, handleSubmit, buttonClassName }, ref) => (
     <form ref={ref} className={style.container} onSubmit={handleSubmit}>
       {children}

@@ -59,8 +59,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         <div className={style.login}>
           <TextField
             id="email"
-            type="text"
+            type="email"
             placeholder="ukázka@email.com"
+            variant="light"
             label="E-mail"
             autoFocus
             value={loginEmail}
@@ -71,6 +72,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             id="password"
             type="password"
             placeholder="Vaše heslo"
+            variant="light"
             label="Heslo"
             value={loginPassword}
             onChange={(e) => setLoginPassword(e.target.value)}

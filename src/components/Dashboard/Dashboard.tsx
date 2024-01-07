@@ -1,20 +1,28 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { Row } from '../Row/Row';
 import { trpc } from '../../utils/trpc';
-import addActivity from './img/plus.png';
-import { UserBox } from './UserBox';
 import { Button } from '../Button/Button';
+import { Row } from '../Row/Row';
+import { TextField } from '../TextField/TextField';
+import { UserBox } from './UserBox';
+import addActivity from './img/plus.png';
 import style from './Dashboard.module.scss';
+
+type ActivityFormData = {
+  name: { value: string };
+  amount: { value: number };
+  unit: { value: string };
+} & HTMLFormElement;
 
 export const Dashboard = () => {
   const [formVisible, setFormVisible] = useState(false);
-  const [newActivity, setNewActivity] = useState('');
+  const [error, setError] = useState('');
 
   const router = useRouter();
+  const formRef = useRef<ActivityFormData>(null);
 
   const { data: activities } = trpc.activities.list.useQuery();
   const utils = trpc.useContext();
@@ -27,30 +35,31 @@ export const Dashboard = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    newActivity !== '' && addNewActivity.mutate({ name: newActivity });
+    if (!formRef.current) {
+      return;
+    }
 
+    const { name, amount, unit } = formRef.current;
+
+    const nameValue = name.value.trim();
+    const amountValue = Number(amount.value);
+    const unitValue = unit.value.trim();
+
+    if (!nameValue || !amountValue || !unitValue) {
+      setError('Vyplňte všechna pole');
+
+      return;
+    }
+
+    addNewActivity.mutate({
+      name: nameValue,
+      amount: amountValue,
+      unit: unitValue,
+    });
+
+    formRef.current.reset();
     setFormVisible(false);
-    setNewActivity('');
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewActivity(e.target.value);
-  };
-
-  const updateDoneCounter = trpc.activities.updateDoneCounter.useMutation({
-    onSuccess: () => {
-      utils.activities.invalidate();
-    },
-  });
-
-  const handleActivityClick = ({
-    id,
-    timesDone,
-  }: {
-    id: number;
-    timesDone: number;
-  }) => {
-    updateDoneCounter.mutate({ id, timesDone: timesDone + 1 });
+    setError('');
   };
 
   const handleDetailClick = (id: number) => {
@@ -78,18 +87,9 @@ export const Dashboard = () => {
               >
                 {timesDone}
               </span>
-              <li className={style.nameOfActivity}>{name}</li>
-              <button
-                className={classnames(style.buttonDone, {
-                  [style.zero]: timesDone === 0,
-                  [style.more]: timesDone > 0,
-                })}
-                aria-label={`Dokončena aktivita ${name}.`}
-                type="button"
-                onClick={() => {
-                  handleActivityClick({ id, timesDone });
-                }}
-              />
+              <div className={style.nameBox}>
+                <li className={style.nameOfActivity}>{name}</li>
+              </div>
             </div>
           ))}
         </ul>
@@ -107,20 +107,35 @@ export const Dashboard = () => {
           </button>
         )}
         {formVisible && (
-          <form className={style.form} onSubmit={handleSubmit}>
-            <Row fullWidth justifyStart>
-              <label htmlFor="activity">
-                aktivita:
-                <input
-                  id="activity"
-                  type="text"
-                  placeholder="běhání"
-                  className={style.input}
-                  onChange={handleChange}
-                  autoFocus
-                />
-              </label>
+          <form ref={formRef} className={style.form} onSubmit={handleSubmit}>
+            <Row fullWidth justifyStart flexCol>
+              <TextField
+                name="name"
+                type="text"
+                label="aktivita"
+                placeholder="běhání, čtení, ..."
+                autoFocus
+              />
+              <div className={style.inputWrapper}>
+                <div className={style.textField}>
+                  <TextField
+                    name="amount"
+                    type="number"
+                    label="množství"
+                    placeholder="30, 50, ..."
+                  />
+                </div>
+                <div className={style.textField}>
+                  <TextField
+                    name="unit"
+                    type="text"
+                    label="jednotka"
+                    placeholder="minut, stránek, ..."
+                  />
+                </div>
+              </div>
             </Row>
+            <p className={style.error}>{error}</p>
             <div className={style.buttonBox}>
               <Button type="submit" className={style.button}>
                 přidat

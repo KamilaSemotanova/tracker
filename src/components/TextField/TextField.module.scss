@@ -15,11 +15,30 @@
 }
 
 .input {
+  width: 100%;
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid $severely-burnt-toast;
+  border-radius: 2px;
 
   @media (min-width: $screen-md-min) {
     font-size: 1.4rem;
+  }
+}
+
+.light {
+  border-bottom: 1px solid $severely-burnt-toast;
+  color: $severely-burnt-toast;
+
+  &:focus {
+    outline: 1px solid $severely-burnt-toast;
+  }
+}
+
+.dark {
+  border-bottom: 1px solid $translucent-silk;
+  color: $translucent-silk;
+
+  &:focus {
+    outline: 1px solid $translucent-silk;
   }
 }

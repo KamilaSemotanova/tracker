@@ -5,21 +5,23 @@ import style from './TextField.module.scss';
 
 type TextFieldProps = {
   label: string;
-  type: string | 'text';
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  variant?: 'dark' | 'light';
 } & InputHTMLAttributes<HTMLInputElement>;
 
 export const TextField: React.FC<TextFieldProps> = ({
   onChange,
   label,
   type,
-  className,
+  variant = 'dark',
   ...props
 }) => (
   <label className={style.labelWrapper}>
     <span className={style.label}>{label}</span>
     <input
-      className={classnames(style.input, className)}
+      className={classnames(style.input, {
+        [style.dark]: variant === 'dark',
+        [style.light]: variant === 'light',
+      })}
       onChange={onChange}
       {...props}
       type={type}

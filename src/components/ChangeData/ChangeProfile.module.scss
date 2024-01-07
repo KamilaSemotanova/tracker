@@ -37,30 +37,6 @@
   border-radius: 10px;
 }
 
-.textField {
-  width: 100%;
-  padding: 0.5rem 0;
-  margin-bottom: 1rem;
-  border: none;
-  border-bottom: 1px solid $translucent-silk;
-  color: $translucent-silk;
-  font-size: 1rem;
-  font-weight: 700;
-
-  &:focus {
-    outline: 1px solid $translucent-silk;
-  }
-
-  @media (min-width: $screen-md-min) {
-    font-size: 1.2rem;
-  }
-}
-
-.textField::placeholder {
-  color: $wallis;
-  font-weight: 400;
-}
-
 .warning {
   margin-top: 1rem;
   color: $pumping-spice;

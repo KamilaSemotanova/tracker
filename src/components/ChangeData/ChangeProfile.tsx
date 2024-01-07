@@ -1,7 +1,6 @@
 import { FormEvent, useState } from 'react';
 
 import { trpc } from '../../utils/trpc';
-import { useAuthentication } from '../AuthenticationProvider';
 import { Button } from '../Button/Button';
 import { TextField } from '../TextField/TextField';
 import style from './ChangeProfile.module.scss';
@@ -10,8 +9,6 @@ export const ChangeProfile = () => {
   const [updatedName, setUpdatedName] = useState('');
   const [updatedEmail, setUpdatedEmail] = useState('');
   const [warningMessage, setWarningMessage] = useState('');
-
-  const { user } = useAuthentication();
 
   const updateProfile = trpc.user.updateUser.useMutation({
     onSuccess: () => {
@@ -48,17 +45,13 @@ export const ChangeProfile = () => {
           autoFocus
           value={updatedName}
           onChange={(e) => setUpdatedName(e.target.value)}
-          className={style.textField}
-          placeholder={user?.name}
         />
         <TextField
           id="email"
-          type="text"
+          type="email"
           label="E-mail"
           value={updatedEmail}
           onChange={(e) => setUpdatedEmail(e.target.value)}
-          className={style.textField}
-          placeholder={user?.email}
         />
         <p className={style.warning}>{warningMessage}</p>
         <Button type="submit" className={style.button}>
