@@ -15,15 +15,13 @@ export const activityRecordRouter = createTRPCRouter({
   create: privateProcedure
     .input(z.object({ activityId: z.number(), addedAmount: z.number() }))
     .mutation(async ({ input, ctx }) => {
-      const newActivityRecord = await ctx.prisma.activityRecord.create({
+      ctx.prisma.activityRecord.create({
         data: {
           activityId: input.activityId,
           userId: ctx.user?.id,
           addedAmount: input.addedAmount,
         },
       });
-
-      return newActivityRecord;
     }),
 
   read: privateProcedure
