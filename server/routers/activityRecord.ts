@@ -12,6 +12,57 @@ export const activityRecordRouter = createTRPCRouter({
     }),
   ),
 
+  streakVerification: privateProcedure
+    .input(z.object({ createdAt: z.date() }))
+    .query(async ({ ctx, input }) => {
+      const dayActivityRecords = await ctx.prisma.activityRecord.findMany({
+        where: {
+          userId: ctx.user?.id,
+          createdAt: input.createdAt,
+        },
+      });
+
+      const targetActivityRecord = await ctx.prisma.activity
+        .findUnique({
+          where: {
+            id: dayActivityRecords[0].activityId,
+          },
+        })
+        .then((activity) => activity?.amount);
+
+      if (!targetActivityRecord) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Activity record not found',
+        });
+      }
+
+      const totalAmount = await ctx.prisma.activityRecord.groupBy({
+        by: ['createdAt'],
+        where: {
+          userId: ctx.user?.id,
+          activityId: dayActivityRecords[0].activityId,
+          createdAt: input.createdAt,
+        },
+        _sum: {
+          addedAmount: true,
+        },
+      });
+
+      if (!totalAmount[0]) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Activity record not found',
+        });
+      }
+
+      if (Number(totalAmount[0]._sum.addedAmount) >= targetActivityRecord) {
+        return true;
+      }
+
+      return true;
+    }),
+
   create: privateProcedure
     .input(z.object({ activityId: z.number(), addedAmount: z.number() }))
     .mutation(({ input, ctx }) =>
