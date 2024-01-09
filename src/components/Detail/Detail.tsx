@@ -17,10 +17,6 @@ export const DetailOfActivity = () => {
     id: Number(id),
   });
 
-  const { data: targetRecordData } = trpc.activities.read.useQuery({
-    id: Number(id),
-  });
-
   const today = new Date();
 
   let daysBack = 0;
@@ -29,17 +25,11 @@ export const DetailOfActivity = () => {
   while (!foundIncomplete) {
     const someTimeAgo = sub(today, { days: daysBack });
 
-    const countInDay = trpc.activityRecord.streakVerification.useQuery(
-      format(someTimeAgo, 'dd-MM-yyyy'),
-    );
+    const countInDay = trpc.activityRecord.streakVerification.useQuery({
+      createdAt: format(someTimeAgo, 'dd-MM-yyyy'),
+    });
 
-    if (targetRecordData?.amount === undefined) {
-      return;
-    }
-
-    const isDone = countInDay >= targetRecordData.amount;
-
-    if (!isDone) {
+    if (!countInDay) {
       foundIncomplete = true;
 
       return;

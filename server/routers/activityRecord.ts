@@ -60,7 +60,7 @@ export const activityRecordRouter = createTRPCRouter({
         return true;
       }
 
-      return true;
+      return false;
     }),
 
   create: privateProcedure
