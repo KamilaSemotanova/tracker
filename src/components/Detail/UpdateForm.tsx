@@ -58,16 +58,18 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
 
   return (
     <section className={style.updateBox}>
-      <div className={style.infoBox}>
+      {/* <div className={style.infoBox}>
         Zbývá:
         <p>{activity.amount - 1}</p>
         <p>z</p>
         <p>{activity.amount}</p>
         <p>{activity.unit}</p>
-      </div>
+      </div> */}
       <form ref={formRef} onSubmit={handleSubmit} className={style.form}>
-        <TextField name="currentAmount" label="Přidat" type="number" />
-        <p>{activity.unit}</p>
+        <div className={style.inputField}>
+          <TextField name="currentAmount" label="Přidat" type="number" />
+          <div className={style.unit}>{activity.unit}</div>
+        </div>
         <Button
           type="submit"
           aria-label={`Přidat hotové množství aktivitě ${activity.name}.`}

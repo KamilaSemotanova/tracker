@@ -70,6 +70,7 @@ export const activityRecordRouter = createTRPCRouter({
           activityId: input.activityId,
           userId: ctx.user?.id,
           addedAmount: input.addedAmount,
+          createdAt: new Date(),
         },
       }),
     ),

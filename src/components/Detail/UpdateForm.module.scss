@@ -10,31 +10,29 @@
   width: 75%;
 
   @media (min-width: $screen-md-min) {
-    flex-direction: row;
-    align-items: flex-start;
     width: 100%;
   }
 }
 
-.infoBox {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 13rem;
-  height: 100%;
-  gap: 1rem;
+// .infoBox {
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   width: 13rem;
+//   height: 100%;
+//   gap: 1rem;
 
-  @media (min-width: $screen-md-min) {
-    width: 50%;
-  }
-}
+//   @media (min-width: $screen-md-min) {
+//     width: 50%;
+//   }
+// }
 
 .form {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 1rem;
   width: 90%;
   height: 100%;
   padding: 1rem;
@@ -43,24 +41,36 @@
   color: $translucent-silk;
 
   @media (min-width: $screen-md-min) {
-    flex-direction: row;
-    align-items: flex-start;
-    width: 50%;
+    width: 51%;
   }
 }
+
+.inputField {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.unit {
+  display: flex;
+  align-items: flex-end;
+}
+
 .done {
-  border: 1px hidden $translucent-silk;
+  width: fit-content;
+  border: 1px solid $translucent-silk;
   border-radius: 10px;
+  background-color: $hornblende-green;
+  color: $translucent-silk;
   font-size: 1rem;
   cursor: pointer;
 
   &:hover {
-    border: 1px solid $severely-burnt-toast;
+    background-color: $translucent-silk;
+    color: $severely-burnt-toast;
   }
 
   @media (min-width: $screen-md-min) {
-    width: 2.5rem;
-    height: 2.5rem;
   }
 }
 

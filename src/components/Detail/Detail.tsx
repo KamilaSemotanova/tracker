@@ -1,6 +1,5 @@
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
-import { format, sub } from 'date-fns';
 
 import { trpc } from '../../utils/trpc';
 import { Row } from '../Row/Row';
@@ -16,43 +15,6 @@ export const DetailOfActivity = () => {
   const { data: activityData } = trpc.activities.read.useQuery({
     id: Number(id),
   });
-
-  const day = new Date().getDate();
-  const month = new Date().getMonth() + 1;
-  const year = new Date().getFullYear();
-  const today = `${day}-${month}-${year}`;
-
-  console.log(today);
-
-  const daysBack = 0;
-  const foundIncomplete = false;
-
-  const countInDay = trpc.activityRecord.streakVerification.useQuery({
-    createdAt: today,
-  });
-
-  console.log(countInDay);
-
-  // while (!foundIncomplete) {
-  //   const someTimeAgo = sub(today, { days: daysBack });
-  //   console.log(someTimeAgo);
-
-  //   const countInDay = trpc.activityRecord.streakVerification.useQuery({
-  //     createdAt: format(someTimeAgo, 'dd-MM-yyyy'),
-  //   });
-
-  //   if (!countInDay) {
-  //     foundIncomplete = true;
-
-  //     return;
-  //   }
-
-  //   daysBack = daysBack - 1;
-  // }
-
-  const streak = Math.abs(daysBack);
-
-  console.log(streak);
 
   const deleteActivity = trpc.activities.delete.useMutation({
     onSuccess: () => {
