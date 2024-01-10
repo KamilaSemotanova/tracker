@@ -1,7 +1,9 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
+import { format, sub, isBefore } from 'date-fns';
 
 import { createTRPCRouter, privateProcedure } from '../trpc';
+import { formatDate } from '../utils/date';
 
 export const activityRecordRouter = createTRPCRouter({
   list: privateProcedure.query(({ ctx }) =>
@@ -13,54 +15,89 @@ export const activityRecordRouter = createTRPCRouter({
   ),
 
   streakVerification: privateProcedure
-    .input(z.object({ createdAt: z.date() }))
+    .input(z.object({ activityId: z.number() }))
     .query(async ({ ctx, input }) => {
-      const dayActivityRecords = await ctx.prisma.activityRecord.findMany({
-        where: {
-          userId: ctx.user?.id,
-        },
-      });
+      try {
+        console.log('Verifying streak');
+        const dayActivityRecords = await ctx.prisma.activityRecord.findMany({});
+        console.log(dayActivityRecords);
 
-      const targetActivityRecord = await ctx.prisma.activity
-        .findUnique({
-          where: {
-            id: dayActivityRecords[0].activityId,
-          },
-        })
-        .then((activity) => activity?.amount);
+        if (dayActivityRecords.length === 0) {
+          console.log('No activity records found for the user');
+          // No activity records found for the user
 
-      if (!targetActivityRecord) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Activity record not found',
-        });
+          return 0; // Assuming 0 streak in this case
+        }
+
+        const targetActivityRecord = await ctx.prisma.activity
+          .findUnique({
+            where: {
+              id: dayActivityRecords[0].activityId,
+            },
+          })
+          .then((activity) => activity?.amount);
+
+        const today = format(new Date(), 'dd-MM-yyyy');
+
+        let daysBack = 0;
+        let foundIncomplete = false;
+
+        while (!foundIncomplete) {
+          const someTimeAgo = sub(new Date(), { days: daysBack });
+          const someTimeAgoFormatted = format(someTimeAgo, 'dd-MM-yyyy');
+
+          const countInDay = getCount(someTimeAgoFormatted);
+
+          const isIncomplete = countInDay < targetActivityRecord;
+
+          if (
+            isIncomplete ||
+            isBefore(someTimeAgo, new Date(input.createdAt))
+          ) {
+            foundIncomplete = true;
+          }
+
+          daysBack = daysBack - 1;
+        }
+
+        const streak = Math.abs(daysBack);
+
+        return streak;
+      } catch (error) {
+        throw new Error('Failed to verify streak');
       }
-
-      const totalAmount = await ctx.prisma.activityRecord.groupBy({
-        by: ['createdAt'],
-        where: {
-          userId: ctx.user?.id,
-          activityId: dayActivityRecords[0].activityId,
-          createdAt: input.createdAt,
-        },
-        _sum: {
-          addedAmount: true,
-        },
-      });
-
-      if (!totalAmount[0]) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Activity record not found',
-        });
-      }
-
-      if (Number(totalAmount[0]._sum.addedAmount) >= targetActivityRecord) {
-        return true;
-      }
-
-      return false;
     }),
+  // if (!targetActivityRecord) {
+  //   throw new TRPCError({
+  //     code: 'NOT_FOUND',
+  //     message: 'Activity record not found',
+  //   });
+  // }
+
+  // const totalAmount = await ctx.prisma.activityRecord.groupBy({
+  //   by: ['createdAt'],
+  //   where: {
+  //     userId: ctx.user?.id,
+  //     activityId: dayActivityRecords[0].activityId,
+  //     createdAt: input.createdAt,
+  //   },
+  //   _sum: {
+  //     addedAmount: true,
+  //   },
+  // });
+
+  // if (!totalAmount[0]) {
+  //   throw new TRPCError({
+  //     code: 'NOT_FOUND',
+  //     message: 'Activity record not found',
+  //   });
+  // }
+
+  // if (Number(totalAmount[0]._sum.addedAmount) >= targetActivityRecord) {
+  //   return true;
+  // }
+
+  // return false;
 
   create: privateProcedure
     .input(z.object({ activityId: z.number(), addedAmount: z.number() }))
@@ -70,7 +107,7 @@ export const activityRecordRouter = createTRPCRouter({
           activityId: input.activityId,
           userId: ctx.user?.id,
           addedAmount: input.addedAmount,
-          createdAt: new Date(),
+          createdAt: formatDate(new Date()),
         },
       }),
     ),
