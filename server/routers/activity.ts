@@ -2,6 +2,7 @@ import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
 import { createTRPCRouter, privateProcedure } from '../trpc';
+import { formatDate } from '../../src/utils/date';
 
 export const activityRouter = createTRPCRouter({
   list: privateProcedure.query(async ({ ctx }) => {
@@ -13,6 +14,65 @@ export const activityRouter = createTRPCRouter({
 
     return activities;
   }),
+
+  streakVerification: privateProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ input, ctx }) => {
+      const activity = await ctx.prisma.activity.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+
+      if (ctx.user?.id !== activity?.userId) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'No access to this resource',
+        });
+      }
+
+      const streak = await ctx.prisma.activityRecord.groupBy({
+        by: ['createdAt'],
+        where: {
+          activityId: input.id,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+        _sum: {
+          addedAmount: true,
+        },
+      });
+
+      const today = formatDate(new Date());
+
+      const startIndex = streak.findIndex((entry) => entry.createdAt === today);
+      let streakCount = 0;
+
+      if (startIndex === -1) {
+        return streakCount;
+      }
+
+      const nextDateInStreak = new Date();
+
+      streak.forEach((entry) => {
+        if (entry.createdAt !== formatDate(nextDateInStreak)) {
+          return streakCount;
+        }
+
+        const addedAmount = entry._sum.addedAmount || -1;
+
+        if (addedAmount >= activity.amount) {
+          streakCount++;
+        } else {
+          return streakCount;
+        }
+
+        nextDateInStreak.setDate(nextDateInStreak.getDate() - 1);
+      });
+
+      return streakCount;
+    }),
 
   create: privateProcedure
     .input(z.object({ name: z.string(), amount: z.number(), unit: z.string() }))

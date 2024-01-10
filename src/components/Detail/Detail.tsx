@@ -1,6 +1,5 @@
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
-import { format, sub } from 'date-fns';
 
 import { trpc } from '../../utils/trpc';
 import { Row } from '../Row/Row';
@@ -17,30 +16,9 @@ export const DetailOfActivity = () => {
     id: Number(id),
   });
 
-  const today = new Date();
-
-  let daysBack = 0;
-  let foundIncomplete = false;
-
-  while (!foundIncomplete) {
-    const someTimeAgo = sub(today, { days: daysBack });
-
-    const countInDay = trpc.activityRecord.streakVerification.useQuery({
-      createdAt: format(someTimeAgo, 'dd-MM-yyyy'),
-    });
-
-    if (!countInDay) {
-      foundIncomplete = true;
-
-      return;
-    }
-
-    daysBack = daysBack - 1;
-  }
-
-  const streak = Math.abs(daysBack);
-
-  console.log(streak);
+  const { data: countInDay } = trpc.activities.streakVerification.useQuery({
+    id: Number(id),
+  });
 
   const deleteActivity = trpc.activities.delete.useMutation({
     onSuccess: () => {
@@ -94,7 +72,7 @@ export const DetailOfActivity = () => {
         <UpdateForm activity={activityData} />
         <div className={style.container}>
           <div className={style.counter}>
-            <p className={style.number}>{activityData.timesDone}</p>
+            <p className={style.number}>{countInDay}</p>
           </div>
           <p className={style.streekDays}>{days(activityData.timesDone)}</p>
         </div>
