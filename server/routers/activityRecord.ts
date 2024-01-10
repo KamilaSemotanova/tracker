@@ -18,7 +18,6 @@ export const activityRecordRouter = createTRPCRouter({
       const dayActivityRecords = await ctx.prisma.activityRecord.findMany({
         where: {
           userId: ctx.user?.id,
-          createdAt: input.createdAt,
         },
       });
 

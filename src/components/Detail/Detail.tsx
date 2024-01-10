@@ -17,26 +17,38 @@ export const DetailOfActivity = () => {
     id: Number(id),
   });
 
-  const today = new Date();
+  const day = new Date().getDate();
+  const month = new Date().getMonth() + 1;
+  const year = new Date().getFullYear();
+  const today = `${day}-${month}-${year}`;
 
-  let daysBack = 0;
-  let foundIncomplete = false;
+  console.log(today);
 
-  while (!foundIncomplete) {
-    const someTimeAgo = sub(today, { days: daysBack });
+  const daysBack = 0;
+  const foundIncomplete = false;
 
-    const countInDay = trpc.activityRecord.streakVerification.useQuery({
-      createdAt: format(someTimeAgo, 'dd-MM-yyyy'),
-    });
+  const countInDay = trpc.activityRecord.streakVerification.useQuery({
+    createdAt: today,
+  });
 
-    if (!countInDay) {
-      foundIncomplete = true;
+  console.log(countInDay);
 
-      return;
-    }
+  // while (!foundIncomplete) {
+  //   const someTimeAgo = sub(today, { days: daysBack });
+  //   console.log(someTimeAgo);
 
-    daysBack = daysBack - 1;
-  }
+  //   const countInDay = trpc.activityRecord.streakVerification.useQuery({
+  //     createdAt: format(someTimeAgo, 'dd-MM-yyyy'),
+  //   });
+
+  //   if (!countInDay) {
+  //     foundIncomplete = true;
+
+  //     return;
+  //   }
+
+  //   daysBack = daysBack - 1;
+  // }
 
   const streak = Math.abs(daysBack);
 
