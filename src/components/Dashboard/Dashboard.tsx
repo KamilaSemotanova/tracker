@@ -20,6 +20,7 @@ type ActivityFormData = {
 export const Dashboard = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [error, setError] = useState('');
+  const [recordFormVisible, setRecordFormVisible] = useState(false);
 
   const router = useRouter();
   const formRef = useRef<ActivityFormData>(null);
@@ -90,6 +91,29 @@ export const Dashboard = () => {
               <div className={style.nameBox}>
                 <li className={style.nameOfActivity}>{name}</li>
               </div>
+              <button
+                onClick={() => {
+                  setRecordFormVisible(true);
+                }}
+              >
+                plus
+              </button>
+              {recordFormVisible && (
+                <>
+                  <form>
+                    <input type="number" />
+                    <input type="text" />
+                    <button type="submit">přidat</button>
+                  </form>
+                  <button
+                    onClick={() => {
+                      setRecordFormVisible(false);
+                    }}
+                  >
+                    zrušit
+                  </button>
+                </>
+              )}
             </div>
           ))}
         </ul>
