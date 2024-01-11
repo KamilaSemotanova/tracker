@@ -22,6 +22,7 @@ export const Dashboard = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [error, setError] = useState('');
   const [recordFormVisible, setRecordFormVisible] = useState<number>();
+  const [record, setRecord] = useState<number>();
 
   const router = useRouter();
   const formRef = useRef<ActivityFormData>(null);
@@ -38,6 +39,35 @@ export const Dashboard = () => {
     trpc.activities.streakVerificationInDate.useQuery({
       date: formatDate(new Date()),
     });
+
+  const createActivityRecord = trpc.activityRecord.create.useMutation({
+    onSuccess: () => {
+      utils.activityRecord.invalidate();
+    },
+  });
+
+  const handleCreateRecord = (
+    e: React.FormEvent<HTMLFormElement>,
+    id: number,
+  ) => {
+    e.preventDefault();
+
+    if (!record) {
+      return;
+    }
+
+    if (record < 0) {
+      return;
+    }
+
+    createActivityRecord.mutate({
+      activityId: id,
+      addedAmount: record,
+    });
+
+    setRecordFormVisible(undefined);
+    setRecord(undefined);
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -86,43 +116,42 @@ export const Dashboard = () => {
               })}
               key={id}
             >
-              <div className={style.summaryBox}>
-                <div
-                  className={style.summaryInfo}
-                  onClick={() => handleDetailClick(id)}
-                >
-                  <div className={style.nameBox}>
-                    <li className={style.nameOfActivity}>{name}</li>
-                  </div>
+              <div
+                className={style.summaryInfo}
+                onClick={() => handleDetailClick(id)}
+              >
+                <div className={style.nameBox}>
+                  <li className={style.nameOfActivity}>{name}</li>
                 </div>
-                <button
-                  className={style.plus}
-                  onClick={() => {
-                    setRecordFormVisible(id);
-                  }}
-                  aria-label="Otevřít krátký formulář pro zaznamenání aktivity."
-                >
-                  <Image
-                    src={addActivity}
-                    alt="Přidat novou aktivitu"
-                    className={style.addActivity}
-                  />
-                </button>
               </div>
               {recordFormVisible === id && (
-                <>
-                  <form>
-                    <input type="number" />
-                  </form>
-                  <button
-                    onClick={() => {
-                      setRecordFormVisible(undefined);
-                    }}
-                  >
-                    zrušit
-                  </button>
-                </>
+                <form
+                  className={style.recordForm}
+                  onSubmit={(e) => handleCreateRecord(e, id)}
+                >
+                  <input
+                    className={style.recordInput}
+                    type="number"
+                    onChange={(e) => setRecord(e.target.valueAsNumber)}
+                  />
+                  <button type="submit">done</button>
+                </form>
               )}
+              <button
+                className={style.plus}
+                onClick={() => {
+                  recordFormVisible
+                    ? setRecordFormVisible(undefined)
+                    : setRecordFormVisible(id);
+                }}
+                aria-label="Otevřít krátký formulář pro zaznamenání aktivity."
+              >
+                <div
+                  className={classnames(style.addRecord, {
+                    [style.closeForm]: recordFormVisible === id,
+                  })}
+                />
+              </button>
             </div>
           ))}
         </ul>

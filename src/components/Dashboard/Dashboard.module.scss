@@ -46,8 +46,8 @@
 
 .activity {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
   width: 80vw;
   height: max-content;
   padding: 0 0.5rem;
@@ -69,12 +69,6 @@
   background-color: $hornblende-green;
 }
 
-.summaryBox {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .summaryInfo {
   display: flex;
   align-items: center;
@@ -92,14 +86,28 @@
   margin-right: 2.5rem;
 }
 
+.recordForm {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.recordInput {
+  width: 5rem;
+  background-color: inherit;
+  border: none;
+  border-bottom: 1px solid $translucent-silk;
+  border-radius: 2px;
+
+  &:focus {
+    outline: 1px solid $translucent-silk;
+  }
+}
+
 .plus {
   width: 2rem;
   height: 2rem;
   padding: 0.2rem;
   background-color: inherit;
-  background-image: url('./img/plus.png');
-  background-size: cover;
-  background-position: center;
   border: 1px solid $translucent-silk;
   border-radius: 8px;
   cursor: pointer;
@@ -107,6 +115,23 @@
   &:hover {
     background-color: $translucent-silk;
   }
+}
+
+.addRecord {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-image: url('./img/lightPlus.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+
+  &:hover {
+    background-image: url('./img/plus.png');
+  }
+}
+
+.closeForm {
+  transform: rotate(45deg);
 }
 
 .revealForm {
