@@ -134,7 +134,9 @@ export const Dashboard = () => {
                     type="number"
                     onChange={(e) => setRecord(e.target.valueAsNumber)}
                   />
-                  <button type="submit">done</button>
+                  <button type="submit" className={style.submitRecordButton}>
+                    <div className={style.submitRecord} />
+                  </button>
                 </form>
               )}
               <button
@@ -144,7 +146,7 @@ export const Dashboard = () => {
                     ? setRecordFormVisible(undefined)
                     : setRecordFormVisible(id);
                 }}
-                aria-label="Otevřít krátký formulář pro zaznamenání aktivity."
+                aria-label={`Otevřít formulář pro přidání aktivity ${name}.`}
               >
                 <div
                   className={classnames(style.addRecord, {
