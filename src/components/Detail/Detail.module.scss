@@ -33,8 +33,8 @@
 }
 
 .back {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1.8rem;
+  height: 1.8rem;
   padding: 0.5rem;
   background: no-repeat center/contain url('./img/back.svg');
   border: none;
@@ -59,7 +59,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  width: 80%;
+  width: 70%;
   height: 100%;
   padding: 0.5rem 0 1.2rem 0;
   background-color: $hornblende-green;
@@ -95,8 +95,8 @@
 }
 
 .delete {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1.8rem;
+  height: 1.8rem;
   background: no-repeat center/contain url('./img/delete.svg');
   border: none;
   cursor: pointer;

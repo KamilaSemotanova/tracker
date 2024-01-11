@@ -31,12 +31,45 @@
   }
 }
 
+.plus {
+  width: 2rem;
+  height: 2rem;
+  padding: 0.2rem;
+  background-color: inherit;
+  border: 1px solid $translucent-silk;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $translucent-silk;
+  }
+}
+
+.addRecord {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-image: url('../Dashboard/img/lightPlus.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+
+  &:hover {
+    background-image: url('../Dashboard/img/plus.png');
+  }
+}
+
+.closeForm {
+  rotate: 45deg;
+  transition: rotate 0.5s;
+}
+
 .input {
   width: 8rem;
   border: none;
   border-bottom: 1px solid $translucent-silk;
   border-radius: 2px;
   background-color: inherit;
+  color: $translucent-silk;
 
   &:focus {
     outline: 1px solid $translucent-silk;

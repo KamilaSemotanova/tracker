@@ -16,6 +16,7 @@ type UpdateFormProps = {
 export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
   const [warningMessage, setWarningMessage] = useState('');
   const [currentAmount, setCurrentAmount] = useState(0);
+  const [recordFormVisible, setRecordFormVisible] = useState(false);
 
   const formRef = useRef<ActivityRecordFormData>(null);
   const utils = trpc.useContext();
@@ -46,37 +47,55 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
 
     setCurrentAmount(0);
     setWarningMessage('');
+    setRecordFormVisible(false);
   };
 
   return (
     <section className={style.updateBox}>
-      <form ref={formRef} onSubmit={handleSubmit} className={style.form}>
-        <input
-          className={style.input}
-          type="number"
-          aria-label={`Vložit počet ${activity.unit} k ${activity.name}`}
-          onChange={(e) => setCurrentAmount(Number(e.target.value))}
-        />
-        <div className={style.infoBox}>
-          <p className={style.text}>
-            z {activity.amount} {activity.unit}
-          </p>
-        </div>
-        <button
-          type="submit"
-          aria-label={`Přidat hotové množství aktivitě ${activity.name}.`}
-          className={style.done}
-        >
-          <div className={style.submitRecord} />
-        </button>
-      </form>
-      <p
-        className={classnames(style.warningBox, {
-          [style.hidden]: warningMessage === '',
-        })}
+      <button
+        className={style.plus}
+        onClick={() => {
+          setRecordFormVisible(!recordFormVisible);
+        }}
+        aria-label={`Otevřít formulář pro přidání aktivity ${name}.`}
       >
-        {warningMessage}
-      </p>
+        <div
+          className={classnames(style.addRecord, {
+            [style.closeForm]: recordFormVisible === true,
+          })}
+        />
+      </button>
+      {recordFormVisible && (
+        <>
+          <form ref={formRef} onSubmit={handleSubmit} className={style.form}>
+            <input
+              className={style.input}
+              type="number"
+              aria-label={`Vložit počet ${activity.unit} k ${activity.name}`}
+              onChange={(e) => setCurrentAmount(Number(e.target.value))}
+            />
+            <div className={style.infoBox}>
+              <p className={style.text}>
+                z {activity.amount} {activity.unit}
+              </p>
+            </div>
+            <button
+              type="submit"
+              aria-label={`Přidat hotové množství aktivitě ${activity.name}.`}
+              className={style.done}
+            >
+              <div className={style.submitRecord} />
+            </button>
+          </form>
+          <p
+            className={classnames(style.warningBox, {
+              [style.hidden]: warningMessage === '',
+            })}
+          >
+            {warningMessage}
+          </p>
+        </>
+      )}
     </section>
   );
 };

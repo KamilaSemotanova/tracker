@@ -12,13 +12,23 @@ export const DetailOfActivity = () => {
 
   const utils = trpc.useContext();
 
-  const { data: activityData } = trpc.activities.read.useQuery({
-    id: Number(id),
-  });
+  const { data: activityData } = trpc.activities.read.useQuery(
+    {
+      id: Number(id),
+    },
+    {
+      enabled: id != null,
+    },
+  );
 
-  const { data: countInDay } = trpc.activities.streakVerification.useQuery({
-    id: Number(id),
-  });
+  const { data: countInDay } = trpc.activities.streakVerification.useQuery(
+    {
+      id: Number(id),
+    },
+    {
+      enabled: id != null,
+    },
+  );
 
   const deleteActivity = trpc.activities.delete.useMutation({
     onSuccess: () => {
