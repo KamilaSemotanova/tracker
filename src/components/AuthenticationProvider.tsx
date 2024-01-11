@@ -17,6 +17,7 @@ export type AuthenticationContextValueType = {
   login: (newToken: string, newUser: { name: string; email: string }) => void;
   logout: () => void;
   user?: { name: string; email: string };
+  setUser: (newUser: { name: string; email: string }) => void;
 };
 
 const AuthenticationContext = createContext<AuthenticationContextValueType>(
@@ -67,7 +68,10 @@ export const AuthenticationProvider: ChildrenFC = ({ children }) => {
     router.push('/prihlaseni');
   }, []);
 
-  const value = useMemo(() => ({ login, logout, user }), [login, logout, user]);
+  const value = useMemo(
+    () => ({ login, logout, user, setUser }),
+    [login, logout, user, setUser],
+  );
 
   return (
     <AuthenticationContext.Provider value={value}>

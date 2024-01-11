@@ -7,14 +7,15 @@ import { useAuthentication } from '../AuthenticationProvider';
 import style from './ChangeProfile.module.scss';
 
 export const ChangeProfile = () => {
-  const [updatedName, setUpdatedName] = useState('');
-  const [updatedEmail, setUpdatedEmail] = useState('');
+  const { user, setUser } = useAuthentication();
+
+  const [updatedName, setUpdatedName] = useState(user?.name || '');
+  const [updatedEmail, setUpdatedEmail] = useState(user?.email || '');
   const [warningMessage, setWarningMessage] = useState('');
 
-  const { user } = useAuthentication();
-
   const updateProfile = trpc.user.updateUser.useMutation({
-    onSuccess: () => {
+    onSuccess: ({ name, email }) => {
+      setUser({ name, email });
       setWarningMessage('Profil byl upraven');
     },
     onError: () => {
@@ -46,14 +47,14 @@ export const ChangeProfile = () => {
           type="text"
           label="Jméno"
           autoFocus
-          defaultValue={user?.name}
+          value={updatedName}
           onChange={(e) => setUpdatedName(e.target.value)}
         />
         <TextField
           id="email"
           type="email"
           label="E-mail"
-          defaultValue={user?.email}
+          value={updatedEmail}
           onChange={(e) => setUpdatedEmail(e.target.value)}
         />
         <p className={style.warning}>{warningMessage}</p>
