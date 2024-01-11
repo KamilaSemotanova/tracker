@@ -16,7 +16,7 @@ type User = {
 
 export const signTokens = async (user: User) => {
   const access_token = signJwt(
-    { sub: user.id },
+    { sub: user.id, name: user.name, email: user.email },
     {
       expiresIn: `${process.env.ACCESS_TOKEN_EXPIRES_IN}m`,
     },
