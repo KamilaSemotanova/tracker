@@ -46,12 +46,13 @@
 
 .activity {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   width: 80vw;
-  height: min-content;
+  height: max-content;
+  padding: 0 0.5rem;
   color: $translucent-silk;
-  background-color: $hornblende-green;
+  background-color: $pumping-spice;
   border: none;
   border-radius: 10px;
   text-align: center;
@@ -64,21 +65,19 @@
   }
 }
 
-.zero {
-  background-color: $pumping-spice;
-}
-
-.more {
+.completed {
   background-color: $hornblende-green;
 }
 
-.timesDone {
+.summaryBox {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 10px;
+  justify-content: space-between;
+}
+
+.summaryInfo {
+  display: flex;
+  align-items: center;
 }
 
 .nameOfActivity {
@@ -91,6 +90,23 @@
   justify-content: center;
   width: 100%;
   margin-right: 2.5rem;
+}
+
+.plus {
+  width: 2rem;
+  height: 2rem;
+  padding: 0.2rem;
+  background-color: inherit;
+  background-image: url('./img/plus.png');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid $translucent-silk;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $translucent-silk;
+  }
 }
 
 .revealForm {

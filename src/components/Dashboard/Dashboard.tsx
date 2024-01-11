@@ -9,6 +9,7 @@ import { Row } from '../Row/Row';
 import { TextField } from '../TextField/TextField';
 import { UserBox } from './UserBox';
 import addActivity from './img/plus.png';
+import { formatDate } from '../../../server/utils/date';
 import style from './Dashboard.module.scss';
 
 type ActivityFormData = {
@@ -20,7 +21,7 @@ type ActivityFormData = {
 export const Dashboard = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [error, setError] = useState('');
-  const [recordFormVisible, setRecordFormVisible] = useState(false);
+  const [recordFormVisible, setRecordFormVisible] = useState<number>();
 
   const router = useRouter();
   const formRef = useRef<ActivityFormData>(null);
@@ -32,6 +33,11 @@ export const Dashboard = () => {
       utils.activities.invalidate();
     },
   });
+
+  const { data: countInDay } =
+    trpc.activities.streakVerificationInDate.useQuery({
+      date: formatDate(new Date()),
+    });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,39 +79,44 @@ export const Dashboard = () => {
       <div className={style.box}>
         <h1 className={style.title}>Všechny aktivity</h1>
         <ul className={style.activities}>
-          {activities?.map(({ timesDone, id, name }) => (
+          {activities?.map(({ id, name }) => (
             <div
-              onClick={() => handleDetailClick(id)}
               className={classnames(style.activity, {
-                [style.zero]: timesDone === 0,
-                [style.more]: timesDone > 0,
+                [style.completed]: countInDay?.[id]?.completed,
               })}
               key={id}
             >
-              <span
-                className={style.timesDone}
-                aria-description={`Aktivita ${name} byla dokončena ${timesDone}x.`}
-              >
-                {timesDone}
-              </span>
-              <div className={style.nameBox}>
-                <li className={style.nameOfActivity}>{name}</li>
+              <div className={style.summaryBox}>
+                <div
+                  className={style.summaryInfo}
+                  onClick={() => handleDetailClick(id)}
+                >
+                  <div className={style.nameBox}>
+                    <li className={style.nameOfActivity}>{name}</li>
+                  </div>
+                </div>
+                <button
+                  className={style.plus}
+                  onClick={() => {
+                    setRecordFormVisible(id);
+                  }}
+                  aria-label="Otevřít krátký formulář pro zaznamenání aktivity."
+                >
+                  <Image
+                    src={addActivity}
+                    alt="Přidat novou aktivitu"
+                    className={style.addActivity}
+                  />
+                </button>
               </div>
-              <button
-                onClick={() => {
-                  setRecordFormVisible(true);
-                }}
-              >
-                plus
-              </button>
-              {recordFormVisible && (
+              {recordFormVisible === id && (
                 <>
                   <form>
                     <input type="number" />
                   </form>
                   <button
                     onClick={() => {
-                      setRecordFormVisible(false);
+                      setRecordFormVisible(undefined);
                     }}
                   >
                     zrušit

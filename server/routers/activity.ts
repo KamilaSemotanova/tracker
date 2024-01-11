@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import { formatDate } from '../utils/date';
 import { createTRPCRouter, privateProcedure } from '../trpc';
+import { indexToMap } from '../utils/dataHelper';
 
 export const activityRouter = createTRPCRouter({
   list: privateProcedure.query(async ({ ctx }) => {
@@ -87,6 +88,54 @@ export const activityRouter = createTRPCRouter({
       });
 
       return streakCount;
+    }),
+
+  streakVerificationInDate: privateProcedure
+    .input(z.object({ date: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const activity = await ctx.prisma.activity.findMany({
+        where: {
+          userId: ctx.user?.id,
+        },
+      });
+
+      const activityMap = indexToMap(activity, 'id');
+
+      const streak = await ctx.prisma.activityRecord.groupBy({
+        by: ['activityId'],
+        where: {
+          createdAt: input.date,
+          userId: ctx.user?.id,
+        },
+        _sum: {
+          addedAmount: true,
+        },
+      });
+
+      const completedActivities = streak.map((entry) => {
+        const matchingActivity = activityMap.get(entry.activityId);
+
+        if (!matchingActivity) {
+          return { ...entry, completed: false };
+        }
+
+        const addedAmount = entry._sum.addedAmount || -1;
+
+        if (addedAmount >= matchingActivity.amount) {
+          return { ...entry, completed: true };
+        } else {
+          return { ...entry, completed: false };
+        }
+      });
+
+      return completedActivities.reduce(
+        (acc: Record<number, (typeof completedActivities)[number]>, entry) => {
+          acc[entry.activityId] = entry;
+
+          return acc;
+        },
+        {},
+      );
     }),
 
   read: privateProcedure
