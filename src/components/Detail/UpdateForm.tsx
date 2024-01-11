@@ -20,12 +20,6 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
   const formRef = useRef<ActivityRecordFormData>(null);
   const utils = trpc.useContext();
 
-  const getActivityStreak = trpc.activityRecord.streakVerification.useQuery({
-    activityId: activity.id,
-  });
-
-  console.log(getActivityStreak.data);
-
   const createActivityRecord = trpc.activityRecord.create.useMutation({
     onSuccess: () => {
       utils.activityRecord.invalidate();

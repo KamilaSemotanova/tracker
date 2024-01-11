@@ -18,17 +18,20 @@ export const activityRecordRouter = createTRPCRouter({
     .input(z.object({ activityId: z.number() }))
     .query(async ({ ctx, input }) => {
       try {
-        console.log('Verifying streak');
-        const dayActivityRecords = await ctx.prisma.activityRecord.findMany({});
-        console.log(dayActivityRecords);
+        // získání všech záznamů aktivity
+        const dayActivityRecords = await ctx.prisma.activityRecord.findMany({
+          where: {
+            userId: ctx.user?.id,
+            activityId: input.activityId,
+          },
+        });
 
+        // zjištění, jestli není ten den počet záznamů 0
         if (dayActivityRecords.length === 0) {
-          console.log('No activity records found for the user');
-          // No activity records found for the user
-
-          return 0; // Assuming 0 streak in this case
+          return 0;
         }
 
+        // zjištění cílového počtu záznamů v daný den
         const targetActivityRecord = await ctx.prisma.activity
           .findUnique({
             where: {
@@ -37,13 +40,14 @@ export const activityRecordRouter = createTRPCRouter({
           })
           .then((activity) => activity?.amount);
 
-        const today = format(new Date(), 'dd-MM-yyyy');
+        // definování funkce, která získá počet záznamů v daný den
+        const today = formatDate(new Date());
 
         let daysBack = 0;
         let foundIncomplete = false;
 
         while (!foundIncomplete) {
-          const someTimeAgo = sub(new Date(), { days: daysBack });
+          const someTimeAgo = sub(today, { days: daysBack });
           const someTimeAgoFormatted = format(someTimeAgo, 'dd-MM-yyyy');
 
           const countInDay = getCount(someTimeAgoFormatted);
@@ -64,40 +68,12 @@ export const activityRecordRouter = createTRPCRouter({
 
         return streak;
       } catch (error) {
-        throw new Error('Failed to verify streak');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to verify streak',
+        });
       }
     }),
-  // if (!targetActivityRecord) {
-  //   throw new TRPCError({
-  //     code: 'NOT_FOUND',
-  //     message: 'Activity record not found',
-  //   });
-  // }
-
-  // const totalAmount = await ctx.prisma.activityRecord.groupBy({
-  //   by: ['createdAt'],
-  //   where: {
-  //     userId: ctx.user?.id,
-  //     activityId: dayActivityRecords[0].activityId,
-  //     createdAt: input.createdAt,
-  //   },
-  //   _sum: {
-  //     addedAmount: true,
-  //   },
-  // });
-
-  // if (!totalAmount[0]) {
-  //   throw new TRPCError({
-  //     code: 'NOT_FOUND',
-  //     message: 'Activity record not found',
-  //   });
-  // }
-
-  // if (Number(totalAmount[0]._sum.addedAmount) >= targetActivityRecord) {
-  //   return true;
-  // }
-
-  // return false;
 
   create: privateProcedure
     .input(z.object({ activityId: z.number(), addedAmount: z.number() }))

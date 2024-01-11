@@ -43,6 +43,12 @@ export const DetailOfActivity = () => {
     return null;
   }
 
+  const getActivityStreak = trpc.activityRecord.streakVerification.useQuery({
+    activityId: activityData.id,
+  });
+
+  console.log(getActivityStreak);
+
   return (
     <Row flexCol fullWidth justifyCenter itemsCenter>
       <div className={style.detailBox}>
