@@ -102,8 +102,6 @@ export const Dashboard = () => {
                 <>
                   <form>
                     <input type="number" />
-                    <input type="text" />
-                    <button type="submit">přidat</button>
                   </form>
                   <button
                     onClick={() => {

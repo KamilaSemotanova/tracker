@@ -16,6 +16,10 @@ export const DetailOfActivity = () => {
     id: Number(id),
   });
 
+  const { data: countInDay } = trpc.activities.streakVerification.useQuery({
+    id: Number(id),
+  });
+
   const deleteActivity = trpc.activities.delete.useMutation({
     onSuccess: () => {
       utils.activities.invalidate();
@@ -43,12 +47,6 @@ export const DetailOfActivity = () => {
     return null;
   }
 
-  const getActivityStreak = trpc.activityRecord.streakVerification.useQuery({
-    activityId: activityData.id,
-  });
-
-  console.log(getActivityStreak);
-
   return (
     <Row flexCol fullWidth justifyCenter itemsCenter>
       <div className={style.detailBox}>
@@ -71,10 +69,14 @@ export const DetailOfActivity = () => {
             aria-label={`Smazat aktivitu ${activityData.name}.`}
           />
         </nav>
+        <div>
+          <p>{activityData.amount}</p>
+          <p>{activityData.unit}</p>
+        </div>
         <UpdateForm activity={activityData} />
         <div className={style.container}>
           <div className={style.counter}>
-            <p className={style.number}>{activityData.timesDone}</p>
+            <p className={style.number}>{countInDay}</p>
           </div>
           <p className={style.streekDays}>{days(activityData.timesDone)}</p>
         </div>
