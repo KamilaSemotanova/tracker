@@ -14,6 +14,7 @@ export const Header = () => {
       <div
         className={classnames(style.title, kohoFont.className)}
         onClick={() => router.push('/')}
+        aria-label="Zpět na úvodní stránku"
       >
         tracker
       </div>
