@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react';
 import { useRouter } from 'next/router';
+import jwt from 'jsonwebtoken';
 
 import { ChildrenFC } from '../utils/types';
 
@@ -26,6 +27,25 @@ export const AuthenticationProvider: ChildrenFC = ({ children }) => {
   const [user, setUser] = useState({ name: '', email: '' });
 
   const router = useRouter();
+
+  useEffect(() => {
+    const jwtToken = localStorage.getItem('token');
+
+    if (!jwtToken) {
+      return;
+    }
+
+    const decodedToken = jwt.decode(jwtToken);
+
+    if (!decodedToken) {
+      return;
+    }
+
+    setUser({
+      name: user.name || (decodedToken as any).name,
+      email: user.email || (decodedToken as any).email,
+    });
+  }, []);
 
   useEffect(() => {
     if (!localStorage.getItem(TOKEN_KEY)) {

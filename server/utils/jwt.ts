@@ -2,6 +2,8 @@ import jwt, { SignOptions } from 'jsonwebtoken';
 
 type Payload = {
   sub: number;
+  name?: string | null;
+  email?: string;
 };
 
 export const signJwt = (payload: Payload, options: SignOptions = {}) => {

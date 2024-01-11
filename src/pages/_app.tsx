@@ -1,4 +1,5 @@
 import '../styles/globalStyles.scss';
+
 import { AppType } from 'next/app';
 import Head from 'next/head';
 import localFont from 'next/font/local';
