@@ -32,7 +32,11 @@ export const DetailOfActivity = () => {
     router.push('/');
   };
 
-  const days = (timesDone: number) => {
+  const days = (timesDone?: number) => {
+    if (!timesDone) {
+      return 'dní';
+    }
+
     if (timesDone === 1) {
       return 'den';
     }
@@ -56,29 +60,25 @@ export const DetailOfActivity = () => {
             className={style.back}
             aria-label="Zpět na hlavní stránku."
           />
-          <h1
-            className={classnames(style.activity, {
-              [style.zero]: activityData.timesDone === 0,
+          <div
+            className={classnames(style.headingBox, {
+              [style.zero]: countInDay === 0,
             })}
           >
-            {activityData.name}
-          </h1>
+            <h1 className={style.activity}>{activityData.name}</h1>
+            <UpdateForm activity={activityData} />
+          </div>
           <button
             onClick={() => handleDelete(activityData.id)}
             className={style.delete}
             aria-label={`Smazat aktivitu ${activityData.name}.`}
           />
         </nav>
-        <div>
-          <p>{activityData.amount}</p>
-          <p>{activityData.unit}</p>
-        </div>
-        <UpdateForm activity={activityData} />
         <div className={style.container}>
           <div className={style.counter}>
             <p className={style.number}>{countInDay}</p>
           </div>
-          <p className={style.streekDays}>{days(activityData.timesDone)}</p>
+          <p className={style.streekDays}>{days(countInDay)}</p>
         </div>
       </div>
     </Row>

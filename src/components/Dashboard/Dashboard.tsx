@@ -134,7 +134,11 @@ export const Dashboard = () => {
                     type="number"
                     onChange={(e) => setRecord(e.target.valueAsNumber)}
                   />
-                  <button type="submit" className={style.submitRecordButton}>
+                  <button
+                    type="submit"
+                    aria-label={`Přidat hotové množství aktivitě ${name}.`}
+                    className={style.submitRecordButton}
+                  >
                     <div className={style.submitRecord} />
                   </button>
                 </form>

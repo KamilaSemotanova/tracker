@@ -1,9 +1,8 @@
 import { useRef, useState } from 'react';
 import { Activity } from '@prisma/client';
+import classnames from 'classnames';
 
 import { trpc } from '../../utils/trpc';
-import { Button } from '../Button/Button';
-import { TextField } from '../TextField/TextField';
 import style from './UpdateForm.module.scss';
 
 type ActivityRecordFormData = {
@@ -16,6 +15,7 @@ type UpdateFormProps = {
 
 export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
   const [warningMessage, setWarningMessage] = useState('');
+  const [currentAmount, setCurrentAmount] = useState(0);
 
   const formRef = useRef<ActivityRecordFormData>(null);
   const utils = trpc.useContext();
@@ -29,19 +29,11 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!formRef.current) {
+    if (!currentAmount) {
       return;
     }
 
-    const { value } = formRef.current.currentAmount;
-
-    if (!value) {
-      return;
-    }
-
-    const currentAmountValue = Number(value);
-
-    if (currentAmountValue < 0) {
+    if (currentAmount < 0) {
       setWarningMessage('Nelze odečíst z cíle');
 
       return;
@@ -49,37 +41,42 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
 
     createActivityRecord.mutate({
       activityId: activity.id,
-      addedAmount: currentAmountValue,
+      addedAmount: currentAmount,
     });
 
-    formRef.current.reset();
+    setCurrentAmount(0);
     setWarningMessage('');
   };
 
   return (
     <section className={style.updateBox}>
-      {/* <div className={style.infoBox}>
-        Zbývá:
-        <p>{activity.amount - 1}</p>
-        <p>z</p>
-        <p>{activity.amount}</p>
-        <p>{activity.unit}</p>
-      </div> */}
       <form ref={formRef} onSubmit={handleSubmit} className={style.form}>
-        <div className={style.inputField}>
-          <TextField name="currentAmount" label="Přidat" type="number" />
-          <div className={style.unit}>{activity.unit}</div>
+        <input
+          className={style.input}
+          type="number"
+          aria-label={`Vložit počet ${activity.unit} k ${activity.name}`}
+          onChange={(e) => setCurrentAmount(Number(e.target.value))}
+        />
+        <div className={style.infoBox}>
+          <p className={style.text}>
+            z {activity.amount} {activity.unit}
+          </p>
         </div>
-        <Button
+        <button
           type="submit"
           aria-label={`Přidat hotové množství aktivitě ${activity.name}.`}
           className={style.done}
         >
-          Přidat
-        </Button>
+          <div className={style.submitRecord} />
+        </button>
       </form>
-
-      <p className={style.warningBox}>{warningMessage}</p>
+      <p
+        className={classnames(style.warningBox, {
+          [style.hidden]: warningMessage === '',
+        })}
+      >
+        {warningMessage}
+      </p>
     </section>
   );
 };

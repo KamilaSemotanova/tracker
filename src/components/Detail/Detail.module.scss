@@ -19,7 +19,7 @@
 
 .navigation {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   width: 100%;
   margin: 1rem 0;
@@ -27,7 +27,6 @@
   font-size: 1.2rem;
 
   @media (min-width: $screen-md-min) {
-    height: 3rem;
     padding: 0 4rem;
     font-size: 1.4rem;
   }
@@ -54,13 +53,36 @@
   }
 }
 
+.headingBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 80%;
+  height: 100%;
+  padding: 0.5rem 0 1.2rem 0;
+  background-color: $hornblende-green;
+  border-radius: 10px;
+  color: $translucent-silk;
+
+  @media (min-width: $screen-md-min) {
+    width: 80%;
+    gap: 0.5rem;
+  }
+}
+
+.zero {
+  background-color: $pumping-spice;
+}
+
 .activity {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 75%;
   color: $translucent-silk;
-  background-color: $hornblende-green;
+  background-color: inherit;
   border: none;
   border-radius: 10px;
   font-size: 1.2rem;
@@ -70,10 +92,6 @@
     height: 2.5rem;
     font-size: 1.4rem;
   }
-}
-
-.zero {
-  background-color: $pumping-spice;
 }
 
 .delete {

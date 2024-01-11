@@ -14,19 +14,6 @@
   }
 }
 
-// .infoBox {
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   width: 13rem;
-//   height: 100%;
-//   gap: 1rem;
-
-//   @media (min-width: $screen-md-min) {
-//     width: 50%;
-//   }
-// }
-
 .form {
   display: flex;
   flex-direction: column;
@@ -35,53 +22,75 @@
   gap: 1rem;
   width: 90%;
   height: 100%;
-  padding: 1rem;
-  background-color: $hornblende-green;
   border-radius: 10px;
   color: $translucent-silk;
 
   @media (min-width: $screen-md-min) {
     width: 51%;
+    flex-direction: row;
   }
 }
 
-.inputField {
-  display: flex;
-  gap: 1rem;
-  width: 100%;
+.input {
+  width: 8rem;
+  border: none;
+  border-bottom: 1px solid $translucent-silk;
+  border-radius: 2px;
+  background-color: inherit;
+
+  &:focus {
+    outline: 1px solid $translucent-silk;
+  }
 }
 
-.unit {
+.infoBox {
   display: flex;
-  align-items: flex-end;
+}
+
+.text {
+  text-wrap: nowrap;
 }
 
 .done {
-  width: fit-content;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.2rem;
+  background-color: inherit;
   border: 1px solid $translucent-silk;
-  border-radius: 10px;
-  background-color: $hornblende-green;
-  color: $translucent-silk;
-  font-size: 1rem;
+  border-radius: 8px;
   cursor: pointer;
 
   &:hover {
     background-color: $translucent-silk;
-    color: $severely-burnt-toast;
   }
+}
 
-  @media (min-width: $screen-md-min) {
+.submitRecord {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: inherit;
+  background-image: url('../Dashboard/img/check.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+
+  &:hover {
+    background-image: url('../Dashboard/img/darkCheck.svg');
   }
 }
 
 .warningBox {
   height: 1rem;
   margin-top: 1rem;
-  color: $pumping-spice;
+  color: $hornblende-green;
   font-size: 1rem;
 
   @media (min-width: $screen-md-min) {
     height: 2rem;
     font-size: 1.4rem;
   }
+}
+
+.hidden {
+  display: none;
 }
