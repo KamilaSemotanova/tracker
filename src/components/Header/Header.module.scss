@@ -1,4 +1,5 @@
 @import 'src/styles/color.scss';
+@import 'src/styles/breakpoints.scss';
 
 .container {
   display: flex;
@@ -8,10 +9,19 @@
   width: 100%;
   padding: 0 1rem;
   background-color: $translucent-silk;
+
+  @media (min-width: $screen-md-min) {
+    height: 6rem;
+  }
 }
 
 .title {
   color: $severely-burnt-toast;
   font-size: 1.5rem;
   font-weight: 600;
+  cursor: pointer;
+
+  @media (min-width: $screen-md-min) {
+    font-size: 2.5rem;
+  }
 }

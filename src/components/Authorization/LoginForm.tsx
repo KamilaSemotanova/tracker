@@ -19,8 +19,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   const router = useRouter();
   const { login } = useAuthentication();
 
-  const [loginEmail, setLoginEmail] = useState('testing@test.com');
-  const [loginPassword, setLoginPassword] = useState('Marecek123');
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
 
   const logUser = trpc.user.login.useQuery(
     {

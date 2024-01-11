@@ -38,7 +38,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     row-gap: 1.8rem;
-    column-gap: 5rem;
+    column-gap: 2rem;
     width: 80%;
     margin: 2.2rem 0;
   }
@@ -49,36 +49,30 @@
   align-items: center;
   justify-content: space-between;
   width: 80vw;
-  height: min-content;
+  height: max-content;
+  padding: 0 0.5rem;
   color: $translucent-silk;
-  background-color: $hornblende-green;
+  background-color: $pumping-spice;
   border: none;
   border-radius: 10px;
   text-align: center;
 
   @media (min-width: $screen-md-min) {
-    width: 43%;
+    gap: 0.2rem;
+    width: 46%;
     height: 4rem;
     padding: 0 1rem;
     font-size: 1.4rem;
   }
 }
 
-.zero {
-  background-color: $pumping-spice;
-}
-
-.more {
+.completed {
   background-color: $hornblende-green;
 }
 
-.timesDone {
+.summaryInfo {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 10px;
 }
 
 .nameOfActivity {
@@ -91,6 +85,83 @@
   justify-content: center;
   width: 100%;
   margin-right: 2.5rem;
+}
+
+.recordForm {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.recordInput {
+  width: 5rem;
+  background-color: inherit;
+  border: none;
+  border-bottom: 1px solid $translucent-silk;
+  border-radius: 2px;
+
+  &:focus {
+    outline: 1px solid $translucent-silk;
+  }
+}
+
+.submitRecordButton {
+  width: 2rem;
+  height: 2rem;
+  padding: 0.2rem;
+  background-color: inherit;
+  border: 1px solid $translucent-silk;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $translucent-silk;
+  }
+}
+
+.submitRecord {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: inherit;
+  background-image: url('./img/check.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+
+  &:hover {
+    background-image: url('./img/darkCheck.svg');
+  }
+}
+
+.plus {
+  width: 2rem;
+  height: 2rem;
+  padding: 0.2rem;
+  background-color: inherit;
+  border: 1px solid $translucent-silk;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $translucent-silk;
+  }
+}
+
+.addRecord {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-image: url('./img/lightPlus.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+
+  &:hover {
+    background-image: url('./img/plus.png');
+  }
+}
+
+.closeForm {
+  transform: rotate(45deg);
 }
 
 .revealForm {

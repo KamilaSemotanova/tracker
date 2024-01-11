@@ -2,6 +2,7 @@ import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
 import { createTRPCRouter, privateProcedure } from '../trpc';
+import { formatDate } from '../utils/date';
 
 export const activityRecordRouter = createTRPCRouter({
   list: privateProcedure.query(({ ctx }) =>
@@ -20,6 +21,7 @@ export const activityRecordRouter = createTRPCRouter({
           activityId: input.activityId,
           userId: ctx.user?.id,
           addedAmount: input.addedAmount,
+          createdAt: formatDate(new Date()),
         },
       }),
     ),
@@ -59,7 +61,7 @@ export const activityRecordRouter = createTRPCRouter({
         },
         data: {
           activityId: input.activityId,
-          createdAt: input.createdAt,
+          createdAt: formatDate(input.createdAt),
           addedAmount: +input.addedAmount,
         },
       });
