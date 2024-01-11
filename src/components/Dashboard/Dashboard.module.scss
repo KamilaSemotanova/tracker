@@ -99,6 +99,7 @@
   border: none;
   border-bottom: 1px solid $translucent-silk;
   border-radius: 2px;
+  color: $translucent-silk;
 
   &:focus {
     outline: 1px solid $translucent-silk;
@@ -161,7 +162,8 @@
 }
 
 .closeForm {
-  transform: rotate(45deg);
+  rotate: 45deg;
+  transition: rotate 0.5s;
 }
 
 .revealForm {
