@@ -22,7 +22,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ activity }) => {
 
   const createActivityRecord = trpc.activityRecord.create.useMutation({
     onSuccess: () => {
-      utils.activityRecord.invalidate();
+      utils.activities.invalidate();
     },
   });
 

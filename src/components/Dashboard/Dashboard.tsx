@@ -42,7 +42,7 @@ export const Dashboard = () => {
 
   const createActivityRecord = trpc.activityRecord.create.useMutation({
     onSuccess: () => {
-      utils.activityRecord.invalidate();
+      utils.activities.invalidate();
     },
   });
 
